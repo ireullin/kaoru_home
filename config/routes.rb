@@ -1,9 +1,12 @@
 Rails.application.routes.draw do
-  get 'lottery/index'
+  get   'lottery/index'
 
-  get 'top/index'
+  get   'top/index'
 
-  get 'lottery/:type/:page' => 'lottery#index'
+  get   'lottery/newest/:type'  => 'lottery#newest'
+  post  'lottery/new'           => 'lottery#new'
+  get   'lottery/:type/:page'   => 'lottery#index'
+  
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
