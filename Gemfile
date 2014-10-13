@@ -36,3 +36,4 @@ gem 'sdoc', '~> 0.4.0',                              group: :doc
 # Use bootstrap in ROR
 gem 'bootstrap-sass'
 
+gem "kaminari"
