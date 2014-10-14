@@ -30,26 +30,25 @@ class LotteryController < ApplicationController
 
 	def new
 
-		if params[:type]=='superlottos'
+		obj = JSON.parse(params[:data])
+
+		"""
+		if obj[:type]=='superlottos'
   			#data = JSON.parse( params[:data] )
-  			Superlottos.new(  params[:data] )
+  			Superlottos.new(  obj )
   			Superlottos.save
 
-  		elsif params[:type]=='lottery649s'
-			Lottery649s.new(  params[:data] )
+  		elsif obj[:type]=='lottery649s'
+			Lottery649s.new(  obj )
   			Lottery649s.save
 
   		else
   			
   		end
-
-  		# it's neccessary for phantomjs
-  		headers['Access-Control-Allow-Origin'] = '*'
-    	headers['Access-Control-Allow-Headers'] = 'GET, POST, PUT, DELETE, OPTIONS'
-    	headers['Access-Control-Allow-Methods'] = %w{Origin Accept Content-Type X-Requested-With X-CSRF-Token}.join(',')
+  		"""
 
 		respond_to do |format|
-    	    format.json { render :json => '@data.to_json'  }
+    	    format.json { render :json => "OK".to_json }
       	end
 	end
 
