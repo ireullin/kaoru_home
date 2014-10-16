@@ -13,8 +13,7 @@
 
 ActiveRecord::Schema.define(version: 20141013093952) do
 
-  create_table "lottery649s", id: false, force: true do |t|
-    t.string   "term",         null: false
+  create_table "lottery649s", primary_key: "term", force: true do |t|
     t.integer  "no1",          null: false
     t.integer  "no2",          null: false
     t.integer  "no3",          null: false
@@ -26,6 +25,8 @@ ActiveRecord::Schema.define(version: 20141013093952) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "lottery649s", ["term"], name: "sqlite_autoindex_lottery649s_1", unique: true
 
   create_table "superlottos", primary_key: "term", force: true do |t|
     t.integer  "no1",          null: false
