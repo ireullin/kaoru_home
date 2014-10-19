@@ -1,16 +1,17 @@
 class LotteryController < ApplicationController
   	
-    skip_before_action :verify_authenticity_token
+  skip_before_action :verify_authenticity_token
 
-    def index
-  		if params[:type]=='superlottos'
-  			@data = Superlottos.order(term: :desc).page(params[:page]).per(10)
-  		elsif params[:type]=='lottery649s'
-  			@data = Lottery649s.order(term: :desc).page(params[:page]).per(10)
-  		else
-  			#page not found
-  		end
-  	end
+  def index
+		if params[:type]=='superlottos'
+			@data = Superlottos.order(term: :desc).page(params[:page]).per(10)
+		elsif params[:type]=='lottery649s'
+			@data = Lottery649s.order(term: :desc).page(params[:page]).per(10)
+		else
+			#page not found
+		end
+	end
+
 
 	def newest
 		if params[:type]=='superlottos'
@@ -43,7 +44,7 @@ class LotteryController < ApplicationController
   	elsif obj['type']=='lottery649s'
     	@data = Lottery649s.new
    	else
-  		respond_to {|format| format.json { render :json => obj['type'] }}
+  		respond_to {|format| format.json { render :json => {msg: "unknown type", status: 102 } } }
       return
   	end
 
@@ -60,9 +61,10 @@ class LotteryController < ApplicationController
 
     respond_to do |format|
       if @data.save
-        format.json { render :show, status: :ok, location: @data }
+        format.json { render json: {msg: "has been inserted", status: 0 } }
       else
-        format.json { render json: @data.errors, status: :unprocessable_entity }
+        format.json { render json: {msg: "inserted failed", status: 101 } }
+        #format.json { render json: @data.errors, status: :unprocessable_entity }
       end
     end
 

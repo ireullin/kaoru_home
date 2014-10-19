@@ -38,4 +38,5 @@ gem 'bootstrap-sass'
 
 gem "kaminari"
 
-gem "mysql2"
+#gem "mysql2"
+

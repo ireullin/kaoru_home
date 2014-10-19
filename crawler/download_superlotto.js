@@ -1,0 +1,175 @@
+
+
+var g_webpage = {};
+
+
+function onConsoleMessage(message)
+{
+    console.log("onConsoleMessage: " + message);
+}
+
+
+function onError(message, trace)
+{
+    console.log("onError: " + message + " Trace: " + trace);
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+function insertToDB(data)
+{
+	console.log( arguments.callee.name );
+
+	g_webpage['insert'] = require('webpage').create();
+	g_webpage['insert'].onError = onError;
+	g_webpage['insert'].onConsoleMessage = onConsoleMessage;
+	g_webpage['insert'].open('http://127.0.0.1:3000/lottery/new.json', 'POST', 'data=' + data,  function(status){
+
+		if(status!='success')
+		{
+			console.log('Status: ' + status );
+			phantom.exit();
+		}
+
+		g_webpage['insert'].render("debug.png");
+
+		doc = g_webpage['insert'].evaluate(function(s){
+			return document.body.innerText;
+		});
+
+		console.log( doc );
+		phantom.exit();
+	});
+
+}
+
+
+
+function onClickLotteryPage(status)
+{
+	console.log( arguments.callee.name );
+
+	if(status!='success')
+	{
+		console.log('Status: ' + status );
+		phantom.exit();
+	}
+
+	if(!g_webpage['lottery'].injectJs('jquery-1.11.1.js'))
+	{
+		console.log('inject jquery failed');		
+		phantom.exit();
+	}
+
+	g_webpage['lottery'].render("debug.png");
+
+	var rc = g_webpage['lottery'].evaluate(function(){
+
+		var twDate = $('#SuperLotto638Control_history1_dlQuery_Date_0').text().split('/');
+		var adDate = parseInt(twDate[0]) + 1911 + '/' + twDate[1] + '/' + twDate[2];
+
+		var data = {
+			'term': $('#SuperLotto638Control_history1_dlQuery_DrawTerm_0').text(),
+			'announced_at': adDate,
+			'no1':$('#SuperLotto638Control_history1_dlQuery_SNo1_0').text(),
+			'no2':$('#SuperLotto638Control_history1_dlQuery_SNo2_0').text(),
+			'no3':$('#SuperLotto638Control_history1_dlQuery_SNo3_0').text(),
+			'no4':$('#SuperLotto638Control_history1_dlQuery_SNo4_0').text(),
+			'no5':$('#SuperLotto638Control_history1_dlQuery_SNo5_0').text(),
+			'no6':$('#SuperLotto638Control_history1_dlQuery_SNo6_0').text(),
+			'special':$('#SuperLotto638Control_history1_dlQuery_SNo7_0').text(),
+
+			'type':'superlottos'
+		};
+
+		return JSON.stringify(data);
+	});
+
+	//console.log( rc );
+	insertToDB(rc);
+}
+
+
+
+function clickLotteryPage(term)
+{
+	console.log( arguments.callee.name );
+	console.log('new term is ' + term);
+
+	g_webpage['lottery'] = require('webpage').create();
+	g_webpage['lottery'].onError = onError;
+	g_webpage['lottery'].onConsoleMessage = onConsoleMessage;
+	g_webpage['lottery'].open('http://www.taiwanlottery.com.tw/lotto/superlotto638/history.aspx', 
+		function(status){
+
+			if(status!='success')
+			{
+				console.log('Status: ' + status );
+				phantom.exit();
+			}
+
+			if(!g_webpage['lottery'].injectJs('jquery-1.11.1.js'))
+			{
+				console.log('inject jquery failed');		
+				phantom.exit();
+			}
+
+			g_webpage['lottery'].onLoadFinished = onClickLotteryPage;
+
+			g_webpage['lottery'].evaluate(function(term){
+				$('#SuperLotto638Control_history1_radYM').prop('checked', false);
+				$('#SuperLotto638Control_history1_radNO').prop('checked', true);
+				$('#SuperLotto638Control_history1_txtNO').val(term);
+				$('#SuperLotto638Control_history1_btnSubmit').trigger('click');
+				return null;
+			}, term);
+
+		}
+	);
+}
+
+
+
+function onGetNewest(status)
+{
+	console.log( arguments.callee.name );
+
+	if(status!='success')
+	{
+		console.log('Status: ' + status + ' Step: ' + step);
+		phantom.exit();
+	}
+
+	var doc = g_webpage['newest'].evaluate(function(s){	return document.body.innerText;});
+	var newestObj = JSON.parse(doc);
+
+	//console.log( newestObj.term );
+	clickLotteryPage( parseInt(newestObj.term) + 1);
+}
+
+
+
+function getNewest()
+{
+	console.log( arguments.callee.name );
+
+	g_webpage['newest'] = require('webpage').create();
+	g_webpage['newest'].onError = onError;
+	g_webpage['newest'].onConsoleMessage = onConsoleMessage;
+	g_webpage['newest'].onLoadFinished = onGetNewest;
+	g_webpage['newest'].open('http://192.168.1.204:3000/lottery/newest/superlottos.json');
+}
+
+
+
+
+function main()
+{
+	console.log( arguments.callee.name );
+	getNewest();
+}
+
+
+main();
