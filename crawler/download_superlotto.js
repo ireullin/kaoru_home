@@ -1,17 +1,26 @@
-
+#!/usr/bin/phantomjs
 
 var g_webpage = {};
-
+var APIURL = 'http://127.0.0.1:3000';
 
 function onConsoleMessage(message)
 {
-    console.log("onConsoleMessage: " + message);
+    printLog( 'onConsoleMessage:', message );
 }
 
 
 function onError(message, trace)
 {
-    console.log("onError: " + message + " Trace: " + trace);
+    //console.log("onError: " + message + " Trace: " + trace);
+    printLog( 'onError:', message, trace );
+}
+
+function printLog()
+{
+    var args = Array.prototype.slice.call(arguments);
+	var d = new Date();
+	var strDate = '[' + d.getFullYear() + '/' + d.getMonth() + '/' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds() + '.' + d.getMilliseconds() + '] ';
+	console.log( strDate + args.join(' ') );
 }
 
 
@@ -20,12 +29,12 @@ function onError(message, trace)
 
 function insertToDB(data)
 {
-	console.log( arguments.callee.name );
+	printLog( 'enter', arguments.callee.name );
 
 	g_webpage['insert'] = require('webpage').create();
 	g_webpage['insert'].onError = onError;
 	g_webpage['insert'].onConsoleMessage = onConsoleMessage;
-	g_webpage['insert'].open('http://127.0.0.1:3000/lottery/new.json', 'POST', 'data=' + data,  function(status){
+	g_webpage['insert'].open(APIURL+'/lottery/new.json', 'POST', 'data=' + data,  function(status){
 
 		if(status!='success')
 		{
@@ -33,13 +42,13 @@ function insertToDB(data)
 			phantom.exit();
 		}
 
-		g_webpage['insert'].render("debug.png");
+		//g_webpage['insert'].render("debug.png");
 
 		doc = g_webpage['insert'].evaluate(function(s){
 			return document.body.innerText;
 		});
 
-		console.log( doc );
+		printLog('post of response:', doc );
 		phantom.exit();
 	});
 
@@ -49,7 +58,7 @@ function insertToDB(data)
 
 function onClickLotteryPage(status)
 {
-	console.log( arguments.callee.name );
+	printLog( 'enter', arguments.callee.name );
 
 	if(status!='success')
 	{
@@ -87,7 +96,7 @@ function onClickLotteryPage(status)
 		return JSON.stringify(data);
 	});
 
-	//console.log( rc );
+	printLog( 'got lottry data:', rc );
 	insertToDB(rc);
 }
 
@@ -95,8 +104,8 @@ function onClickLotteryPage(status)
 
 function clickLotteryPage(term)
 {
-	console.log( arguments.callee.name );
-	console.log('new term is ' + term);
+	printLog( 'enter', arguments.callee.name );
+	printLog( 'new term is', term );
 
 	g_webpage['lottery'] = require('webpage').create();
 	g_webpage['lottery'].onError = onError;
@@ -134,7 +143,7 @@ function clickLotteryPage(term)
 
 function onGetNewest(status)
 {
-	console.log( arguments.callee.name );
+	printLog( 'enter', arguments.callee.name );
 
 	if(status!='success')
 	{
@@ -145,7 +154,7 @@ function onGetNewest(status)
 	var doc = g_webpage['newest'].evaluate(function(s){	return document.body.innerText;});
 	var newestObj = JSON.parse(doc);
 
-	//console.log( newestObj.term );
+	printLog( 'get of response:', doc );
 	clickLotteryPage( parseInt(newestObj.term) + 1);
 }
 
@@ -153,21 +162,19 @@ function onGetNewest(status)
 
 function getNewest()
 {
-	console.log( arguments.callee.name );
+	printLog( 'enter', arguments.callee.name );
 
 	g_webpage['newest'] = require('webpage').create();
 	g_webpage['newest'].onError = onError;
 	g_webpage['newest'].onConsoleMessage = onConsoleMessage;
 	g_webpage['newest'].onLoadFinished = onGetNewest;
-	g_webpage['newest'].open('http://192.168.1.204:3000/lottery/newest/superlottos.json');
+	g_webpage['newest'].open(APIURL+'/lottery/newest/superlottos.json');
 }
-
-
 
 
 function main()
 {
-	console.log( arguments.callee.name );
+	printLog( 'enter', arguments.callee.name );
 	getNewest();
 }
 
