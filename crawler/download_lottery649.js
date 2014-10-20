@@ -75,21 +75,21 @@ function onClickLotteryPage(status)
 
 	var rc = g_webpage['lottery'].evaluate(function(){
 
-		var twDate = $('#SuperLotto638Control_history1_dlQuery_Date_0').text().split('/');
+		var twDate = $('#Lotto649Control_history_dlQuery_L649_DDate_0').text().split('/');
 		var adDate = parseInt(twDate[0]) + 1911 + '/' + twDate[1] + '/' + twDate[2];
 
 		var data = {
-			'term': $('#SuperLotto638Control_history1_dlQuery_DrawTerm_0').text(),
+			'term': $('#Lotto649Control_history_dlQuery_L649_DrawTerm_0').text(),
 			'announced_at': adDate,
-			'no1':$('#SuperLotto638Control_history1_dlQuery_SNo1_0').text(),
-			'no2':$('#SuperLotto638Control_history1_dlQuery_SNo2_0').text(),
-			'no3':$('#SuperLotto638Control_history1_dlQuery_SNo3_0').text(),
-			'no4':$('#SuperLotto638Control_history1_dlQuery_SNo4_0').text(),
-			'no5':$('#SuperLotto638Control_history1_dlQuery_SNo5_0').text(),
-			'no6':$('#SuperLotto638Control_history1_dlQuery_SNo6_0').text(),
-			'special':$('#SuperLotto638Control_history1_dlQuery_SNo7_0').text(),
+			'no1':$('#Lotto649Control_history_dlQuery_SNo1_0').text(),
+			'no2':$('#Lotto649Control_history_dlQuery_SNo2_0').text(),
+			'no3':$('#Lotto649Control_history_dlQuery_SNo3_0').text(),
+			'no4':$('#Lotto649Control_history_dlQuery_SNo4_0').text(),
+			'no5':$('#Lotto649Control_history_dlQuery_SNo5_0').text(),
+			'no6':$('#Lotto649Control_history_dlQuery_SNo6_0').text(),
+			'special':$('#Lotto649Control_history_dlQuery_No7_0').text(),
 
-			'type':'superlottos'
+			'type':'lottery649s'
 		};
 
 		return JSON.stringify(data);
@@ -109,7 +109,7 @@ function clickLotteryPage(term)
 	g_webpage['lottery'] = require('webpage').create();
 	g_webpage['lottery'].onError = onError;
 	g_webpage['lottery'].onConsoleMessage = onConsoleMessage;
-	g_webpage['lottery'].open('http://www.taiwanlottery.com.tw/lotto/superlotto638/history.aspx', 
+	g_webpage['lottery'].open('http://www.taiwanlottery.com.tw/lotto/Lotto649/history.aspx', 
 		function(status){
 
 			if(status!='success')
@@ -127,10 +127,10 @@ function clickLotteryPage(term)
 			g_webpage['lottery'].onLoadFinished = onClickLotteryPage;
 
 			g_webpage['lottery'].evaluate(function(term){
-				$('#SuperLotto638Control_history1_radYM').prop('checked', false);
-				$('#SuperLotto638Control_history1_radNO').prop('checked', true);
-				$('#SuperLotto638Control_history1_txtNO').val(term);
-				$('#SuperLotto638Control_history1_btnSubmit').trigger('click');
+				$('#Lotto649Control_history_radYM').prop('checked', false);
+				$('#Lotto649Control_history_radNO').prop('checked', true);
+				$('#Lotto649Control_history_txtNO').val(term);
+				$('#Lotto649Control_history_btnSubmit').trigger('click');
 				return null;
 			}, term);
 
@@ -167,7 +167,7 @@ function getNewest()
 	g_webpage['newest'].onError = onError;
 	g_webpage['newest'].onConsoleMessage = onConsoleMessage;
 	g_webpage['newest'].onLoadFinished = onGetNewest;
-	g_webpage['newest'].open(APIURL+'/lottery/newest/superlottos.json');
+	g_webpage['newest'].open(APIURL+'/lottery/newest/lottery649s.json');
 }
 
 
