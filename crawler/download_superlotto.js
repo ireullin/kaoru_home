@@ -11,7 +11,6 @@ function onConsoleMessage(message)
 
 function onError(message, trace)
 {
-    //console.log("onError: " + message + " Trace: " + trace);
     printLog( 'onError:', message, trace );
 }
 
@@ -38,7 +37,7 @@ function insertToDB(data)
 
 		if(status!='success')
 		{
-			console.log('Status: ' + status );
+			printLog('stop the process with status', status);
 			phantom.exit();
 		}
 
@@ -62,13 +61,13 @@ function onClickLotteryPage(status)
 
 	if(status!='success')
 	{
-		console.log('Status: ' + status );
+		printLog('stop the process with status', status);
 		phantom.exit();
 	}
 
 	if(!g_webpage['lottery'].injectJs('jquery-1.11.1.js'))
 	{
-		console.log('inject jquery failed');		
+		printLog('stop the process with injecting jquery failed', status);
 		phantom.exit();
 	}
 
@@ -115,13 +114,13 @@ function clickLotteryPage(term)
 
 			if(status!='success')
 			{
-				console.log('Status: ' + status );
+				printLog('stop the process with status', status);
 				phantom.exit();
 			}
 
 			if(!g_webpage['lottery'].injectJs('jquery-1.11.1.js'))
 			{
-				console.log('inject jquery failed');		
+				printLog('stop the process with injecting jquery failed', status);
 				phantom.exit();
 			}
 
@@ -147,7 +146,7 @@ function onGetNewest(status)
 
 	if(status!='success')
 	{
-		console.log('Status: ' + status + ' Step: ' + step);
+		printLog('stop the process with status', status);
 		phantom.exit();
 	}
 
@@ -176,6 +175,10 @@ function main()
 {
 	printLog( 'enter', arguments.callee.name );
 	getNewest();
+	setTimeout(function(){  
+		printLog( 'stop the process with timeout' );
+		phantom.exit();
+	}, 60*1000);
 }
 
 
