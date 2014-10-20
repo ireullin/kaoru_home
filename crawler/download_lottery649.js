@@ -1,4 +1,4 @@
-#!/usr/bin/phantomjs
+#!/usr/bin/env phantomjs
 
 var g_webpage = {};
 var APIURL = 'http://127.0.0.1:3000';
