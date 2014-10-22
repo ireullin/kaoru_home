@@ -1,21 +1,17 @@
 
+<div class="page-header">
+  <h1><%= params[:type]=='superlottos' ? '威力彩各期獎號' : '大樂透各期獎號' %></h1>
+</div>
 
-<h1><%= params[:type]=='superlottos' ? 'superlottos' : 'lottery649' %></h1>
-
-<%= paginate @data %>
+<%= paginate @data, :window => 2 %>
 <table class="table table-hover table-striped">
   <thead>
     <tr>
-      <th>Term</th>
-      <th>No 1</th>
-      <th>No 2</th>
-      <th>No 3</th>
-      <th>No 4</th>
-      <th>No 5</th>
-      <th>No 6</th>
-      <th>Special</th>
-      <th>Annouced date</th>
-      <th>Created date</th>
+      <th>期別</th>
+      <th colspan="6">一般號</th>
+      <th>特別號</th>
+      <th>開獎日</th>
+      <th>下載時間</th>
     </tr>
   </thead>
 
@@ -36,4 +32,4 @@
     <% end %>
   </tbody>
 </table>
-<%= paginate @data %>
+<%= paginate @data, :window => 2 %>
