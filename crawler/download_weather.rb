@@ -19,12 +19,12 @@ def insert_to_db(data)
 end
 
 
-def parse_data(ele)
+def parse_data(ele, city)
 	
 	data = Hash.new
 
 	ele.elements.each('weather-elements/Wx/time/text') do |child|
-		data[ get_date(child) ] = { des: child.text }
+		data[ get_date(child) ] = { des: child.text, city: city }
 	end
 
 	ele.elements.each('weather-elements/MaxT/time/value') do |child|
@@ -36,6 +36,7 @@ def parse_data(ele)
 	end
 
 	insert_to_db data
+	#puts data.to_json
 end
 
 
@@ -44,7 +45,7 @@ def find_city(content)
 	_doc.elements.each('fifowml/data/location/name') do |ele|
    		
    		if ele.text == '臺北市'
-   			parse_data( ele.parent )
+   			parse_data( ele.parent, ele.text )
    			break
    		end
 	end

@@ -5,7 +5,7 @@ class WeatherController < ApplicationController
 	def update
 		obj = JSON.parse(params[:data])
 	
-		Weather.destroy_all
+		Weather.delete_all
 
 		obj.each do |k,v| 
 			@data = Weather.new
@@ -13,6 +13,7 @@ class WeatherController < ApplicationController
 		    @data.des = v['des']
 		    @data.max = v['max']
 		    @data.min = v['min']
+		    @data.city = v['city']
 		    @data.save
 		end
 
