@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141013093952) do
+ActiveRecord::Schema.define(version: 20141022035733) do
 
   create_table "lottery649s", primary_key: "term", force: true do |t|
     t.integer  "no1",          null: false
@@ -42,5 +42,15 @@ ActiveRecord::Schema.define(version: 20141013093952) do
   end
 
   add_index "superlottos", ["term"], name: "sqlite_autoindex_superlottos_1", unique: true
+
+  create_table "weathers", id: false, force: true do |t|
+    t.date     "weather_date"
+    t.string   "des"
+    t.float    "max"
+    t.float    "min"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "city"
+  end
 
 end

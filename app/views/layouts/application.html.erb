@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>RorTemplate</title>
+  <title>Kaoru's Home</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
@@ -18,22 +18,22 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">KA<span class="glyphicon glyphicon-th-large"></span>RU'S HOME</a>
+      <a class="navbar-brand" href="/top/index"><span class="glyphicon glyphicon-heart-empty"></span> KAORU'S HOME</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><a href="#">首頁</a></li>
+        <li><a href="/top/index">首頁</a></li>
         <li><a href="#">相本</a></li>
         <li><a href="#">酒單</a></li>
         <li><a href="#">菜單</a></li>
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Lottery <span class="caret"></span></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">樂透<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="/lottery/superlottos/1">SuperLotto</a></li>
+            <li><a href="/lottery/superlottos/1">威力彩各期獎號</a></li>
             <li class="divider"></li>
-            <li><a href="/lottery/lottery649s/1">Lottery649</a></li>
+            <li><a href="/lottery/lottery649s/1">大樂透各期獎號</a></li>
           </ul>
         </li>
       </ul>
