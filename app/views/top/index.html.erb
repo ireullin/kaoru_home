@@ -4,19 +4,15 @@
 </div>
 
 
-<div class="row">
-	<% 0.upto(5) do |i| %>
-		<div class="col-md-2">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title"><%= @weather[i].weather_date %></h3>
-				</div>
-				<div class="panel-body">
-					<p><%= "#{@weather[i].min}~#{@weather[i].max} 度" %></p>
-					<p><%= @weather[i].des %></p>
-				</div>
-			</div>
-		</div>
-	<% end %>
+<div class="col-md-2">
+	<div class="list-group">
+	  <div class="list-group-item active">本周天氣</div>
+	  <% 0.upto(6) do |i| %>
+	  <div class="list-group-item">
+	  		<h4 class="list-group-item-heading"><%= @weather[i].weather_date %></h4>
+    		<p class="list-group-item-text"><%= "#{@weather[i].min}~#{@weather[i].max} 度" %></p>
+    		<p class="list-group-item-text"><%= "#{@weather[i].des}" %></p>
+	  </div>
+	  <% end %>
+	</div>
 </div>
-
