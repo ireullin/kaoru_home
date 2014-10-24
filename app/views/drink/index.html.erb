@@ -1,33 +1,21 @@
-<div class="page-header">
-  <h1>Drink</h1>
-</div>
 
-<div class="row">
-	<div class="col-md-4">
-		<input id="new_category" type="text" class="form-control" placeholder="add a new categroy">
+<div class="container-fluid">
+	<div class="page-header">
+  		<h1><small>Menu of</small> Drinks</h1>
 	</div>
-</div>
-
-<div class="row" id="show_panel">
 
 
-</div>
-
-
-<div class="row">
-	<div class="col-md-2 category-panel" id="template_panel">
-		<div class="list-group">
-			<div class="list-group-item active">
-				<span class="category-name">Head</span>
-				<span class="glyphicon glyphicon-remove category-remove pull-right"></span>
-			</div>
-			<div class="list-group-item">
-				<input type="text" class="form-control sub-item" placeholder="add a new item">
-			</div>
+	<div class="row">
+		<div class="col-md-4">
+			<input id="new_category" type="text" class="form-control" placeholder="add a new categroy">
 		</div>
 	</div>
-</div>
 
+
+	<div class="row" id="show_panel">
+	</div>
+
+</div>
 
 <script language="javascript">
 
@@ -39,18 +27,30 @@ $(document).ready(ready);
 function ready()
 {console.log(arguments.callee.name);
 
-	//$('#new_category').keypress(newCategoryOnPress);
 	$(document).on( 'keypress', '#new_category', newCategoryOnPress );
 	$(document).on( 'keypress', '.form-control.sub-item', newSubItemOnPress );
 	$(document).on( 'click', '.glyphicon.glyphicon-remove.category-remove', removeCategoryOnclick );
 	$(document).on( 'click', '.glyphicon.glyphicon-remove.item-remove', removeItemOnclick );
+	$(document).on( 'mouseover', '.category-panel', listOnOver);
+	$(document).on( 'mouseleave', '.category-panel', listOnLeave);
+}
+
+function listOnOver()
+{console.log(arguments.callee.name);
+
+	$(this).find('.list-group-item-sm' ).fadeIn( 500 );
+}
+
+function listOnLeave()
+{console.log(arguments.callee.name);
+
+	$(this).find('.list-group-item-sm' ).fadeOut( 100 );
 }
 
 
 function removeItemOnclick()
 {console.log(arguments.callee.name);
 
-	console.log( $(this).parentsUntil('.list-group-item') );
 	$(this).parent().remove();
 }
 
@@ -58,7 +58,11 @@ function removeItemOnclick()
 function removeCategoryOnclick()
 {console.log(arguments.callee.name);
 
-	$(this).parentsUntil('.category-panel').remove();
+	if(!confirm("Do you remove this list?"))
+		return;
+
+	var id = $(this).parentsUntil('.category-panel').parent().prop('id');
+	$('#'+id).remove();
 }
 
 
@@ -69,10 +73,15 @@ function newSubItemOnPress(e)
 	if (code != 13)
 		return;
 
+	var itemName = $.trim($(this).val());
+	if(itemName.length<=0)
+		return;
+
+
 	var content = [
 		'<div class="list-group-item">',
 			'<span class="category-name">',
-				$(this).val(),
+				itemName,
 			'</span>',
 			'<span class="glyphicon glyphicon-remove item-remove pull-right"></span>',
 		'</div>'
@@ -81,7 +90,6 @@ function newSubItemOnPress(e)
 
 	$(this).val('');
 	$(this).parent().before(content);
-
 }
 
 
@@ -92,13 +100,45 @@ function newCategoryOnPress(e)
 	if (code != 13)
 		return;
 
-	var newPanel = $('#template_panel').clone();
-	newPanel.removeProp('id');
-	newPanel.find('.category-name').first().text( $(this).val() );
-	newPanel.appendTo('#show_panel');
+	var categoryName = $.trim($(this).val());
+	if(categoryName.length<=0)
+		return;
+
+	var i=1;
+	var id='';
+	while(true)
+	{
+		id = 'category_panel_id_'+i;
+		if( $('#'+id).length<=0 )
+			break;
+
+		i++;
+	}
+
+
+	var newPanel = generateList(id, categoryName);
+	$('#show_panel').append(newPanel);
 	$(this).val('');
 }
 
 
+function generateList(id, categoryName)
+{
+	var data =[
+		'<div class="col-md-2 category-panel" id="'+id+'">',
+			'<div class="list-group">',
+				'<div class="list-group-item active">',
+					'<span class="category-name">'+categoryName+'</span>',
+					'<span class="glyphicon glyphicon-remove category-remove pull-right"></span>',
+				'</div>',
+				'<div class="list-group-item-sm" style="display:none">',
+					'<input type="text" class="form-control sub-item" placeholder="add a new item">',
+				'</div>',
+			'</div>',
+		'</div>'
+	];
+
+	return data.join('');
+}
 
 </script>
