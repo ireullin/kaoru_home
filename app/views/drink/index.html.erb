@@ -29,8 +29,13 @@ function ready()
 
 	$(document).on( 'keypress', '#new_category', newCategoryOnPress );
 	$(document).on( 'keypress', '.form-control.sub-item', newSubItemOnPress );
+	
 	$(document).on( 'click', '.glyphicon.glyphicon-remove.category-remove', removeCategoryOnclick );
 	$(document).on( 'click', '.glyphicon.glyphicon-remove.item-remove', removeItemOnclick );
+
+	$(document).on( 'click', '.glyphicon-chevron-up', itemUpOnclick );
+	$(document).on( 'click', '.glyphicon-chevron-down', itemDownOnclick );
+
 
 
 	$(document).on( 'dblclick', '.list-group-item', listOnDbclick );
@@ -41,6 +46,24 @@ function ready()
 
 	$(document).on( 'mouseover', '.list-group-item', headOnOver);
 	$(document).on( 'mouseleave', '.list-group-item', headOnLeave);
+}
+
+
+function itemDownOnclick()
+{
+	var index = $(this).parents('.list-group-item').index();
+	var par = $(this).parents('.list-group-item');
+	console.log( index, par );
+	$(this).parents('.list-group').eq(index).before(par);
+
+	//console.log(context);
+}
+
+
+function itemUpOnclick()
+{
+
+	
 }
 
 
