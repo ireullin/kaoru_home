@@ -31,9 +31,42 @@ function ready()
 	$(document).on( 'keypress', '.form-control.sub-item', newSubItemOnPress );
 	$(document).on( 'click', '.glyphicon.glyphicon-remove.category-remove', removeCategoryOnclick );
 	$(document).on( 'click', '.glyphicon.glyphicon-remove.item-remove', removeItemOnclick );
+
+
+	$(document).on( 'dblclick', '.list-group-item', listOnDbclick );
+
+	
 	$(document).on( 'mouseover', '.category-panel', listOnOver);
 	$(document).on( 'mouseleave', '.category-panel', listOnLeave);
+
+	$(document).on( 'mouseover', '.list-group-item', headOnOver);
+	$(document).on( 'mouseleave', '.list-group-item', headOnLeave);
 }
+
+
+function listOnDbclick()
+{
+	var context = $(this).children().first().text();
+	var rc = prompt("",context);
+	if(rc==null)
+		return;
+
+	$(this).children().first().text(rc);
+}
+
+
+function headOnOver()
+{console.log(arguments.callee.name);
+
+	$(this).find('.pull-right' ).fadeIn( 100 );
+}
+
+function headOnLeave()
+{console.log(arguments.callee.name);
+
+	$(this).find('.pull-right' ).fadeOut( 100 );
+}
+
 
 function listOnOver()
 {console.log(arguments.callee.name);
@@ -51,7 +84,7 @@ function listOnLeave()
 function removeItemOnclick()
 {console.log(arguments.callee.name);
 
-	$(this).parent().remove();
+	$(this).parent().parent().remove();
 }
 
 
@@ -80,10 +113,15 @@ function newSubItemOnPress(e)
 
 	var content = [
 		'<div class="list-group-item">',
-			'<span class="category-name">',
+			'<span>',
 				itemName,
 			'</span>',
-			'<span class="glyphicon glyphicon-remove item-remove pull-right"></span>',
+			'<span class="pull-right" style="display:none">',
+				'<span class="glyphicon glyphicon-chevron-up item-remove"></span>',
+				'<span class="glyphicon glyphicon-chevron-down item-remove"></span>',
+				'&nbsp&nbsp',
+				'<span class="glyphicon glyphicon-remove item-remove"></span>',
+			'</span>',
 		'</div>'
 	].join('');
 	
@@ -128,8 +166,13 @@ function generateList(id, categoryName)
 		'<div class="col-md-2 category-panel" id="'+id+'">',
 			'<div class="list-group">',
 				'<div class="list-group-item active">',
-					'<span class="category-name">'+categoryName+'</span>',
-					'<span class="glyphicon glyphicon-remove category-remove pull-right"></span>',
+					'<span>'+categoryName+'</span>',
+					'<span class="pull-right" style="display:none">',
+						'<span class="glyphicon glyphicon-chevron-left category-remove"></span>',
+						'<span class="glyphicon glyphicon-chevron-right category-remove"></span>',
+						'&nbsp&nbsp',
+						'<span class="glyphicon glyphicon-remove category-remove"></span>',
+					'</span>',
 				'</div>',
 				'<div class="list-group-item-sm" style="display:none">',
 					'<input type="text" class="form-control sub-item" placeholder="add a new item">',
