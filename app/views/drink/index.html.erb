@@ -26,9 +26,10 @@ $(document).ready(ready);
 //$(document).on('page:load', ready);
 //$(document).on('page:change', ready);
 
-
 function ready()
-{console.log(arguments.callee.name);
+{//console.log(arguments.callee.name);
+
+	initList();
 
 	$(document).on( 'keypress', '#new_category', newCategoryOnPress );
 	$(document).on( 'keypress', '.form-control.sub-item', newSubItemOnPress );
@@ -213,24 +214,8 @@ function newSubItemOnPress(e)
 	if(itemName.length<=0)
 		return;
 
-
-	var content = [
-		'<div class="list-group-item">',
-			'<span class="item-name">',
-				itemName,
-			'</span>',
-			'<span class="pull-right" style="display:none">',
-				'<span class="glyphicon glyphicon-chevron-up item-remove"></span>',
-				'<span class="glyphicon glyphicon-chevron-down item-remove"></span>',
-				'&nbsp&nbsp',
-				'<span class="glyphicon glyphicon-remove item-remove"></span>',
-			'</span>',
-		'</div>'
-	].join('');
-	
-
 	$(this).val('');
-	$(this).parent().before(content);
+	$(this).parent().before( generateItem( itemName ) );
 	g_isModified = true;
 }
 
@@ -246,17 +231,6 @@ function newCategoryOnPress(e)
 	if(categoryName.length<=0)
 		return;
 
-	/*var i=1;
-	var id='';
-	while(true)
-	{
-		id = 'category_panel_id_'+i;
-		if( $('#'+id).length<=0 )
-			break;
-
-		i++;
-	}*/
-
 
 	var newPanel = generateList(categoryName);
 	$('#show_panel').append(newPanel);
@@ -265,8 +239,31 @@ function newCategoryOnPress(e)
 }
 
 
-function generateList(categoryName)
+function generateItem(itemName)
 {
+	var data = [
+		'<div class="list-group-item">',
+			'<span class="item-name">',
+				itemName,
+			'</span>',
+			'<span class="pull-right" style="display:none">',
+				'<span class="glyphicon glyphicon-chevron-up item-remove"></span>',
+				'<span class="glyphicon glyphicon-chevron-down item-remove"></span>',
+				'&nbsp&nbsp',
+				'<span class="glyphicon glyphicon-remove item-remove"></span>',
+			'</span>',
+		'</div>'
+	];
+
+	return data.join('');
+}
+
+
+function generateList(categoryName, items)
+{
+	if(typeof(items)==='undefined')
+		items = '';
+
 	var data =[
 		'<div class="col-md-2 category-panel">',
 			'<div class="list-group">',
@@ -279,6 +276,7 @@ function generateList(categoryName)
 						'<span class="glyphicon glyphicon-remove category-remove"></span>',
 					'</span>',
 				'</div>',
+				items,
 				'<div class="list-group-item-sm" style="display:none">',
 					'<input type="text" class="form-control sub-item" placeholder="add a new item">',
 				'</div>',
@@ -287,6 +285,27 @@ function generateList(categoryName)
 	];
 
 	return data.join('');
+}
+
+function initList()
+{
+	var initdata = JSON.parse("<%= @data.context %>".replace(/&quot;/g,'"'));
+	console.log( initdata );
+
+	for(var i=0; i<initdata.length; i++)
+	{
+		var items = '';
+		for(var j=0; j<initdata[i]['item'].length; j++ )
+		{
+			items += generateItem( initdata[i]['item'][j] );
+		}
+
+		var list = generateList( initdata[i]['list'], items );
+		$('#show_panel').append( list );
+
+		console.log(list);
+	}	
+
 }
 
 </script>

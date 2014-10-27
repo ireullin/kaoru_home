@@ -1,14 +1,15 @@
 class DrinkController < ApplicationController
   
 
-  skip_before_action :verify_authenticity_token
+  	skip_before_action :verify_authenticity_token
 
-  def index
-  end
+	def index
 
-  def update
-		#obj = JSON.parse(params[:data])
-	
+		@data = Drinks.first
+
+	end
+
+  	def update
 		Drinks.delete_all
 		@data = Drinks.new( context: params[:data] )
 	    @data.save
