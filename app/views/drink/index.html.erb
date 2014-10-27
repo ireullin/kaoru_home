@@ -36,10 +36,10 @@ function ready()
 	$(document).on( 'click', '.glyphicon-chevron-up', itemUpOnclick );
 	$(document).on( 'click', '.glyphicon-chevron-down', itemDownOnclick );
 
-
+	$(document).on( 'click', '.glyphicon-chevron-right', listRightOnclick );
+	$(document).on( 'click', '.glyphicon-chevron-left', listLeftOnclick );
 
 	$(document).on( 'dblclick', '.list-group-item', listOnDbclick );
-
 	
 	$(document).on( 'mouseover', '.category-panel', listOnOver);
 	$(document).on( 'mouseleave', '.category-panel', listOnLeave);
@@ -48,22 +48,41 @@ function ready()
 	$(document).on( 'mouseleave', '.list-group-item', headOnLeave);
 }
 
+function listRightOnclick()
+{
+	var obj = $(this).parents('.category-panel');
+	if( obj.next('.category-panel').length <= 0 )
+		return;
+
+	obj.insertAfter( obj.next('.category-panel') );
+}
+
+function listLeftOnclick()
+{
+	var obj = $(this).parents('.category-panel');
+	if( obj.prev('.category-panel').length <= 0 )
+		return;
+
+	obj.insertBefore( obj.prev('.category-panel') );
+}
 
 function itemDownOnclick()
 {
-	var index = $(this).parents('.list-group-item').index();
-	var par = $(this).parents('.list-group-item');
-	console.log( index, par );
-	$(this).parents('.list-group').eq(index).before(par);
+	var obj = $(this).parents('.list-group-item');
+	if( obj.next().prop('class')!='list-group-item' )
+		return;
 
-	//console.log(context);
+	obj.insertAfter( obj.next() );
 }
 
 
 function itemUpOnclick()
 {
+	var obj = $(this).parents('.list-group-item');
+	if( obj.prev().prop('class')!='list-group-item' )
+		return;
 
-	
+	obj.insertBefore( obj.prev() );
 }
 
 
@@ -79,26 +98,26 @@ function listOnDbclick()
 
 
 function headOnOver()
-{console.log(arguments.callee.name);
+{//console.log(arguments.callee.name);
 
 	$(this).find('.pull-right' ).fadeIn( 100 );
 }
 
 function headOnLeave()
-{console.log(arguments.callee.name);
+{//console.log(arguments.callee.name);
 
 	$(this).find('.pull-right' ).fadeOut( 100 );
 }
 
 
 function listOnOver()
-{console.log(arguments.callee.name);
+{//console.log(arguments.callee.name);
 
 	$(this).find('.list-group-item-sm' ).fadeIn( 500 );
 }
 
 function listOnLeave()
-{console.log(arguments.callee.name);
+{//console.log(arguments.callee.name);
 
 	$(this).find('.list-group-item-sm' ).fadeOut( 100 );
 }
