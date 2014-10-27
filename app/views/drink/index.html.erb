@@ -5,7 +5,7 @@
 	</div>
 
 
-	<div class="row">
+	<div class="row " style="margin-bottom: 15px">
 		<div class="col-md-4">
 			<input id="new_category" type="text" class="form-control" placeholder="add a new categroy">
 		</div>
@@ -18,6 +18,9 @@
 </div>
 
 <script language="javascript">
+
+var g_timer = null;
+var g_isModified = false;
 
 $(document).ready(ready);
 //$(document).on('page:load', ready);
@@ -46,7 +49,55 @@ function ready()
 
 	$(document).on( 'mouseover', '.list-group-item', headOnOver);
 	$(document).on( 'mouseleave', '.list-group-item', headOnLeave);
+
+	$(document).one( 'page:before-change', unload);
+
+	g_timer = setInterval(onTimer, 2000);
 }
+
+function onTimer()
+{
+	send();
+}
+
+function unload()
+{
+	clearInterval(g_timer);
+	send();
+}
+
+
+function send()
+{
+	if(!g_isModified)
+		return;
+
+	var json = extraToJson();
+	console.log( json );
+
+	g_isModified = false;
+}
+
+
+function extraToJson()
+{
+	var data =[];
+	var i=0;
+	$('.category-panel').each(function(){
+
+		var list = $(this).find('.list-name').text();
+		data[i] = {'list': list, 'item':[] };
+
+		$(this).find('.item-name').each(function(){
+			data[i]['item'].push( $(this).text() );
+		});
+
+		i++;
+	});
+
+	return JSON.stringify(data);
+}
+
 
 function listRightOnclick()
 {
@@ -55,6 +106,7 @@ function listRightOnclick()
 		return;
 
 	obj.insertAfter( obj.next('.category-panel') );
+	g_isModified = true;
 }
 
 function listLeftOnclick()
@@ -64,6 +116,7 @@ function listLeftOnclick()
 		return;
 
 	obj.insertBefore( obj.prev('.category-panel') );
+	g_isModified = true;
 }
 
 function itemDownOnclick()
@@ -73,6 +126,7 @@ function itemDownOnclick()
 		return;
 
 	obj.insertAfter( obj.next() );
+	g_isModified = true;
 }
 
 
@@ -83,6 +137,7 @@ function itemUpOnclick()
 		return;
 
 	obj.insertBefore( obj.prev() );
+	g_isModified = true;
 }
 
 
@@ -94,6 +149,7 @@ function listOnDbclick()
 		return;
 
 	$(this).children().first().text(rc);
+	g_isModified = true;
 }
 
 
@@ -127,6 +183,7 @@ function removeItemOnclick()
 {console.log(arguments.callee.name);
 
 	$(this).parent().parent().remove();
+	g_isModified = true;
 }
 
 
@@ -137,11 +194,12 @@ function removeCategoryOnclick()
 		return;
 
 	$(this).parents('.category-panel').remove();
+	g_isModified = true;
 }
 
 
 function newSubItemOnPress(e)
-{console.log(arguments.callee.name);
+{//console.log(arguments.callee.name);
 
 	code = (e.keyCode ? e.keyCode : e.which);
 	if (code != 13)
@@ -154,7 +212,7 @@ function newSubItemOnPress(e)
 
 	var content = [
 		'<div class="list-group-item">',
-			'<span>',
+			'<span class="item-name">',
 				itemName,
 			'</span>',
 			'<span class="pull-right" style="display:none">',
@@ -169,11 +227,12 @@ function newSubItemOnPress(e)
 
 	$(this).val('');
 	$(this).parent().before(content);
+	g_isModified = true;
 }
 
 
 function newCategoryOnPress(e)
-{console.log(arguments.callee.name);
+{//console.log(arguments.callee.name);
 
 	code = (e.keyCode ? e.keyCode : e.which);
 	if (code != 13)
@@ -183,7 +242,7 @@ function newCategoryOnPress(e)
 	if(categoryName.length<=0)
 		return;
 
-	var i=1;
+	/*var i=1;
 	var id='';
 	while(true)
 	{
@@ -192,22 +251,23 @@ function newCategoryOnPress(e)
 			break;
 
 		i++;
-	}
+	}*/
 
 
-	var newPanel = generateList(id, categoryName);
+	var newPanel = generateList(categoryName);
 	$('#show_panel').append(newPanel);
 	$(this).val('');
+	g_isModified = true;
 }
 
 
-function generateList(id, categoryName)
+function generateList(categoryName)
 {
 	var data =[
-		'<div class="col-md-2 category-panel" id="'+id+'">',
+		'<div class="col-md-2 category-panel">',
 			'<div class="list-group">',
 				'<div class="list-group-item active">',
-					'<span>'+categoryName+'</span>',
+					'<span class="list-name">'+categoryName+'</span>',
 					'<span class="pull-right" style="display:none">',
 						'<span class="glyphicon glyphicon-chevron-left category-remove"></span>',
 						'<span class="glyphicon glyphicon-chevron-right category-remove"></span>',
