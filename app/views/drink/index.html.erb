@@ -136,8 +136,7 @@ function removeCategoryOnclick()
 	if(!confirm("Do you remove this list?"))
 		return;
 
-	var id = $(this).parentsUntil('.category-panel').parent().prop('id');
-	$('#'+id).remove();
+	$(this).parents('.category-panel').remove();
 }
 
 
