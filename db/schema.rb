@@ -11,7 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141022035733) do
+ActiveRecord::Schema.define(version: 20141027040114) do
+
+  create_table "drinks", id: false, force: true do |t|
+    t.text     "context"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "lottery649s", primary_key: "term", force: true do |t|
     t.integer  "no1",          null: false

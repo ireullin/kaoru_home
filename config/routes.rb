@@ -11,7 +11,8 @@ Rails.application.routes.draw do
   
   post  'weather/update'        => 'weather#update'
 
-  get   'drink/index'
+  get   'drink/index'           => 'drink#index'
+  post  'drink/update'          => 'drink#update'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -75,6 +75,10 @@ function send()
 	var json = extraToJson();
 	console.log( json );
 
+	$.post( "/drink/update.json", { data: json },  function( data ) {
+  		console.log( data );
+	});
+
 	g_isModified = false;
 }
 
