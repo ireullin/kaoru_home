@@ -1,7 +1,7 @@
 
 <div class="container-fluid">
 	<div class="page-header">
-  		<h1><small>Menu of</small> Drinks</h1>
+  		<h1><small>Menu of</small> <%= params[:type]=='drink'? 'Drinks' : 'Foods' %></h1>
 	</div>
 
 
@@ -53,7 +53,7 @@ function ready()
 
 	$(document).one( 'page:before-change', unload);
 
-	g_timer = setInterval(onTimer, 2000);
+	g_timer = setInterval(onTimer, 5000);
 }
 
 function onTimer()
@@ -76,10 +76,13 @@ function send()
 	var json = extraToJson();
 	console.log( json );
 
-	$.post( "/drink/update.json", { data: json },  function( data ) {
-  		console.log( data );
-	});
+	<% if params[:type]=='drink' %>
+	var url = "/foodmenu/update/drink.json";
+	<% else %>
+	var url = "/foodmenu/update/food.json";
+	<% end %>
 
+	$.post( url, { data: json },  function( data ) {console.log( data );});
 	g_isModified = false;
 }
 
@@ -289,17 +292,26 @@ function generateList(categoryName, items)
 
 function initList()
 {
-	var initdata = JSON.parse("<%= @data==nil? '' : @data.context %>".replace(/&quot;/g,'"'));
+	<% unless @data.nil? %>
+	
+	var initdata = JSON.parse("<%= @data.context %>".replace(/&quot;/g,'"'));
 
 	for(var i=0; i<initdata.length; i++)
 	{
 		var items = '';
 		for(var j=0; j<initdata[i]['item'].length; j++ )
+		{
+			//console.log( initdata[i]['item'][j]  );
 			items += generateItem( initdata[i]['item'][j] );
+		}
 
 		var list = generateList( initdata[i]['list'], items );
 		$('#show_panel').append( list );
+
+		//console.log(list);
 	}	
+
+	<% end %>
 }
 
 </script>
