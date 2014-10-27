@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'drink/index'
+
   get   'lottery/index'
 
   get   'top/index'
@@ -8,6 +10,13 @@ Rails.application.routes.draw do
   get   'lottery/:type/:page'   => 'lottery#index'
   
   post  'weather/update'        => 'weather#update'
+
+  get   'drink/index'           => 'drink#index'
+  post  'drink/update'          => 'drink#update'
+
+  get   'foodmenu/index/:type'  => 'food_menu#index'
+  post  'foodmenu/update/:type' => 'food_menu#update'
+  
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
