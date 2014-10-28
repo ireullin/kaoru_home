@@ -82,6 +82,7 @@ function send()
 	var url = "/foodmenu/update/food.json";
 	<% end %>
 
+	$.ajaxSetup({headers: { "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content') }  });
 	$.post( url, { data: json },  function( data ) {console.log( data );});
 	g_isModified = false;
 }
