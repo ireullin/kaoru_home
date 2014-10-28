@@ -7,17 +7,22 @@
 		<h1><small>Welcom to</small> Kaoru's home</h1>
 	</div>
 
-	
-	<div class="col-md-2">
-		<div class="list-group">
-		  <div class="list-group-item active">本周天氣</div>
-		  <% 0.upto(6) do |i| %>
-		  <div class="list-group-item">
-		  		<h4 class="list-group-item-heading"><%= @weather[i].weather_date %></h4>
-	    		<p class="list-group-item-text"><%= "#{@weather[i].min}~#{@weather[i].max} 度" %></p>
-	    		<p class="list-group-item-text"><%= "#{@weather[i].des}" %></p>
-		  </div>
-		  <% end %>
+	<div class="row">
+		<div class="col-md-2">
+			<div class="list-group">
+			  <div class="list-group-item active">本周天氣</div>
+			  <% 0.upto(6) do |i| %>
+			  <div class="list-group-item">
+			  		<h4 class="list-group-item-heading"><%= @weather[i].weather_date %></h4>
+		    		<p class="list-group-item-text"><%= "#{@weather[i].min}~#{@weather[i].max} 度" %></p>
+		    		<p class="list-group-item-text"><%= "#{@weather[i].des}" %></p>
+			  </div>
+			  <% end %>
+			</div>
+		</div>
+
+		<div class="col-md-4">
+			<iframe src="https://www.google.com/calendar/embed?showTitle=0&amp;showNav=0&amp;showPrint=0&amp;showTabs=0&amp;showCalendars=0&amp;showTz=0&amp;height=600&amp;wkst=1&amp;bgcolor=%23ffffff&amp;src=pvcv3890uqaaaf1osi7lfijotg%40group.calendar.google.com&amp;color=%236B3304&amp;src=7joafcqira48p2k0ca8g438jg4%40group.calendar.google.com&amp;color=%232952A3&amp;ctz=Asia%2FTaipei" style=" border-width:0 " width="800" height="600" frameborder="0" scrolling="no"></iframe>
 		</div>
 	</div>
 </div>
