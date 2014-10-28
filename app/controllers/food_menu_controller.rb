@@ -1,9 +1,7 @@
 class FoodMenuController < ApplicationController
-	skip_before_action :verify_authenticity_token
 
 	def index
 		@data = FoodMenu.where( :food_type => params[:type] ).first
-
 	end
 
   	def update
