@@ -8,7 +8,7 @@ class LotteryController < ApplicationController
 		elsif params[:type]=='lottery649s'
 			@data = Lottery649s.order(term: :desc).page(params[:page]).per(10)
 		else
-			#page not found
+			render :file => "#{Rails.root}/public/404.html",  :status => 404
 		end
 	end
 
@@ -22,11 +22,7 @@ class LotteryController < ApplicationController
   			@data = 'no data'
   		end
 
-  		# it's neccessary for phantomjs
-    	#headers['Access-Control-Allow-Origin'] = '*'
-    	#headers['Access-Control-Allow-Headers'] = 'GET, POST, PUT, DELETE, OPTIONS'
-    	#headers['Access-Control-Allow-Methods'] = %w{Origin Accept Content-Type X-Requested-With X-CSRF-Token}.join(',')
-  		
+
   		respond_to do |format|
     	  format.json { render :json => @data.to_json  }
       end
@@ -34,6 +30,12 @@ class LotteryController < ApplicationController
 
 
 	def new
+
+    unless request.remote_ip == '127.0.0.1'
+      respond_to {|format| format.json { render json: {msg: 'illegal ip', status: 1 } } }
+      return
+    end
+
 
 		obj = JSON.parse(params[:data])
 
