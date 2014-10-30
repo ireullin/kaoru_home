@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get   'lottery/newest/:type'  => 'lottery#newest'
   post  'lottery/new'           => 'lottery#new'
   get   'lottery/:type/:page'   => 'lottery#index'
+  get   'lottery/refresh'       => 'lottery#refresh'
   
   post  'weather/update'        => 'weather#update'
 
