@@ -3,17 +3,24 @@ Rails.application.routes.draw do
 
   get   'lottery/index'
 
+
   get   'top/index'
+
 
   get   'lottery/newest/:type'  => 'lottery#newest'
   post  'lottery/new'           => 'lottery#new'
   get   'lottery/:type/:page'   => 'lottery#index'
   get   'lottery/refresh'       => 'lottery#refresh'
+
+  get   'lotterystatistic/count/:type' => 'lottery_statistic#count'
   
+
   post  'weather/update'        => 'weather#update'
+
 
   get   'drink/index'           => 'drink#index'
   post  'drink/update'          => 'drink#update'
+
 
   get   'foodmenu/index/:type'  => 'food_menu#index'
   post  'foodmenu/update/:type' => 'food_menu#update'
