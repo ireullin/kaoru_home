@@ -86,15 +86,19 @@ class LotteryController < ApplicationController
         special_no_rc = Statistics.rank_count(special_no)
 
 
-        max = normal_no_rc['numbers'][0]
+        max = normal_no_rc[:numbers][0]
         normal_max = Array.new
         special_max = Array.new
         data.each do |row|
-            next unless[ row['no1'],row['no2'],row['no3'],row['no4'],row['no5'],row['no6'] ].include?(max)
+            
+            tmp = [ row['no1'],row['no2'],row['no3'],row['no4'],row['no5'],row['no6'] ]
+
+            next unless tmp.include?( max.to_i )
 
             normal_max.concat([ row['no1'],row['no2'],row['no3'],row['no4'],row['no5'],row['no6'] ])
             special_max.push(row['special'])
         end
+
 
         normal_max_rc = Statistics.rank_count(normal_max)
         special_max_rc = Statistics.rank_count(special_max)
