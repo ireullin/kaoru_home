@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141027102554) do
+ActiveRecord::Schema.define(version: 20141031152835) do
 
   create_table "food_menus", id: false, force: true do |t|
     t.string   "food_type"
@@ -34,6 +34,14 @@ ActiveRecord::Schema.define(version: 20141027102554) do
   end
 
   add_index "lottery649s", ["term"], name: "sqlite_autoindex_lottery649s_1", unique: true
+
+  create_table "lottery_statistics", id: false, force: true do |t|
+    t.string   "statistic_type"
+    t.text     "context"
+    t.text     "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "superlottos", primary_key: "term", force: true do |t|
     t.integer  "no1",          null: false

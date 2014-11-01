@@ -8,7 +8,9 @@ class LotteryController < ApplicationController
 		elsif params[:type]=='lottery649s'
 			@data = Lottery649s.order(term: :desc).page(params[:page]).per(10)
 		else
-			render :file => "#{Rails.root}/public/404.html",  :status => 404
+            respond_to do |format|
+                format.any { render :file => "#{Rails.root}/public/404.html",  :status => 404 }
+            end
 		end
 	end
 
@@ -71,6 +73,29 @@ class LotteryController < ApplicationController
 	end
 
 
+    def statistic
+
+        if params[:type]=='superlottos'
+            @high_ral = LotteryStatistic.where(statistic_type: 'superlottos_count_high_ral').first
+            @high_ral['context'] = JSON.parse(@high_ral['context'])
+
+            @normal = LotteryStatistic.where(statistic_type: 'superlottos_count').first 
+            @normal['context'] = JSON.parse(@normal['context'])
+        
+        elsif params[:type]=='lottery649s'
+            @high_ral = LotteryStatistic.where(statistic_type: 'lottery649s_count_high_ral').first
+            @high_ral['context'] = JSON.parse(@high_ral['context'])
+
+            @normal = LotteryStatistic.where(statistic_type: 'lottery649s_count').first
+            @normal['context'] = JSON.parse(@normal['context'])
+        else
+            respond_to do |format|
+                format.any { render :file => "#{Rails.root}/public/404.html",  :status => 404 }
+            end
+        end
+
+
+    end
     
 
 end
