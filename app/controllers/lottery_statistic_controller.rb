@@ -1,6 +1,6 @@
 class LotteryStatisticController < ApplicationController
 
-	#before_action :filter_ip
+	before_action :filter_ip
 
 	def count
 
@@ -54,10 +54,10 @@ class LotteryStatisticController < ApplicationController
 
         if params[:type]=='superlottos'
         	LotteryStatistic.where( statistic_type: 'superlottos_count_high_ral' ).delete_all
-      		LotteryStatistic.new( statistic_type: 'superlottos_count_high_ral', context:{normal: normal_no_rc, special: special_no_rc }.to_json  ).save
+      		LotteryStatistic.new( statistic_type: 'superlottos_count_high_ral', context:{normal: normal_max_rc, special: special_max_rc }.to_json  ).save
       	else
       		LotteryStatistic.where( statistic_type: 'lottery649s_count_high_ral' ).delete_all
-      		LotteryStatistic.new( statistic_type: 'lottery649s_count_high_ral', context:{normal: normal_no_rc, special: special_no_rc }.to_json  ).save
+      		LotteryStatistic.new( statistic_type: 'lottery649s_count_high_ral', context:{normal: normal_max_rc, special: special_max_rc }.to_json  ).save
       	end
 
 

@@ -25,7 +25,7 @@
           <td><%= @high_ral['context']['normal']['numbers'][4] %></td>
           <td><%= @high_ral['context']['normal']['numbers'][5] %></td>
        	  <td><%= @high_ral['context']['special']['numbers'][0] %></td>
-          <td><%= @high_ral['updated_at'] %></td>
+          <td><%= @high_ral['updated_at'].localtime.strftime("%Y-%m-%d %H:%M:%S") %></td>
         </tr>
         <tr>
           <td>次數統計</td>
@@ -62,7 +62,7 @@
           <td><%= @normal['context']['normal']['numbers'][4] %></td>
           <td><%= @normal['context']['normal']['numbers'][5] %></td>
           <td><%= @normal['context']['special']['numbers'][0] %></td>
-          <td><%= @normal['updated_at'] %></td>
+          <td><%= @normal['updated_at'].localtime.strftime("%Y-%m-%d %H:%M:%S") %></td>
         </tr>
         <tr>
           <td>次數統計</td>
