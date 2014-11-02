@@ -7,11 +7,11 @@ Rails.application.routes.draw do
   get   'top/index'
 
 
-  get   'lottery/statistic/:type' => 'lottery#statistic'
-  get   'lottery/newest/:type'    => 'lottery#newest'
-  post  'lottery/new'             => 'lottery#new'
-  get   'lottery/:type/:page'     => 'lottery#index'
-  get   'lottery/refresh'         => 'lottery#refresh'
+  get   'lottery/statistic/:type'       => 'lottery#statistic'
+  get   'lottery/newest/:type'          => 'lottery#newest'
+  post  'lottery/new'                   => 'lottery#new'
+  get   'lottery/history/:type/:page'   => 'lottery#index'
+
 
   get   'lotterystatistic/count/:type' => 'lottery_statistic#count'
   
