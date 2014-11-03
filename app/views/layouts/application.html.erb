@@ -8,8 +8,12 @@
 </head>
 <body>
 
+<div class="container-fluid">
+<%= image_tag("header_800x100.jpg", width: '100%') %>
+
 <nav class="navbar navbar-default" role="navigation">
   <div class="container-fluid">
+
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -31,9 +35,11 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">樂透<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="/lottery/superlottos/1">威力彩各期獎號</a></li>
+            <li><a href="/lottery/history/superlottos/1">威力彩各期獎號</a></li>
+            <li><a href="/lottery/statistic/superlottos">威力彩統計方法</a></li>
             <li class="divider"></li>
-            <li><a href="/lottery/lottery649s/1">大樂透各期獎號</a></li>
+            <li><a href="/lottery/history/lottery649s/1">大樂透各期獎號</a></li>
+            <li><a href="/lottery/statistic/lottery649s">大樂透統計方法</a></li>
           </ul>
         </li>
       </ul>
@@ -48,7 +54,7 @@
 
 
 <%= yield %>
-
+</div>
 </body>
 <SCRIPT LANGUAGE="JavaScript">  
 </SCRIPT>

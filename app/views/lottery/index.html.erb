@@ -30,7 +30,7 @@
           <td><%= row.no6 %></td>
           <td><%= row.special %></td>
           <td><%= row.announced_at %></td>
-          <td><%= row.created_at %></td>
+          <td><%= row.created_at.localtime.strftime("%Y-%m-%d %H:%M:%S") %></td>
         </tr>
       <% end %>
     </tbody>
