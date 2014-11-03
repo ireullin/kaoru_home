@@ -5,10 +5,18 @@
 	</div>
 
 
-	<div class="row " style="margin-bottom: 15px">
+	<div class="row " style="margin-bottom: 15px;">
+		<div class="col-md-6"></div>
+		<div class="col-md-1"></div>
 		<div class="col-md-4">
-			<input id="new_category" type="text" class="form-control" placeholder="add a new categroy">
+			<input style="display:none" id="new_category" type="text" class="form-control" placeholder="add a new categroy">
 		</div>
+		<div class="col-md-1 checkbox">
+			<label>
+				<%= check_box_tag('chk_edit_mode')%>
+				edit menu
+			</label>
+		</div>		
 	</div>
 
 
@@ -38,6 +46,8 @@ function ready()
 {console.log(arguments.callee.name);
 
 	initList();
+
+	registEvent( 'click', '#chk_edit_mode', chkEditModeOnClick );
 
 	registEvent( 'keypress', '#new_category', newCategoryOnPress );
 	registEvent( 'keypress', '.form-control.sub-item', newSubItemOnPress );
@@ -169,6 +179,20 @@ function listOnDbclick()
 	g_isModified = true;
 }
 
+
+function chkEditModeOnClick()
+{console.log(arguments.callee.name);
+	if( $(this).prop('checked') )
+	{
+		$('#new_category').slideDown(  );
+		console.log('true');
+	}
+	else
+	{
+		$('#new_category').slideUp(  );
+		console.log('false');
+	}
+}
 
 function headOnOver()
 {//console.log(arguments.callee.name);
