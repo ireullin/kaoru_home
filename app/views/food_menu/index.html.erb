@@ -26,30 +26,38 @@ $(document).ready(ready);
 //$(document).on('page:load', ready);
 //$(document).on('page:change', ready);
 
+
+function registEvent(eventName, selector, callback)
+{
+	$(document).off( eventName, selector );
+	$(document).on( eventName, selector, callback );
+}
+
+
 function ready()
-{//console.log(arguments.callee.name);
+{console.log(arguments.callee.name);
 
 	initList();
 
-	$(document).on( 'keypress', '#new_category', newCategoryOnPress );
-	$(document).on( 'keypress', '.form-control.sub-item', newSubItemOnPress );
+	registEvent( 'keypress', '#new_category', newCategoryOnPress );
+	registEvent( 'keypress', '.form-control.sub-item', newSubItemOnPress );
 	
-	$(document).on( 'click', '.glyphicon.glyphicon-remove.category-remove', removeCategoryOnclick );
-	$(document).on( 'click', '.glyphicon.glyphicon-remove.item-remove', removeItemOnclick );
+	registEvent( 'click', '.glyphicon.glyphicon-remove.category-remove', removeCategoryOnclick );
+	registEvent( 'click', '.glyphicon.glyphicon-remove.item-remove', removeItemOnclick );
 
-	$(document).on( 'click', '.glyphicon-chevron-up', itemUpOnclick );
-	$(document).on( 'click', '.glyphicon-chevron-down', itemDownOnclick );
+	registEvent( 'click', '.glyphicon-chevron-up', itemUpOnclick );
+	registEvent( 'click', '.glyphicon-chevron-down', itemDownOnclick );
 
-	$(document).on( 'click', '.glyphicon-chevron-right', listRightOnclick );
-	$(document).on( 'click', '.glyphicon-chevron-left', listLeftOnclick );
+	registEvent( 'click', '.glyphicon-chevron-right', listRightOnclick );
+	registEvent( 'click', '.glyphicon-chevron-left', listLeftOnclick );
 
-	$(document).on( 'dblclick', '.list-group-item', listOnDbclick );
+	registEvent( 'dblclick', '.list-group-item', listOnDbclick );
 	
-	$(document).on( 'mouseover', '.category-panel', listOnOver);
-	$(document).on( 'mouseleave', '.category-panel', listOnLeave);
+	registEvent( 'mouseover', '.category-panel', listOnOver);
+	registEvent( 'mouseleave', '.category-panel', listOnLeave);
 
-	$(document).on( 'mouseover', '.list-group-item', headOnOver);
-	$(document).on( 'mouseleave', '.list-group-item', headOnLeave);
+	registEvent( 'mouseover', '.list-group-item', headOnOver);
+	registEvent( 'mouseleave', '.list-group-item', headOnLeave);
 
 	$(document).one( 'page:before-change', unload);
 
@@ -208,7 +216,7 @@ function removeCategoryOnclick()
 
 
 function newSubItemOnPress(e)
-{//console.log(arguments.callee.name);
+{console.log(arguments.callee.name);
 
 	code = (e.keyCode ? e.keyCode : e.which);
 	if (code != 13)
@@ -225,7 +233,7 @@ function newSubItemOnPress(e)
 
 
 function newCategoryOnPress(e)
-{//console.log(arguments.callee.name);
+{console.log(arguments.callee.name);
 
 	code = (e.keyCode ? e.keyCode : e.which);
 	if (code != 13)
