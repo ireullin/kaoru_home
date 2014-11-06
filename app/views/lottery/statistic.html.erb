@@ -1,7 +1,10 @@
 
 <div class="container-fluid">
   <div class="page-header">
-    <h1><%= params[:type]=='superlottos' ? '威力彩統計方法' : '大樂透統計方法' %></h1>
+    <h1>
+      <%= params[:type]=='superlottos' ? '威力彩各期獎號' : '大樂透各期獎號' %>
+      <small><%= params[:type]=='superlottos' ? '(每周一四開獎)' : '(每周二五開獎)' %></small>
+    </h1>
   </div>
   
   <h3>高關聯性數字</h3>
