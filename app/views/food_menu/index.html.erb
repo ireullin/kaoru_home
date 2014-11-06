@@ -14,7 +14,7 @@
 		<div class="col-md-1 checkbox">
 			<label>
 				<%= check_box_tag('chk_edit_mode')%>
-				edit menu
+				edit
 			</label>
 		</div>		
 	</div>
@@ -35,11 +35,72 @@ $(document).ready(ready);
 //$(document).on('page:change', ready);
 
 
-function registEvent(eventName, selector, callback)
+function onEvents()
 {
-	$(document).off( eventName, selector );
-	$(document).on( eventName, selector, callback );
+	
+
+	$(document).on( 'keypress', '#new_category', newCategoryOnPress );
+	$(document).on( 'keypress', '.form-control.sub-item', newSubItemOnPress );
+	
+	$(document).on( 'click', '.glyphicon.glyphicon-remove.category-remove', removeCategoryOnclick );
+	$(document).on( 'click', '.glyphicon.glyphicon-remove.item-remove', removeItemOnclick );
+
+	$(document).on( 'click', '.glyphicon-chevron-up', itemUpOnclick );
+	$(document).on( 'click', '.glyphicon-chevron-down', itemDownOnclick );
+
+	$(document).on( 'click', '.glyphicon-chevron-right', listRightOnclick );
+	$(document).on( 'click', '.glyphicon-chevron-left', listLeftOnclick );
+
+	$(document).on( 'dblclick', '.list-group-item', listOnDbclick );
+	
+	$(document).on( 'mouseover', '.category-panel', listOnOver);
+	$(document).on( 'mouseleave', '.category-panel', listOnLeave);
+
+	$(document).on( 'mouseover', '.list-group-item', headOnOver);
+	$(document).on( 'mouseleave', '.list-group-item', headOnLeave);	
 }
+
+
+function offEvents()
+{
+	
+
+	$(document).off( 'keypress', '#new_category');
+	$(document).off( 'keypress', '.form-control.sub-item');
+	
+	$(document).off( 'click', '.glyphicon.glyphicon-remove.category-remove');
+	$(document).off( 'click', '.glyphicon.glyphicon-remove.item-remove');
+
+	$(document).off( 'click', '.glyphicon-chevron-up');
+	$(document).off( 'click', '.glyphicon-chevron-down');
+
+	$(document).off( 'click', '.glyphicon-chevron-right');
+	$(document).off( 'click', '.glyphicon-chevron-left');
+
+	$(document).off( 'dblclick', '.list-group-item');
+	
+	$(document).off( 'mouseover', '.category-panel');
+	$(document).off( 'mouseleave', '.category-panel');
+
+	$(document).off( 'mouseover', '.list-group-item');
+	$(document).off( 'mouseleave', '.list-group-item');
+}
+
+
+function chkEditModeOnClick()
+{console.log(arguments.callee.name);
+	if( $(this).prop('checked') )
+	{
+		$('#new_category').slideDown(  );
+		onEvents();
+	}
+	else
+	{
+		$('#new_category').slideUp(  );
+		offEvents();
+	}
+}
+
 
 
 function ready()
@@ -47,28 +108,10 @@ function ready()
 
 	initList();
 
-	registEvent( 'click', '#chk_edit_mode', chkEditModeOnClick );
+	offEvents();
 
-	registEvent( 'keypress', '#new_category', newCategoryOnPress );
-	registEvent( 'keypress', '.form-control.sub-item', newSubItemOnPress );
-	
-	registEvent( 'click', '.glyphicon.glyphicon-remove.category-remove', removeCategoryOnclick );
-	registEvent( 'click', '.glyphicon.glyphicon-remove.item-remove', removeItemOnclick );
-
-	registEvent( 'click', '.glyphicon-chevron-up', itemUpOnclick );
-	registEvent( 'click', '.glyphicon-chevron-down', itemDownOnclick );
-
-	registEvent( 'click', '.glyphicon-chevron-right', listRightOnclick );
-	registEvent( 'click', '.glyphicon-chevron-left', listLeftOnclick );
-
-	registEvent( 'dblclick', '.list-group-item', listOnDbclick );
-	
-	registEvent( 'mouseover', '.category-panel', listOnOver);
-	registEvent( 'mouseleave', '.category-panel', listOnLeave);
-
-	registEvent( 'mouseover', '.list-group-item', headOnOver);
-	registEvent( 'mouseleave', '.list-group-item', headOnLeave);
-
+	$(document).off( 'click', '#chk_edit_mode');
+	$(document).on( 'click', '#chk_edit_mode', chkEditModeOnClick );
 	$(document).one( 'page:before-change', unload);
 
 	g_timer = setInterval(onTimer, 5000);
@@ -180,20 +223,6 @@ function listOnDbclick()
 }
 
 
-function chkEditModeOnClick()
-{console.log(arguments.callee.name);
-	if( $(this).prop('checked') )
-	{
-		$('#new_category').slideDown(  );
-		console.log('true');
-	}
-	else
-	{
-		$('#new_category').slideUp(  );
-		console.log('false');
-	}
-}
-
 function headOnOver()
 {//console.log(arguments.callee.name);
 
@@ -210,13 +239,13 @@ function headOnLeave()
 function listOnOver()
 {//console.log(arguments.callee.name);
 
-	$(this).find('.list-group-item-sm' ).fadeIn( 500 );
+	$(this).find('.list-group-item-sm' ).slideDown( 200 );
 }
 
 function listOnLeave()
 {//console.log(arguments.callee.name);
 
-	$(this).find('.list-group-item-sm' ).fadeOut( 100 );
+	$(this).find('.list-group-item-sm' ).slideUp( 200 );
 }
 
 
