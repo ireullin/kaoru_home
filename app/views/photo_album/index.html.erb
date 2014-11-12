@@ -1,0 +1,22 @@
+
+<div class="container-fluid">
+
+	<div class="page-header">
+		<h1>阿麥的相本</h1>
+	</div>
+
+	<div class="row">
+		<% @icons.each do |i| %>
+    		
+    			<a href="#" >
+      			<img src="<%= i %>">
+    			</a>
+  			
+    	<% end %>
+  	</div>
+	
+</div>
+
+
+<br><br>
+<%= debug( @icons ) %>
