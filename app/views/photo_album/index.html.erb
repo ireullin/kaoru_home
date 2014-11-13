@@ -11,10 +11,6 @@
 	
 </div>
 
-
-<br><br>
-<%= debug( @icons ) %>
-
 <script language="javascript">
 $(document).ready(ready);
 
@@ -23,7 +19,7 @@ var g_apiKey = "eba448bcd6c37026451a079690eff107";
 var g_photosetId = '72157648727044669';
 var g_totalPage = 0;
 var g_page = 1;
-var g_prePage = 10;
+var g_prePage = 50;
 var g_timer = null;
 
 function ready()
@@ -45,12 +41,12 @@ function onGetInfo(data)
 	var obj = JSON.parse(data);
 	var totalCount = obj.photoset.photos;
 	g_totalPage = Math.ceil(totalCount / g_prePage);
-	g_timer = setInterval(onTimer, 5000);
-
+	getPhotos();
+	g_timer = setInterval(getPhotos, 1000);
 }
 
 
-function onTimer()
+function getPhotos()
 {
 	getFlickr(
 		'flickr.photosets.getPhotos',
@@ -62,7 +58,7 @@ function onTimer()
 		}
 	);
 
-	console.log( 'g_totalPage='+g_totalPage+' g_page='+g_page  );
+	//console.log( 'g_totalPage='+g_totalPage+' g_page='+g_page  );
 	if( g_totalPage ==  g_page)
 		clearInterval(g_timer);
 	else
@@ -71,26 +67,30 @@ function onTimer()
 }
 
 
+var g_fedeinFlag = true;
+
 function onGetPhotos(data)
 {
 	var obj = JSON.parse(data);
 	for(i in obj.photoset.photo)
 	{
 		$('#photowall').append( generatePicTag( obj.photoset.photo[i] ) );
-
+		//$('#'+obj.photoset.photo[i].id).fadeIn( 2000 );
 	}
+	$('.fancybox').fadeIn( 2000 );
 }
 
 
 function generatePicTag(info)
 {
-	var url = generateSmallPic(info);
+	//var url = generateSmallPic(info);
  	arr = [
-	'<a class="fancybox" rel="kaoru_gallery" href="'+url+'" >',
-   			'<img src="'+url+'">',
+	'<a id="'+info.id+'" class="fancybox" rel="kaoru_gallery" href="'+generateLargePic(info)+'" style="display:none" >',
+   			'<img src="'+generateSmallPic(info)+'">',
 	'</a>'
 	];
-	return arr.join();
+
+	return arr.join('');
 }
 
 
@@ -98,6 +98,13 @@ function generateSmallPic(info)
 {
 	console.log(info);
 	return "https://farm" + info.farm + ".staticflickr.com/" + info.server + "/" + info.id + "_" + info.secret + "_q.jpg"
+}
+
+
+function generateLargePic(info)
+{
+	//console.log(info);
+	return "https://farm" + info.farm + ".staticflickr.com/" + info.server + "/" + info.id + "_" + info.secret + "_b.jpg"
 }
 
 
