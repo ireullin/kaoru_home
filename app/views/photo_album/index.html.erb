@@ -7,11 +7,9 @@
 
 	<div class="row">
 		<% @icons.each do |i| %>
-    		
-    			<a href="#" >
+   			<a class="fancybox" rel="gallery1" href="<%= i %>" >
       			<img src="<%= i %>">
-    			</a>
-  			
+   			</a>
     	<% end %>
   	</div>
 	
@@ -20,3 +18,13 @@
 
 <br><br>
 <%= debug( @icons ) %>
+
+<script language="javascript">
+$(document).ready(function() {
+	$(".fancybox").fancybox({
+		openEffect	: 'none',
+		closeEffect	: 'none'
+	});
+});
+
+</script>
