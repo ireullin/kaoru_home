@@ -4,13 +4,13 @@ class PhotoAlbumController < ApplicationController
 
 	def index
 
-		@photoset = flickr.photosets.getPhotos( :photoset_id => @photoset_id )
+		#@photoset = flickr.photosets.getPhotos( :photoset_id => @photoset_id )
 
 
-		@icons = []
-		@photoset.photo.each do |info|
-			@icons << photo_url(info, 'q')
-		end
+		#@icons = []
+		#@photoset.photo.each do |info|
+		#	@icons << photo_url(info, 'q')
+		#end
 
 
 	end
