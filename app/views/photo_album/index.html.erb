@@ -6,13 +6,23 @@
 	</div>
 
 
-	<div class="progress" id="id_progress">
-  		<div id="id_progress_bar" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
-    		下載中
-  		</div>
+	<div class="alert alert-info" role="alert">
+		<strong>Do you wanna play it?&nbsp&nbsp</strong>
+		<div class="btn-group" role="group" aria-label="...">
+  			<button type="button" class="btn btn-primary">In order</button>
+  			<button type="button" class="btn btn-primary">At random </button>
+		</div>
+
+		
+
 	</div>
 
-
+	<div class="progress" id="id_progress">
+  		<div id="id_progress_bar" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+    		相片牆下載中
+  		</div>
+	</div>
+	
 
 	<div class="row" id="photowall">
   	</div>
@@ -27,7 +37,7 @@ var g_apiKey = "eba448bcd6c37026451a079690eff107";
 var g_photosetId = '72157648727044669';
 var g_totalPage = 0;
 var g_page = 1;
-var g_prePage = 50;
+var g_prePage = 100;
 var g_timer = null;
 
 
@@ -76,7 +86,8 @@ function getPhotos()
 	if( g_totalPage ==  g_page)
 	{
 		clearInterval(g_timer);
-		$('#id_progress').fadeOut( 5000 );
+		$('#id_progress_bar').text('完成');
+		$('#id_progress').slideUp( 2000 );
 	}
 	else
 		g_page++;
@@ -154,8 +165,17 @@ function getFlickr(method, callback, data)
 function initFancybox()
 {
 	$(".fancybox").fancybox({
-		openEffect	: 'none',
-		closeEffect	: 'none'
+		"loop"        : true,
+  		"autoPlay"    : true,
+  		"playSpeed"   : 4000,
+  		"nextSpeed"   : 500,
+  		"prevSpeed"   : 500,
+  		"openSpeed"   : 500,
+  		"speedOut"    : 500,
+  		"openEffect"  : "fade", 
+  		"closeEffect" : "fade",
+  		"nextEffect"  : "fade",
+  		"prevEffect"  : "fade"
 	});
 }
 
