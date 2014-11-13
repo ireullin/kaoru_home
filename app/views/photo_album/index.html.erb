@@ -75,9 +75,9 @@ function onGetPhotos(data)
 	for(i in obj.photoset.photo)
 	{
 		$('#photowall').append( generatePicTag( obj.photoset.photo[i] ) );
-		//$('#'+obj.photoset.photo[i].id).fadeIn( 2000 );
+		$('#'+obj.photoset.photo[i].id).fadeIn( 2000 );
 	}
-	$('.fancybox').fadeIn( 2000 );
+	//$('.fancybox').fadeIn( 2000 );
 }
 
 
@@ -85,8 +85,8 @@ function generatePicTag(info)
 {
 	//var url = generateSmallPic(info);
  	arr = [
-	'<a id="'+info.id+'" class="fancybox" rel="kaoru_gallery" href="'+generateLargePic(info)+'" style="display:none" >',
-   			'<img src="'+generateSmallPic(info)+'">',
+	'<a id="'+info.id+'" class="fancybox" rel="kaoru_gallery" href="'+generateLargePic(info)+'" style="display:none;" >',
+   			'<img src="'+generateSmallPic(info)+'" style="padding: 3px; border: 1px solid gray; margin: 3px;" >',
 	'</a>'
 	];
 
