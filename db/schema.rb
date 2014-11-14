@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 20141114110542) do
 
   create_table "login_histories", id: false, force: true do |t|
     t.string   "ip"
+    t.string   "path"
     t.text     "agent"
     t.datetime "created_at"
   end
