@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get  'logger/index'
+  
   get 'photo_album/index'
 
   get 'lottery/test'

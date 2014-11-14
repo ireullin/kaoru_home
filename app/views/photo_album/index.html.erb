@@ -74,11 +74,8 @@ function unload()
 	$(document).off( 'click', '#btn_order');
 	$(document).off( 'mouseover', '.fancybox');
 
-	var cookies = $.cookie();
-	for(var cookie in cookies) 
-	{
-   		$.removeCookie(cookie);
-	}
+	$.removeCookie('api_key');
+	$.removeCookie('photoset_id');
 }
 
 
