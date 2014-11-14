@@ -7,11 +7,10 @@
 
 
 	<div class="alert alert-info" role="alert">
-		<strong>Do you wanna play it?&nbsp&nbsp</strong>
-		<div class="btn-group" role="group" aria-label="...">
-  			<button type="button" class="btn btn-primary">In order</button>
-  			<button type="button" class="btn btn-primary">At random </button>
-		</div>
+		<button id="btn_order" type="button" class="btn btn-primary">
+			<span class="glyphicon glyphicon-play"></span>
+		</button>
+		<strong>&nbsp&nbspDo you wanna play it?</strong>
 	</div>
 
 	<div class="progress" id="id_progress">
@@ -38,8 +37,9 @@ var g_timer = null;
 function ready()
 {console.log(arguments.callee.name);
 
-	console.log(  );
 	$(document).one( 'page:before-change', unload);
+	$(document).on( 'click', '#btn_order',  onClickOrder );
+
 	initFancybox();
 	getFlickr('flickr.photosets.getInfo', onGetInfo, {photoset_id: $.cookie('photoset_id')});
 }
@@ -48,6 +48,10 @@ function ready()
 function unload()
 {
 	clearInterval(g_timer);
+
+	$(document).off( 'click', '#btn_order');
+
+	//clear cookie
 }
 
 
@@ -98,8 +102,10 @@ function onGetPhotos(data)
 	if( g_totalPage ==  g_page)
 	{
 		clearInterval(g_timer);
-		$('#id_progress_bar').text('完成');
-		setTimeout(function(){$('#id_progress').slideUp( 2000 );}, 1000);
+		setTimeout(function(){
+			$('#id_progress_bar').text('完成');
+			$('#id_progress').slideUp( 3000 );
+		}, 1000);
 	}
 	else
 		g_page++;
@@ -112,7 +118,8 @@ function generatePicTag(info)
 	//var url = generateSmallPic(info);
  	arr = [
 	'<a id="'+info.id+'" class="fancybox" rel="kaoru_gallery" href="'+generateLargePic(info)+'" style="display:none;" >',
-   		'<img src="'+generateSmallPic(info)+'" style="padding: 3px; border: 1px solid gray; margin: 3px;" >',
+   		'<img src="'+generateSmallPic(info)+'" style="padding: 3px; border: 1px solid #D8D8D8; margin: 3px;" >',
+   		//'<img src="'+generateSmallPic(info)+'" class="img-thumbnail" style="margin: 3px;" >',
 	'</a>'
 	];
 
@@ -157,11 +164,9 @@ function getFlickr(method, callback, data)
 
 
 function initFancybox()
-{
+{console.log(arguments.callee.name);
+
 	$(".fancybox").fancybox({
-		"loop"        : true,
-  		"autoPlay"    : true,
-  		"playSpeed"   : 4000,
   		"nextSpeed"   : 500,
   		"prevSpeed"   : 500,
   		"openSpeed"   : 500,
@@ -172,5 +177,28 @@ function initFancybox()
   		"prevEffect"  : "fade"
 	});
 }
+
+
+function onClickOrder()
+{console.log(arguments.callee.name);
+
+	$(".fancybox").fancybox({
+		"loop"        : true,
+  		"autoPlay"    : true,
+  		"playSpeed"   : 2000,
+  		"nextSpeed"   : 500,
+  		"prevSpeed"   : 500,
+  		"openSpeed"   : 500,
+  		"speedOut"    : 500,
+  		"openEffect"  : "fade", 
+  		"closeEffect" : "fade",
+  		"nextEffect"  : "fade",
+  		"prevEffect"  : "fade",
+  		"afterClose"  : initFancybox
+	});
+
+	$(".fancybox").first().trigger('click');
+}
+
 
 </script>
