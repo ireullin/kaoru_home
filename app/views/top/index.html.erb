@@ -7,11 +7,15 @@
 		<h1><small>Welcom to</small> Kaoru's home</h1>
 	</div>
 
+
 	<div class="alert alert-warning alert-dismissible" role="alert">
-  		<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+  		<button type="button" class="close" data-dismiss="alert">
+  			<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+  		</button>
   		<strong>最新消息</strong><br>
   		阿麥的相本已經開放囉!!點選上面選單中的相本就可以看了
 	</div>
+
 
 	<div class="row">
 		<div class="col-md-2">
@@ -27,10 +31,23 @@
 			</div>
 		</div>
 
+
 		<div class="col-md-4">
 
 			<iframe src="https://www.google.com/calendar/embed?showTitle=0&amp;showNav=0&amp;showPrint=0&amp;showTabs=0&amp;showCalendars=0&amp;showTz=0&amp;height=600&amp;wkst=1&amp;bgcolor=%23ffffff&amp;src=pvcv3890uqaaaf1osi7lfijotg%40group.calendar.google.com&amp;color=%236B3304&amp;src=7joafcqira48p2k0ca8g438jg4%40group.calendar.google.com&amp;color=%232952A3&amp;ctz=Asia%2FTaipei" style=" border-width:0 " width="800" height="600" frameborder="0" scrolling="no"></iframe>
 
 		</div>
 	</div>
+
+
+
+	<div class="alert alert-info alert-dismissible" role="alert">
+  		<button type="button" class="close" data-dismiss="alert">
+  			<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+  		</button>
+  		You've logon from <strong><%= request.remote_ip %></strong>
+  		<br>
+  		<%= request.env['HTTP_USER_AGENT'] %>
+	</div>
+
 </div>
