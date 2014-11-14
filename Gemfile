@@ -41,3 +41,5 @@ gem "kaminari"
 gem "mysql2"
 
 gem "rinruby"
+
+gem "flickraw"

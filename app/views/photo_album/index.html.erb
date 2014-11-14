@@ -1,0 +1,231 @@
+
+<div class="container-fluid">
+
+	<div class="page-header">
+		<h1><small>The wall of </small>Kaoru</h1>
+	</div>
+
+
+	<div class="alert alert-info" role="alert">
+		<button id="btn_order" type="button" class="btn btn-primary">
+			<span class="glyphicon glyphicon-play"></span>
+		</button>
+		<strong>&nbsp&nbspDo you wanna play it?</strong>
+	</div>
+
+
+	<div class="progress" id="id_progress">
+  		<div id="id_progress_bar" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+    		相片牆下載中
+  		</div>
+	</div>
+	
+
+	<div class="row" id="photowall">
+  	</div>
+	
+</div>
+
+<script language="javascript">
+$(document).ready(ready);
+
+var g_totalPage = 0;
+var g_page = 1;
+var g_prePage = 100;
+var g_timer = null;
+
+
+function ready()
+{console.log(arguments.callee.name);
+
+	$(document).one( 'page:before-change', unload);
+	$(document).on( 'click', '#btn_order',  onClickOrder );
+	$(document).on( 'mouseover', '.fancybox', onPhotoOver);
+
+	initFancybox();
+	getFlickr('flickr.photosets.getInfo', onGetInfo, {photoset_id: $.cookie('photoset_id')});
+
+	
+}
+
+
+function onPhotoOver()
+{
+	$(this).transition({
+  		perspective: '250px',
+  		rotateY: '180deg',
+  		complete: onPhotoLeave
+	});
+}
+
+function onPhotoLeave()
+{
+	$(this).transition({
+  		perspective: '250px',
+  		rotateY: '0deg'
+	});
+}
+
+
+function unload()
+{
+	clearInterval(g_timer);
+
+	$(document).off( 'click', '#btn_order');
+	$(document).off( 'mouseover', '.fancybox');
+
+	var cookies = $.cookie();
+	for(var cookie in cookies) 
+	{
+   		$.removeCookie(cookie);
+	}
+}
+
+
+function onGetInfo(data)
+{
+	console.log(data);
+	var obj = JSON.parse(data);
+	var totalCount = obj.photoset.photos;
+
+	$('#id_progress_bar').attr('aria-valuemax', totalCount);
+
+	g_totalPage = Math.ceil(totalCount / g_prePage);
+	getPhotos();
+	g_timer = setInterval(getPhotos, 1000);
+}
+
+
+function getPhotos()
+{
+	getFlickr(
+		'flickr.photosets.getPhotos',
+		onGetPhotos,
+		{
+			photoset_id: $.cookie('photoset_id'),
+			per_page: g_prePage,
+			page: g_page
+		}
+	);
+}
+
+
+function onGetPhotos(data)
+{
+	var obj = JSON.parse(data);
+	for(i in obj.photoset.photo)
+	{
+		$('#photowall').append( generatePicTag( obj.photoset.photo[i] ) );
+		$('#'+obj.photoset.photo[i].id).fadeIn( 5000 );
+
+
+		var valuenow = $('#id_progress_bar').attr('aria-valuenow');
+		var valuemax = $('#id_progress_bar').attr('aria-valuemax');
+		$('#id_progress_bar').attr('aria-valuenow', parseInt(valuenow)+1);
+		$('#id_progress_bar').css('width', valuenow/valuemax*100 + '%' );
+	}
+	//$('.fancybox').fadeIn( 2000 );
+
+	if( g_totalPage ==  g_page)
+	{
+		clearInterval(g_timer);
+		setTimeout(function(){
+			$('#id_progress_bar').text('完成');
+			$('#id_progress').slideUp( 3000 );
+		}, 1000);
+	}
+	else
+		g_page++;
+}
+
+
+
+function generatePicTag(info)
+{
+	//var url = generateSmallPic(info);
+ 	arr = [
+	'<a id="'+info.id+'" class="fancybox" rel="kaoru_gallery" href="'+generateLargePic(info)+'" style="display:none;" >',
+   		'<img src="'+generateSmallPic(info)+'" style="padding: 3px; border: 1px solid #D8D8D8; margin: 3px;" >',
+   		//'<img src="'+generateSmallPic(info)+'" class="img-thumbnail" style="margin: 3px;" >',
+	'</a>'
+	];
+
+	return arr.join('');
+}
+
+
+function generateSmallPic(info)
+{
+	//console.log(info);
+	return "https://farm" + info.farm + ".staticflickr.com/" + info.server + "/" + info.id + "_" + info.secret + "_q.jpg"
+}
+
+
+function generateLargePic(info)
+{
+	//console.log(info);
+	return "https://farm" + info.farm + ".staticflickr.com/" + info.server + "/" + info.id + "_" + info.secret + "_b.jpg"
+}
+
+
+function getFlickr(method, callback, data)
+{
+	var defaultVal = {
+		format: 'json',
+		method: method,
+		api_key: $.cookie('api_key')
+	};
+
+	$.get(
+		"https://api.flickr.com/services/rest",
+		$.extend(defaultVal, data)
+	).always(
+		function(data)
+		{	
+			var rspText = data.responseText
+			var rc = rspText.substring( 'jsonFlickrApi'.length+1 , rspText.length-1);
+			callback( rc );
+		}
+	);
+}
+
+
+function initFancybox()
+{console.log(arguments.callee.name);
+
+	$(".fancybox").fancybox({
+  		"nextSpeed"   : 500,
+  		"prevSpeed"   : 500,
+  		"openSpeed"   : 500,
+  		"speedOut"    : 500,
+  		"openEffect"  : "fade", 
+  		"closeEffect" : "fade",
+  		"nextEffect"  : "fade",
+  		"prevEffect"  : "fade"
+	});
+}
+
+
+function onClickOrder()
+{console.log(arguments.callee.name);
+
+	$(".fancybox").fancybox({
+		"loop"        : true,
+  		"autoPlay"    : true,
+  		"playSpeed"   : 2000,
+  		"nextSpeed"   : 500,
+  		"prevSpeed"   : 500,
+  		"openSpeed"   : 500,
+  		"speedOut"    : 500,
+  		"openEffect"  : "fade", 
+  		"closeEffect" : "fade",
+  		"nextEffect"  : "fade",
+  		"prevEffect"  : "fade",
+  		"afterClose"  : initFancybox
+	});
+
+	$(".fancybox").first().trigger('click');
+}
+
+
+</script>
