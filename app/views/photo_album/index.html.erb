@@ -40,9 +40,30 @@ function ready()
 
 	$(document).one( 'page:before-change', unload);
 	$(document).on( 'click', '#btn_order',  onClickOrder );
+	$(document).on( 'mouseover', '.fancybox', onPhotoOver);
 
 	initFancybox();
 	getFlickr('flickr.photosets.getInfo', onGetInfo, {photoset_id: $.cookie('photoset_id')});
+
+	
+}
+
+
+function onPhotoOver()
+{
+	$(this).transition({
+  		perspective: '250px',
+  		rotateY: '180deg',
+  		complete: onPhotoLeave
+	});
+}
+
+function onPhotoLeave()
+{
+	$(this).transition({
+  		perspective: '250px',
+  		rotateY: '0deg'
+	});
 }
 
 
@@ -51,6 +72,7 @@ function unload()
 	clearInterval(g_timer);
 
 	$(document).off( 'click', '#btn_order');
+	$(document).off( 'mouseover', '.fancybox');
 
 	var cookies = $.cookie();
 	for(var cookie in cookies) 
