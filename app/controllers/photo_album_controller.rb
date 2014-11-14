@@ -3,14 +3,8 @@ class PhotoAlbumController < ApplicationController
 	before_action :flickr_info
 
 	def index
-
-		#@photoset = flickr.photosets.getPhotos( :photoset_id => @photoset_id )
-
-
-		#@icons = []
-		#@photoset.photo.each do |info|
-		#	@icons << photo_url(info, 'q')
-		#end
+		cookies[:api_key] = @api_key
+		cookies[:photoset_id] = @photoset_id
 
 
 	end
@@ -42,8 +36,8 @@ class PhotoAlbumController < ApplicationController
 
 
 	def flickr_info
-		FlickRaw.api_key = "eba448bcd6c37026451a079690eff107"
-		FlickRaw.shared_secret = "861d1cc1a0791a58"
+		@api_key = "eba448bcd6c37026451a079690eff107"
+		@shared_secret = "861d1cc1a0791a58"
 		@photoset_id = '72157648727044669'
 		@user_id = '127432547@N03'
 	end

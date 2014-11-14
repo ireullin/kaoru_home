@@ -2,7 +2,7 @@
 <div class="container-fluid">
 
 	<div class="page-header">
-		<h1>Kaoru's <small>album</small></h1>
+		<h1><small>The wall of </small>Kaoru</h1>
 	</div>
 
 
@@ -12,9 +12,6 @@
   			<button type="button" class="btn btn-primary">In order</button>
   			<button type="button" class="btn btn-primary">At random </button>
 		</div>
-
-		
-
 	</div>
 
 	<div class="progress" id="id_progress">
@@ -32,9 +29,6 @@
 <script language="javascript">
 $(document).ready(ready);
 
-// 第一次登入的時候會娶不到apikey 建議用cookie
-var g_apiKey = "eba448bcd6c37026451a079690eff107";
-var g_photosetId = '72157648727044669';
 var g_totalPage = 0;
 var g_page = 1;
 var g_prePage = 100;
@@ -44,9 +38,10 @@ var g_timer = null;
 function ready()
 {console.log(arguments.callee.name);
 
+	console.log(  );
 	$(document).one( 'page:before-change', unload);
 	initFancybox();
-	getFlickr('flickr.photosets.getInfo', onGetInfo, {photoset_id: g_photosetId});
+	getFlickr('flickr.photosets.getInfo', onGetInfo, {photoset_id: $.cookie('photoset_id')});
 }
 
 
@@ -76,22 +71,11 @@ function getPhotos()
 		'flickr.photosets.getPhotos',
 		onGetPhotos,
 		{
-			photoset_id: g_photosetId,
+			photoset_id: $.cookie('photoset_id'),
 			per_page: g_prePage,
 			page: g_page
 		}
 	);
-
-	//console.log( 'g_totalPage='+g_totalPage+' g_page='+g_page  );
-	if( g_totalPage ==  g_page)
-	{
-		clearInterval(g_timer);
-		$('#id_progress_bar').text('完成');
-		$('#id_progress').slideUp( 2000 );
-	}
-	else
-		g_page++;
-
 }
 
 
@@ -110,7 +94,17 @@ function onGetPhotos(data)
 		$('#id_progress_bar').css('width', valuenow/valuemax*100 + '%' );
 	}
 	//$('.fancybox').fadeIn( 2000 );
+
+	if( g_totalPage ==  g_page)
+	{
+		clearInterval(g_timer);
+		$('#id_progress_bar').text('完成');
+		setTimeout(function(){$('#id_progress').slideUp( 2000 );}, 1000);
+	}
+	else
+		g_page++;
 }
+
 
 
 function generatePicTag(info)
@@ -145,7 +139,7 @@ function getFlickr(method, callback, data)
 	var defaultVal = {
 		format: 'json',
 		method: method,
-		api_key: g_apiKey
+		api_key: $.cookie('api_key')
 	};
 
 	$.get(
