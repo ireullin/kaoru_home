@@ -1,37 +1,70 @@
 <div class="container-fluid">
   	<div class="page-header">
-    	<h1>Log history</h1>
+    	<h1>歷史紀錄</h1>
 	</div>
 
 	<div class="row">
-
-
-		<div class="col-md-8">
+		<div class="col-md-2">
 			<table class="table table-hover table-striped">
 			    <thead>
 			    	<tr>
-			        	<th>ip</th>
-			        	<th>path</th>
-			        	<th>agent</th>
-			        	<th>created date</th>
+			        	<th colspan="2">最常登入IP</th>
 			      	</tr>
 			    </thead>
 
 			    <tbody>
-			      	<% @histories.each do |row| %>
+			      	<% @count_ip.each do |row| %>
 			        	<tr>
-			          	<td><%= row.ip %></td>
-			          	<td><%= row.path %></td>
-			          	<td><%= row.agent %></td>
-			          	<td><%= row.created_at.localtime.strftime("%Y-%m-%d %H:%M:%S") %></td>
+			          		<td><%= row.ip %>&nbsp;&nbsp;<span class="badge"><%= row.count %></span></td>
 			        	</tr>
 			      	<% end %>
 			    </tbody>
 			</table>
 		</div>
 
+		<div class="col-md-3">
+			<table class="table table-hover table-striped">
+			    <thead>
+			    	<tr>
+			        	<th colspan="2">最常使用路徑</th>
+			      	</tr>
+			    </thead>
 
-		<div class="col-md-4">
+			    <tbody>
+			      	<% @count_path.each do |row| %>
+			        	<tr>
+			          		<td><%= row.path %>&nbsp;&nbsp;<span class="badge"><%= row.count %></span></td>
+			        	</tr>
+			      	<% end %>
+			    </tbody>
+			</table>
 		</div>
 	</div>
+
+
+	<div>
+		<table class="table table-hover table-striped">
+		    <thead>
+		    	<tr>
+		        	<th>ip</th>
+		        	<th>path</th>
+		        	<th>agent</th>
+		        	<th>created date</th>
+		      	</tr>
+		    </thead>
+
+		    <tbody>
+		      	<% @histories.each do |row| %>
+		        	<tr>
+		          	<td><%= row.ip %></td>
+		          	<td><%= row.path %></td>
+		          	<td><%= row.agent %></td>
+		          	<td><%= row.created_at.localtime.strftime("%Y-%m-%d %H:%M:%S") %></td>
+		        	</tr>
+		      	<% end %>
+		    </tbody>
+		</table>
+	</div>
+
+	
 </div>
