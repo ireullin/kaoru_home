@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141114110542) do
+ActiveRecord::Schema.define(version: 20141115035628) do
 
   create_table "food_menus", id: false, force: true do |t|
     t.string   "food_type"
@@ -49,6 +49,20 @@ ActiveRecord::Schema.define(version: 20141114110542) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "photo_albums", id: false, force: true do |t|
+    t.string   "path"
+    t.string   "name"
+    t.string   "yahoo_account"
+    t.string   "api_key"
+    t.string   "shared_secret"
+    t.string   "photoset_id"
+    t.string   "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "photo_albums", ["path"], name: "index_photo_albums_on_path", unique: true
 
   create_table "superlottos", primary_key: "term", force: true do |t|
     t.integer  "no1",          null: false

@@ -1,0 +1,64 @@
+
+<%= form_tag('/photo_album/create', id: "album_form") do %>
+  	<div class="form-group">
+  		<%= label_tag('path')%>
+  		<%= text_field_tag('path', nil, class: "form-control" ) %>
+  	</div>
+  	<div class="form-group">
+		<%= label_tag 'name' %>
+		<%= text_field_tag('name', nil, class: "form-control" ) %>
+	</div>
+  	<div class="form-group">
+		<%= label_tag 'yahoo_account' %>
+		<%= text_field_tag('yahoo_account', nil, class: "form-control" ) %>
+	</div>
+  	<div class="form-group">
+		<%= label_tag 'api_key' %>
+		<%= text_field_tag('api_key', nil, class: "form-control" ) %>
+	</div>
+  	<div class="form-group">
+		<%= label_tag 'shared_secret' %>
+		<%= text_field_tag('shared_secret', nil, class: "form-control" ) %>
+	</div>
+  	<div class="form-group">
+		<%= label_tag 'photoset_id' %>
+		<%= text_field_tag('photoset_id', nil, class: "form-control" ) %>
+	</div>
+  	<div class="form-group">
+		<%= label_tag 'user_id' %>
+		<%= text_field_tag('user_id', nil, class: "form-control" ) %>
+	</div>
+
+	<button id="id_submit" type="button">Submit</button>
+
+<% end %>
+
+
+<script language="javascript">
+$(document).ready(ready);
+
+function ready()
+{console.log(arguments.callee.name);
+
+	$(document).one( 'page:before-change', unload);
+	$(document).on( 'click', '#id_submit',  onClickSubmit );
+
+}
+
+function unload()
+{console.log(arguments.callee.name);
+	$(document).off( 'click', '#id_submit');
+}
+
+function onClickSubmit()
+{console.log(arguments.callee.name);
+
+	$('#album_form').submit(onRecvSubmit);
+}
+
+function onRecvSubmit()
+{
+	
+}
+
+</script>

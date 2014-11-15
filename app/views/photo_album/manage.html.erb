@@ -1,0 +1,70 @@
+
+<div class="container-fluid">
+
+	<div class="page-header">
+		<h1>相簿管理</h1>
+	</div>
+
+	<a class="fancybox fancybox.ajax" href="/photo_album/new">新增相簿</a>
+
+	<div>
+		<table class="table table-hover table-striped">
+		    <thead>
+		    	<tr>
+		    		<td>edit</td>
+		        	<td>path</td>
+					<td>name</td>
+					<td>yahoo_account</td>
+					<td>api_key</td>
+					<td>shared_secret</td>
+					<td>photoset_id</td>
+					<td>user_id</td>
+					<td>created_at</td>
+					<td>updated_at</td>
+		      	</tr>
+		    </thead>
+
+		    <tbody>
+		      	<% @photo_albums.each do |row| %>
+		        	<tr>
+		        		<td>
+		        			<a href="#"><span class="glyphicon glyphicon-file"></span></a>
+		        			<a href="#"><span class="glyphicon glyphicon-remove"></span></a>
+		        		</td>
+		          		<td><%= row.path %></td>
+						<td><%= row.name %></td>
+						<td><%= row.yahoo_account %></td>
+						<td><%= row.api_key %></td>
+						<td><%= row.shared_secret %></td>
+						<td><%= row.photoset_id %></td>
+						<td><%= row.user_id %></td>
+						<td><%= row.created_at.localtime.strftime("%Y-%m-%d %H:%M:%S") %></td>
+						<td><%= row.updated_at.localtime.strftime("%Y-%m-%d %H:%M:%S") %></td>
+		        	</tr>
+		      	<% end %>
+		    </tbody>
+		</table>
+	</div>
+	
+	
+</div>
+
+<script language="javascript">
+
+$(document).ready(ready);
+function ready()
+{
+	$(".fancybox").fancybox({
+  		maxWidth	: 800,
+		maxHeight	: 600,
+		fitToView	: false,
+		width		: '70%',
+		height		: '70%',
+		autoSize	: false,
+		closeClick	: false,
+		openEffect	: 'none',
+		closeEffect	: 'none'
+	});
+}
+
+</script>
