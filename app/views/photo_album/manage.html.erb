@@ -6,12 +6,12 @@
 	</div>
 
 	<a class="fancybox fancybox.ajax" href="/photo_album/new">新增相簿</a>
-
+	<br>
 	<div>
 		<table class="table table-hover table-striped">
 		    <thead>
 		    	<tr>
-		    		<td>edit</td>
+		    		<td></td>
 		        	<td>path</td>
 					<td>name</td>
 					<td>yahoo_account</td>
@@ -28,10 +28,10 @@
 		      	<% @photo_albums.each do |row| %>
 		        	<tr>
 		        		<td>
-		        			<a href="/photo_album/edit/"<%= row.path %>>
+		        			<a class="fancybox fancybox.ajax" href="/photo_album/edit/<%= row.path %>" >
 		        				<span class="glyphicon glyphicon-file"></span>
 		        			</a>
-		        			<a href="#">
+		        			<a class="fancybox fancybox.ajax" href="#">
 		        				<span class="glyphicon glyphicon-remove"></span>
 		        			</a>
 		        		</td>
@@ -54,7 +54,8 @@
 </div>
 
 <script language="javascript">
-
+// mark this if you wanna debug
+/*
 $(document).ready(ready);
 function ready()
 {
@@ -70,5 +71,5 @@ function ready()
 		closeEffect	: 'none'
 	});
 }
-
+*/
 </script>

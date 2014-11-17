@@ -43,7 +43,7 @@ class PhotoAlbumController < ApplicationController
 
 	def edit
 		
-		@data = PhotoAlbum.where( params[:path] ).first
+		@data = PhotoAlbum.where( path: params[:path] ).first
 
 		respond_to do |format|
        		format.html { render :new, layout: false }
