@@ -1,0 +1,45 @@
+
+<!-- I dont know why can't use form_tag -->
+<% if @data.blank? %>
+<form action="/photo_album/create" method="post">
+<% else %>
+<form action="/photo_album/update" method="put">
+<% end %>
+  	<div class="form-group">
+  		<%= label_tag('path')%>
+  		<%= text_field_tag('path', @data.try(:path) , class: "form-control" ) %>
+  	</div>
+  	
+  	<div class="form-group">
+		<%= label_tag 'name' %>
+		<%= text_field_tag('name', @data.try(:name), class: "form-control" ) %>
+	</div>
+  	<div class="form-group">
+		<%= label_tag 'yahoo_account' %>
+		<%= text_field_tag('yahoo_account', @data.try(:yahoo_account), class: "form-control" ) %>
+	</div>
+  	<div class="form-group">
+		<%= label_tag 'api_key' %>
+		<%= text_field_tag('api_key', @data.try(:api_key), class: "form-control" ) %>
+	</div>
+  	<div class="form-group">
+		<%= label_tag 'shared_secret' %>
+		<%= text_field_tag('shared_secret', @data.try(:shared_secret), class: "form-control" ) %>
+	</div>
+  	<div class="form-group">
+		<%= label_tag 'photoset_id' %>
+		<%= text_field_tag('photoset_id', @data.try(:photoset_id), class: "form-control" ) %>
+	</div>
+  	<div class="form-group">
+		<%= label_tag 'user_id' %>
+		<%= text_field_tag('user_id', @data.try(:user_id), class: "form-control" ) %>
+	</div>
+
+	<%= submit_tag "submit" %>
+
+</form>
+
+
+<script language="javascript">
+
+</script>

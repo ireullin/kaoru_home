@@ -2,7 +2,7 @@
 <div class="container-fluid">
 
 	<div class="page-header">
-		<h1><small>The wall of </small>Kaoru</h1>
+		<h1><small>The wall of </small><%= @data.name %></h1>
 	</div>
 
 
@@ -74,11 +74,8 @@ function unload()
 	$(document).off( 'click', '#btn_order');
 	$(document).off( 'mouseover', '.fancybox');
 
-	var cookies = $.cookie();
-	for(var cookie in cookies) 
-	{
-   		$.removeCookie(cookie);
-	}
+	$.removeCookie('api_key');
+	$.removeCookie('photoset_id');
 }
 
 
@@ -131,7 +128,7 @@ function onGetPhotos(data)
 		clearInterval(g_timer);
 		setTimeout(function(){
 			$('#id_progress_bar').text('完成');
-			$('#id_progress').slideUp( 3000 );
+			$('#id_progress').slideUp( 1500 );
 		}, 1000);
 	}
 	else
