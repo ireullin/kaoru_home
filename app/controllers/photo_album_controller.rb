@@ -3,10 +3,11 @@ class PhotoAlbumController < ApplicationController
 	before_action :flickr_info
 
 	def index
-		cookies[:api_key] = @api_key
-		cookies[:photoset_id] = @photoset_id
 
+		data = PhotoAlbum.where(path: params[:path]).first
 
+		cookies[:api_key] = data.api_key
+		cookies[:photoset_id] = data.photoset_id
 	end
 
 
@@ -34,13 +35,28 @@ class PhotoAlbumController < ApplicationController
 
 	    respond_to do |format|
 	      	if @photo_albums.save
-	        	format.html { redirect_to atcion: 'manage' }
+	        	format.html { redirect_to action: 'manage' }
 	      	else
 		        format.html { render :new }
 		    end
 	    end
 	end
 
+
+	def edit
+		
+		@data = PhotoAlbum.where( params[:path] ).first
+
+		respond_to do |format|
+       		format.html { render :new, layout: false }
+       	end
+	end
+
+
+	def update
+
+
+	end
 
 	private
 	######################################################

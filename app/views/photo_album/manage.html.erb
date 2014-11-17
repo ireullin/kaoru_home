@@ -28,8 +28,12 @@
 		      	<% @photo_albums.each do |row| %>
 		        	<tr>
 		        		<td>
-		        			<a href="#"><span class="glyphicon glyphicon-file"></span></a>
-		        			<a href="#"><span class="glyphicon glyphicon-remove"></span></a>
+		        			<a href="/photo_album/edit/"<%= row.path %>>
+		        				<span class="glyphicon glyphicon-file"></span>
+		        			</a>
+		        			<a href="#">
+		        				<span class="glyphicon glyphicon-remove"></span>
+		        			</a>
 		        		</td>
 		          		<td><%= row.path %></td>
 						<td><%= row.name %></td>

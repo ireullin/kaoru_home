@@ -1,10 +1,12 @@
 Rails.application.routes.draw do
   get  'logger/index'
   
-  get 'photo_album/index'
+  get 'photo_album/photoset/:path' => 'photo_album#index'
   get 'photo_album/manage'
   get 'photo_album/new'
   post 'photo_album/create'
+  get 'photo_album/edit/:path' => 'photo_album#edit'
+  patch 'photo_album/update'
 
   get 'lottery/test'
 

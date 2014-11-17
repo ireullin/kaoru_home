@@ -29,36 +29,11 @@
 		<%= text_field_tag('user_id', nil, class: "form-control" ) %>
 	</div>
 
-	<button id="id_submit" type="button">Submit</button>
+	<%= submit_tag "submit" %>
 
 <% end %>
 
 
 <script language="javascript">
-$(document).ready(ready);
-
-function ready()
-{console.log(arguments.callee.name);
-
-	$(document).one( 'page:before-change', unload);
-	$(document).on( 'click', '#id_submit',  onClickSubmit );
-
-}
-
-function unload()
-{console.log(arguments.callee.name);
-	$(document).off( 'click', '#id_submit');
-}
-
-function onClickSubmit()
-{console.log(arguments.callee.name);
-
-	$('#album_form').submit(onRecvSubmit);
-}
-
-function onRecvSubmit()
-{
-	
-}
 
 </script>
