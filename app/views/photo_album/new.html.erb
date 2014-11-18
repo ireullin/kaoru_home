@@ -1,10 +1,19 @@
+<!DOCTYPE html>
+<html>
+<body>
 
 <!-- I dont know why can't use form_tag -->
-<% if @data.blank? %>
-<form action="/photo_album/create" method="post">
-<% else %>
-<form action="/photo_album/update" method="put">
-<% end %>
+<% 
+if @data.blank? 
+	action = 'create'
+else
+	action = 'update'
+end
+%>
+
+
+
+<%= form_tag {action: action} %>
   	<div class="form-group">
   		<%= label_tag('path')%>
   		<%= text_field_tag('path', @data.try(:path) , class: "form-control" ) %>
@@ -37,9 +46,13 @@
 
 	<%= submit_tag "submit" %>
 
-</form>
+<% end %>
 
 
 <script language="javascript">
 
 </script>
+
+</body>
+</html>
+
