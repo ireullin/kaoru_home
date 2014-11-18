@@ -11,10 +11,8 @@ else
 end
 %>
 
-
-
-<%= form_tag {action: action} %>
-  	<div class="form-group">
+<%= form_tag action: action do %>
+  	<div class="form-group" <%= 'style=display:none' unless @data.blank? %> >
   		<%= label_tag('path')%>
   		<%= text_field_tag('path', @data.try(:path) , class: "form-control" ) %>
   	</div>
