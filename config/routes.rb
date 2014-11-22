@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'movie/index'
+
   get  'logger/index'
   
   get 'photo_album/photoset/:path' => 'photo_album#index'
