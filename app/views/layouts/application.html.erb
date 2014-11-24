@@ -98,12 +98,14 @@
 
 <script language="javascript">
 
-
+//$(document).one( 'page:change', ready);
 $(document).ready(ready);
 function ready()
 {
+    console.log('application#ready');
     // commit this if wanna debug
     $("#id_login").fancybox({
+        parent: 'body',
         maxWidth    : 800,
         maxHeight   : 600,
         fitToView   : false,
