@@ -18,6 +18,9 @@ Rails.application.routes.draw do
 
 
   get   'top/index'
+  get   'top/login'
+  post  'top/varify'
+  get   'top/logout'
 
 
   get   'lottery/statistic/:type'       => 'lottery#statistic'
