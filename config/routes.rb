@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   get 'photo_album/new'
   post 'photo_album/create'
   post 'photo_album/update'
-  get 'photo_album/delete/:path' => 'photo_album#delete'
+  post 'photo_album/delete/:path' => 'photo_album#delete'
   get 'photo_album/edit/:path' => 'photo_album#edit'
   
 
