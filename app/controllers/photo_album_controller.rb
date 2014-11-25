@@ -1,9 +1,9 @@
 class PhotoAlbumController < ApplicationController
 
+	before_action :check_session, :except => [:index]
+
 	def index
-
 		@data = PhotoAlbum.where(path: params[:path]).first
-
 		cookies[:api_key] = @data.api_key
 		cookies[:photoset_id] = @data.photoset_id
 	end
@@ -42,7 +42,6 @@ class PhotoAlbumController < ApplicationController
 
 
 	def edit
-		
 		@data = PhotoAlbum.where( path: params[:path] ).first
 
 		respond_to do |format|
@@ -52,8 +51,38 @@ class PhotoAlbumController < ApplicationController
 
 
 	def update
+		@photo_albums = PhotoAlbum.where(:path => params[:path])
+	    @photo_albums.update_all(
+			name: params[:name],
+			yahoo_account: params[:yahoo_account],
+			api_key: params[:api_key],
+			shared_secret: params[:shared_secret],
+			photoset_id: params[:photoset_id],
+			user_id: params[:user_id],
+			updated_at: Time.now.localtime.strftime("%Y-%m-%d %H:%M:%S")
+		)
 
-
+	    respond_to do |format|
+        	format.html { redirect_to action: 'manage', notice: 'OK' }
+	    end
 	end
 
+
+	def delete
+		PhotoAlbum.where(:path => params[:path]).delete_all
+
+		respond_to do |format|
+        	format.html { redirect_to action: 'manage' }
+	    end
+	end
+
+
+	private
+	def check_session
+		if session[:account].blank?
+			respond_to do |format|
+        		format.any { render file: "#{Rails.root}/public/500.html",  status: 500, layout: false }
+      		end
+	    end
+	end
 end

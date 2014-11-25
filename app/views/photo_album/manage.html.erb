@@ -5,22 +5,24 @@
 		<h1>相簿管理</h1>
 	</div>
 
-	<a class="fancybox fancybox.ajax" href="/photo_album/new">新增相簿</a>
-	<br>
 	<div>
 		<table class="table table-hover table-striped">
 		    <thead>
 		    	<tr>
-		    		<td></td>
-		        	<td>path</td>
-					<td>name</td>
-					<td>yahoo_account</td>
-					<td>api_key</td>
-					<td>shared_secret</td>
-					<td>photoset_id</td>
-					<td>user_id</td>
-					<td>created_at</td>
-					<td>updated_at</td>
+		    		<th>
+		    			<a class="fancybox fancybox.ajax fancy_album_form" href="/photo_album/new">
+							<span class="glyphicon glyphicon-plus"></span>
+						</a>
+		    		</th>
+		        	<th>path</th>
+					<th>name</th>
+					<th>yahoo account</th>
+					<th>api key</th>
+					<th>shared secret</th>
+					<th>photoset id</th>
+					<th>user id</th>
+					<th>created date</th>
+					<th>updated date</th>
 		      	</tr>
 		    </thead>
 
@@ -28,10 +30,10 @@
 		      	<% @photo_albums.each do |row| %>
 		        	<tr>
 		        		<td>
-		        			<a class="fancybox fancybox.ajax" href="/photo_album/edit/<%= row.path %>" >
+		        			<a class="fancybox fancybox.ajax fancy_album_form" href="/photo_album/edit/<%= row.path %>" >
 		        				<span class="glyphicon glyphicon-file"></span>
 		        			</a>
-		        			<a class="fancybox fancybox.ajax" href="#">
+		        			<a href="/photo_album/delete/<%= row.path %>" data-confirm="確認刪除?" >
 		        				<span class="glyphicon glyphicon-remove"></span>
 		        			</a>
 		        		</td>
@@ -54,12 +56,14 @@
 </div>
 
 <script language="javascript">
-// mark this if you wanna debug
-/*
+
+
 $(document).ready(ready);
 function ready()
 {
-	$(".fancybox").fancybox({
+	// commit this if wanna debug
+	$(".fancy_album_form").fancybox({
+		parent      : 'body',
   		maxWidth	: 800,
 		maxHeight	: 600,
 		fitToView	: false,
@@ -70,6 +74,12 @@ function ready()
 		openEffect	: 'none',
 		closeEffect	: 'none'
 	});
+
+	$('a[data-confirm], input[data-confirm]').on('click', function() 
+	{
+    	if (!confirm($(this).attr('data-confirm'))) 
+      		return false;
+	});
 }
-*/
+
 </script>

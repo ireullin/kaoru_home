@@ -5,8 +5,10 @@ Rails.application.routes.draw do
   get 'photo_album/manage'
   get 'photo_album/new'
   post 'photo_album/create'
+  post 'photo_album/update'
+  get 'photo_album/delete/:path' => 'photo_album#delete'
   get 'photo_album/edit/:path' => 'photo_album#edit'
-  put 'photo_album/update'
+  
 
   get 'lottery/test'
 
@@ -16,6 +18,9 @@ Rails.application.routes.draw do
 
 
   get   'top/index'
+  get   'top/login'
+  post  'top/varify'
+  get   'top/logout'
 
 
   get   'lottery/statistic/:type'       => 'lottery#statistic'

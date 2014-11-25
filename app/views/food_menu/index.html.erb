@@ -12,10 +12,12 @@
 			<input style="display:none" id="new_category" type="text" class="form-control" placeholder="add a new categroy">
 		</div>
 		<div class="col-md-1 checkbox">
+			<% unless session[:account].blank? %>
 			<label>
 				<%= check_box_tag('chk_edit_mode')%>
 				edit
 			</label>
+			<% end %>
 		</div>		
 	</div>
 
@@ -24,6 +26,7 @@
 	</div>
 
 </div>
+
 
 <script language="javascript">
 
@@ -37,8 +40,6 @@ $(document).ready(ready);
 
 function onEvents()
 {
-	
-
 	$(document).on( 'keypress', '#new_category', newCategoryOnPress );
 	$(document).on( 'keypress', '.form-control.sub-item', newSubItemOnPress );
 	
@@ -63,8 +64,6 @@ function onEvents()
 
 function offEvents()
 {
-	
-
 	$(document).off( 'keypress', '#new_category');
 	$(document).off( 'keypress', '.form-control.sub-item');
 	
@@ -108,6 +107,7 @@ function ready()
 
 	initList();
 
+	<% unless session[:account].blank? %>
 	offEvents();
 
 	$(document).off( 'click', '#chk_edit_mode');
@@ -115,6 +115,7 @@ function ready()
 	$(document).one( 'page:before-change', unload);
 
 	g_timer = setInterval(onTimer, 5000);
+	<% end %>
 }
 
 function onTimer()

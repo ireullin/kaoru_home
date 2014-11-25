@@ -1,11 +1,18 @@
+<!DOCTYPE html>
+<html>
+<body>
 
 <!-- I dont know why can't use form_tag -->
-<% if @data.blank? %>
-<form action="/photo_album/create" method="post">
-<% else %>
-<form action="/photo_album/update" method="put">
-<% end %>
-  	<div class="form-group">
+<% 
+if @data.blank? 
+	action = 'create'
+else
+	action = 'update'
+end
+%>
+
+<%= form_tag action: action do %>
+  	<div class="form-group" <%= 'style=display:none' unless @data.blank? %> >
   		<%= label_tag('path')%>
   		<%= text_field_tag('path', @data.try(:path) , class: "form-control" ) %>
   	</div>
@@ -35,11 +42,15 @@
 		<%= text_field_tag('user_id', @data.try(:user_id), class: "form-control" ) %>
 	</div>
 
-	<%= submit_tag "submit" %>
+	<%= submit_tag "submit", class: "btn btn-default" %>
 
-</form>
+<% end %>
 
 
 <script language="javascript">
 
 </script>
+
+</body>
+</html>
+

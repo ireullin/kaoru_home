@@ -40,7 +40,7 @@ function ready()
 
 	$(document).one( 'page:before-change', unload);
 	$(document).on( 'click', '#btn_order',  onClickOrder );
-	$(document).on( 'mouseover', '.fancybox', onPhotoOver);
+	$(document).on( 'mouseover', '.fancypic', onPhotoOver);
 
 	initFancybox();
 	getFlickr('flickr.photosets.getInfo', onGetInfo, {photoset_id: $.cookie('photoset_id')});
@@ -141,7 +141,7 @@ function generatePicTag(info)
 {
 	//var url = generateSmallPic(info);
  	arr = [
-	'<a id="'+info.id+'" class="fancybox" rel="kaoru_gallery" href="'+generateLargePic(info)+'" style="display:none;" >',
+	'<a id="'+info.id+'" class="fancybox fancypic" rel="kaoru_gallery" href="'+generateLargePic(info)+'" style="display:none;" >',
    		'<img src="'+generateSmallPic(info)+'" style="padding: 3px; border: 1px solid #D8D8D8; margin: 3px;" >',
    		//'<img src="'+generateSmallPic(info)+'" class="img-thumbnail" style="margin: 3px;" >',
 	'</a>'
@@ -190,7 +190,8 @@ function getFlickr(method, callback, data)
 function initFancybox()
 {console.log(arguments.callee.name);
 
-	$(".fancybox").fancybox({
+	$(".fancypic").fancybox({
+		"parent"      : 'body',
   		"nextSpeed"   : 500,
   		"prevSpeed"   : 500,
   		"openSpeed"   : 500,
@@ -206,7 +207,8 @@ function initFancybox()
 function onClickOrder()
 {console.log(arguments.callee.name);
 
-	$(".fancybox").fancybox({
+	$(".fancypic").fancybox({
+		"parent"      : 'body',
 		"loop"        : true,
   		"autoPlay"    : true,
   		"playSpeed"   : 2000,
@@ -221,7 +223,7 @@ function onClickOrder()
   		"afterClose"  : initFancybox
 	});
 
-	$(".fancybox").first().trigger('click');
+	$(".fancypic").first().trigger('click');
 }
 
 

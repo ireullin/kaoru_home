@@ -10,7 +10,17 @@
 <body>
 
 <div class="container-fluid">
+
 <%= image_tag("header_800x100.jpg", width: '100%') %>
+
+<div style="position: absolute; top: 5px; right: 30px;">
+    <% if session[:account].blank? %>
+    <a id="id_login" href="/top/login" style="color: white;" class="fancybox fancybox.ajax">登入</a>
+    <% else %>
+    <a href="/top/logout" style="color: white;">登出</a>
+    <% end %>
+</div>
+
 
 <nav class="navbar navbar-default" role="navigation">
 <div class="container-fluid">
@@ -51,7 +61,17 @@
                 <li><a href="/lottery/statistic/lottery649s">大樂透統計方法</a></li>
             </ul>
         </li>
-        <li><a href="/logger/index">管理工具</a></li>
+
+        <% unless session[:account].blank? %>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">管理工具<span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="/photo_album/manage">相簿管理</a></li>
+                <li><a href="/logger/index">歷史紀錄</a></li>
+            </ul>
+        </li>
+        <% end %>
+
         </ul>
       <!--<ul class="nav navbar-nav navbar-right">
         <li><a href="#">Player Panel</a></li>
@@ -74,4 +94,31 @@
 <%= yield %>
 </div>
 </body>
+
+
+<script language="javascript">
+
+//$(document).one( 'page:change', ready);
+$(document).ready(ready);
+function ready()
+{
+    console.log('application#ready');
+    // commit this if wanna debug
+    $("#id_login").fancybox({
+        parent      : 'body',
+        maxWidth    : 800,
+        maxHeight   : 600,
+        fitToView   : false,
+        width       : '70%',
+        height      : '70%',
+        autoSize    : false,
+        closeClick  : false,
+        openEffect  : 'none',
+        closeEffect : 'none'
+    });
+}
+
+</script>
+
+
 </html>
