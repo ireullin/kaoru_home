@@ -1,5 +1,7 @@
 class PhotoAlbumController < ApplicationController
 
+	before_action :check_session, :except => [:index]
+
 	def index
 		@data = PhotoAlbum.where(path: params[:path]).first
 		cookies[:api_key] = @data.api_key
@@ -74,4 +76,13 @@ class PhotoAlbumController < ApplicationController
 	    end
 	end
 
+
+	private
+	def check_session
+		if session[:account].blank?
+			respond_to do |format|
+        		format.any { render file: "#{Rails.root}/public/500.html",  status: 500, layout: false }
+      		end
+	    end
+	end
 end
