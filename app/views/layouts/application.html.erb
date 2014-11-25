@@ -13,11 +13,11 @@
 
 <%= image_tag("header_800x100.jpg", width: '100%') %>
 
-<div style="position: fixed; top: 5px; right: 30px;">
+<div style="position: absolute; top: 5px; right: 30px;">
     <% if session[:account].blank? %>
-    <a id="id_login" href="/top/login" style="color: white;" class="fancybox fancybox.ajax">login</a>
+    <a id="id_login" href="/top/login" style="color: white;" class="fancybox fancybox.ajax">登入</a>
     <% else %>
-    <a href="/top/logout" style="color: white;">logout</a>
+    <a href="/top/logout" style="color: white;">登出</a>
     <% end %>
 </div>
 
