@@ -1,3 +1,5 @@
+
+<% sum = 0.0 %>
 <table class="table table-hover table-striped">
     <thead>
     	<tr>
@@ -19,7 +21,10 @@
 				<td><%= row.price %></td>
 				<td><%= row.expended_at %></td>
 				<td><%= row.updated_at.localtime.strftime("%Y-%m-%d %H:%M:%S") %></td>
+                <% sum += row.price %>
         	</tr>
       	<% end %>
     </tbody>
 </table>
+
+<div class="alert alert-info" role="alert">總消費金額 <strong><%= sum %></strong> 元</div>

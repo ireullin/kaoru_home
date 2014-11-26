@@ -12,7 +12,7 @@
 				<span class="input-group-addon">分類</span>
 				<%= text_field_tag 'category', nil, class: "form-control" %>
 				<div class="input-group-btn">
-					<%= select_tag 'sel_category', nil, class: "form-control" %>
+					<%= select_tag 'sel_category', nil, class: "selectpicker form-control" %>
 				</div>
 			</div>
 		</div>
@@ -22,7 +22,7 @@
 				<span class="input-group-addon">品項</span>
 				<%= text_field_tag 'item', nil, class: "form-control" %>
 				<div class="input-group-btn">
-					<%= select_tag 'sel_item', nil, class: "form-control" %>
+					<%= select_tag 'sel_item', nil, class: "selectpicker form-control" %>
 				</div>
 			</div>
 		</div>
@@ -60,7 +60,7 @@
 	</div>
 
 	<br>
-	
+
 	<div id="history">
 	</div>
 
@@ -74,8 +74,8 @@ $(document).ready(ready);
 function ready()
 {
 	$(document).one( 'page:before-change', unload);
-	$(document).on( 'change', '#sel_category',  onChangeCategory );
-	$(document).on( 'change', '#sel_item',  onChangeItem );
+	$(document).on( 'click', '#sel_category',  onChangeCategory );
+	$(document).on( 'click', '#sel_item',  onChangeItem );
 	$("#record_form").on("ajax:success", onSubmitSuccess);
 	$("#record_form").on("ajax:error", onSubmitError);
  	$("#record_form").on("ajax:before", onBeforeSubmit);
@@ -86,25 +86,36 @@ function ready()
 	$.get('/money_note/history/'+ d.getFullYear() + '/' + (d.getMonth()+1) , function(table){$('#history').html(table);}  )
 }
 
+function generate_message(msg)
+{
+	return [
+		'<div class="alert alert-danger alert-dismissible" role="alert">',
+  		'<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>',
+  		'<strong>',
+  		msg,
+  		'</strong>',
+  		'</div>'
+	].join('');
+}
 
 function onBeforeSubmit()
 {
 	console.log("onBeforeSubmit");
 	if( $('#category').val().trim()=="" )
 	{
-		$('#message').html( "category can't be empty" );
+		$('#message').html( generate_message("category can't be empty") );
 		return false;
 	}
 	
 	if( $('#item').val().trim()=="" )
 	{
-		$('#message').html( "item can't be empty" );
+		$('#message').html( generate_message("item can't be empty") );
 		return false;
 	}
 
 	if( $('#price').val().trim()=="" )
 	{
-		$('#message').html( "price can't be empty" );
+		$('#message').html( generate_message("price can't be empty") );
 		return false;
 	}
 
@@ -125,6 +136,7 @@ function onSubmitSuccess(e, data, status, xhr)
 	refreshCategory();
 
 	var obj = JSON.parse( data );
+
 	var url = '/money_note/history/' + obj['year'] + '/' + obj['month'];
 	$.get(url, function(table){$('#history').html(table);}  )
 

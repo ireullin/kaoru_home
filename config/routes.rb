@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  get 'money_note/index'
+  get 'money_note' => 'money_note#index'
   get 'money_note/history/:year/:month' => 'money_note#history'
   post 'money_note/create'
   post 'money_note/items'
