@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141115035628) do
+ActiveRecord::Schema.define(version: 20141126075238) do
 
   create_table "food_menus", id: false, force: true do |t|
     t.string   "food_type"
@@ -47,6 +47,21 @@ ActiveRecord::Schema.define(version: 20141115035628) do
     t.text     "context"
     t.text     "description"
     t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "money_note_histories", force: true do |t|
+    t.string   "category"
+    t.string   "item"
+    t.string   "comment"
+    t.float    "price"
+    t.date     "expended_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "money_note_items", id: false, force: true do |t|
+    t.text     "items"
     t.datetime "updated_at"
   end
 
