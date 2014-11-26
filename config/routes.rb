@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  get 'money_note' => 'money_note#index'
+  get 'money_note/history/:year/:month' => 'money_note#history'
+  post 'money_note/create'
+  post 'money_note/items'
+
   get  'logger/index'
   
   get 'photo_album/photoset/:path' => 'photo_album#index'
@@ -6,7 +11,7 @@ Rails.application.routes.draw do
   get 'photo_album/new'
   post 'photo_album/create'
   post 'photo_album/update'
-  get 'photo_album/delete/:path' => 'photo_album#delete'
+  post 'photo_album/delete/:path' => 'photo_album#delete'
   get 'photo_album/edit/:path' => 'photo_album#edit'
   
 

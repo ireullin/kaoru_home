@@ -33,7 +33,7 @@
 		        			<a class="fancybox fancybox.ajax fancy_album_form" href="/photo_album/edit/<%= row.path %>" >
 		        				<span class="glyphicon glyphicon-file"></span>
 		        			</a>
-		        			<a href="/photo_album/delete/<%= row.path %>" data-confirm="確認刪除?" >
+		        			<a href="/photo_album/delete/<%= row.path %>" data-confirm="確認刪除?" data-method="post" >
 		        				<span class="glyphicon glyphicon-remove"></span>
 		        			</a>
 		        		</td>
@@ -75,11 +75,11 @@ function ready()
 		closeEffect	: 'none'
 	});
 
-	$('a[data-confirm], input[data-confirm]').on('click', function() 
+	/*$('a[data-confirm], input[data-confirm]').on('click', function() 
 	{
     	if (!confirm($(this).attr('data-confirm'))) 
       		return false;
-	});
+	});*/
 }
 
 </script>

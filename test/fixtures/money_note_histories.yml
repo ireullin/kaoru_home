@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  category: MyString
+  item: MyString
+  comment: MyString
+  price: 1.5
+  expended_at: 2014-11-26
+
+two:
+  category: MyString
+  item: MyString
+  comment: MyString
+  price: 1.5
+  expended_at: 2014-11-26

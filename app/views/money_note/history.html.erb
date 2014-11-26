@@ -1,0 +1,30 @@
+
+<% sum = 0.0 %>
+<table class="table table-hover table-striped">
+    <thead>
+    	<tr>
+        	<th>分類</th>
+			<th>品項</th>
+			<th>說明</th>
+			<th>價格</th>
+			<th>消費日期</th>
+			<th>紀錄時間</th>
+      	</tr>
+    </thead>
+
+    <tbody>
+      	<% @data.each do |row| %>
+        	<tr>
+          		<td><%= row.category %></td>
+				<td><%= row.item %></td>
+				<td><%= row.comment %></td>
+				<td><%= row.price %></td>
+				<td><%= row.expended_at %></td>
+				<td><%= row.updated_at.localtime.strftime("%Y-%m-%d %H:%M:%S") %></td>
+                <% sum += row.price %>
+        	</tr>
+      	<% end %>
+    </tbody>
+</table>
+
+<div class="alert alert-info" role="alert">總消費金額 <strong><%= sum %></strong> 元</div>
