@@ -97,7 +97,7 @@ function ready()
 function onChangeYearMonth()
 {
 	var url = '/money_note/history/' + $('#sel_year option:selected').val() + '/' + $('#sel_month option:selected').val();
-	console.log(url);
+	//console.log(url);
 	$.get(url, function(table){$('#history').html(table);}  )
 
 }
@@ -117,7 +117,7 @@ function generate_message(msg)
 
 function onBeforeSubmit()
 {
-	console.log("onBeforeSubmit");
+	//console.log("onBeforeSubmit");
 	if( $('#category').val().trim()=="" )
 	{
 		$('#message').html( generate_message("category can't be empty") );
@@ -183,7 +183,7 @@ function unload()
 function onChangeCategory()
 {
 	var c = $(this).text();
-	console.log( c );
+	//console.log( c );
 	refreshItem(c);
 	$('#category').val(c);
 	$('#item').val('');
@@ -207,7 +207,7 @@ function refreshCategory()
 
 function refreshItem(category)
 {
-	console.log( category );
+	//console.log( category );
 	$('#sel_item').html('');
 
 	if(!(category in g_items))
