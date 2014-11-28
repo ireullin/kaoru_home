@@ -37,11 +37,12 @@ class TopController < ApplicationController
 
 
 	def record_name
-		record = IpOwner.new
-		record.name = params[:name]
-		record.ip = request.remote_ip
-		record.reason = "keypress"
-		record.save
+		IpOwner.find_or_initialize_by(ip: request.remote_ip ) do |record|
+			record.name = params[:name]
+			record.ip = request.remote_ip
+			record.reason = "keypress"
+			record.save
+		end
 
 		cookies.permanent[:name] = params[:name]
 
