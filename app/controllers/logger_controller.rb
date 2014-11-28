@@ -6,6 +6,7 @@ class LoggerController < ApplicationController
 		@histories = LoginHistory.order("created_at DESC").limit(30)
 		@count_ip = LoginHistory.count_ip
 		@count_path = LoginHistory.count_path
+		@ipowner = IpOwner.all
 	end
 
 	private

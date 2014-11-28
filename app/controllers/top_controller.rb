@@ -27,4 +27,25 @@ class TopController < ApplicationController
 	      	redirect_to params[:url]
 	    end
 	end
+
+
+	def first
+		respond_to do |format|
+       		format.html { render :first, layout: false }
+       	end
+	end
+
+
+	def record_name
+		IpOwner.find_or_initialize_by(ip: request.remote_ip ) do |record|
+			record.name = params[:name]
+			record.ip = request.remote_ip
+			record.reason = "keypress"
+			record.save
+		end
+
+		cookies.permanent[:name] = params[:name]
+
+      	redirect_to params[:url]
+	end
 end
