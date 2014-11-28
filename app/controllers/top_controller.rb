@@ -40,17 +40,11 @@ class TopController < ApplicationController
 		record = IpOwner.new
 		record.name = params[:name]
 		record.ip = request.remote_ip
-		record.reason = "from keypress"
-		
+		record.reason = "keypress"
+		record.save
+
 		cookies.permanent[:name] = params[:name]
 
-		if( !record.save )
-			respond_to do |format|
-        		format.any { render file: "#{Rails.root}/public/500.html",  status: 500, layout: false }
-      		end
-      	else
-	      	redirect_to params[:url]
-	    end
-
+      	redirect_to params[:url]
 	end
 end
