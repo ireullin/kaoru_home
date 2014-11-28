@@ -19,6 +19,7 @@
     <% else %>
     <a href="/top/logout" style="color: white;">登出</a>
     <% end %>
+    <a id="id_first" href="/top/first" style="color: white; display: none" class="fancybox fancybox.ajax">first</a>
 </div>
 
 
@@ -80,29 +81,51 @@
     </div><!-- /.navbar-collapse -->
 </div><!-- /.container-fluid -->
 </nav>
+<%= yield %>
+</div>
 
-<%
+
+<% 
     data = LoginHistory.new
     data.ip = request.remote_ip
     data.agent = request.env['HTTP_USER_AGENT']
     data.path = request.env['PATH_INFO']
     data.save
+
+    is_first = false
+    record = IpOwner.where(ip: request.remote_ip)
+
+    if( record.empty? )
+        unless( cookies[:name].blank? )
+            new_record = IpOwner.new
+            new_record.name = cookies[:name]
+            new_record.ip = request.remote_ip
+            new_record.reason = "from cookie"
+            new_record.save 
+    
+        else
+            is_first = true
+        
+        end
+    end
 %>
-
-
-
-<%= yield %>
-</div>
 </body>
-
-
 <script language="javascript">
 
 //$(document).one( 'page:change', ready);
 $(document).ready(ready);
 function ready()
 {
-    console.log('application#ready');
+    initFancyBox();
+
+    <% if is_first %>
+    $("#id_first").trigger('click');
+    <% end %>
+}
+
+
+function initFancyBox()
+{
     // commit this if wanna debug
     $("#id_login").fancybox({
         parent      : 'body',
@@ -116,7 +139,23 @@ function ready()
         openEffect  : 'none',
         closeEffect : 'none'
     });
+
+     $("#id_first").fancybox({
+        parent      : 'body',
+        maxWidth    : 800,
+        maxHeight   : 600,
+        fitToView   : false,
+        width       : '70%',
+        height      : '70%',
+        autoSize    : false,
+        closeClick  : false,
+        openEffect  : 'none',
+        closeEffect : 'none'
+    });
 }
+
+
+
 
 </script>
 

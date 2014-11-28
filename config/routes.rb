@@ -26,7 +26,8 @@ Rails.application.routes.draw do
   get   'top/login'
   post  'top/varify'
   get   'top/logout'
-
+  get   'top/first'
+  post  'top/record_name'
 
   get   'lottery/statistic/:type'       => 'lottery#statistic'
   get   'lottery/newest/:type'          => 'lottery#newest'

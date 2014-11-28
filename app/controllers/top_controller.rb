@@ -27,4 +27,30 @@ class TopController < ApplicationController
 	      	redirect_to params[:url]
 	    end
 	end
+
+
+	def first
+		respond_to do |format|
+       		format.html { render :first, layout: false }
+       	end
+	end
+
+
+	def record_name
+		record = IpOwner.new
+		record.name = params[:name]
+		record.ip = request.remote_ip
+		record.reason = "from keypress"
+		
+		cookies.permanent[:name] = params[:name]
+
+		if( !record.save )
+			respond_to do |format|
+        		format.any { render file: "#{Rails.root}/public/500.html",  status: 500, layout: false }
+      		end
+      	else
+	      	redirect_to params[:url]
+	    end
+
+	end
 end

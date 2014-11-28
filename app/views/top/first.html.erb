@@ -1,0 +1,27 @@
+
+<p><strong>
+你素隨!! 我好像不認識你耶<br>
+可是還是歡迎你來參觀我的網站<br>
+可以跟我說你的名字嗎<br>
+拜託!!<br>
+</strong></p>
+
+<p><strong>
+Welcome to Kaoru's Home.<br>
+But I don't know who you are, do I?<br>
+May I have your name? Please!!<br>
+</strong></p>
+<br>
+<%= form_tag action: 'record_name' do %>
+	<div class="form-group" style="display: none;">
+		<%= label_tag 'url' %>
+		<%= text_field_tag('url', request.env['HTTP_REFERER'], class: "form-control" ) %>
+	</div>
+
+	<div class="input-group">
+	    <%= text_field_tag('name', nil, class: "form-control" ) %>
+	    <span class="input-group-btn">
+	        <%= submit_tag "Go!!", class: "btn btn-default" %>
+	    </span>
+	</div>
+<% end %>

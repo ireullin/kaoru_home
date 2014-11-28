@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141126075238) do
+ActiveRecord::Schema.define(version: 20141128080940) do
 
   create_table "food_menus", id: false, force: true do |t|
     t.string   "food_type"
@@ -19,6 +19,16 @@ ActiveRecord::Schema.define(version: 20141126075238) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "ip_owners", force: true do |t|
+    t.string   "ip"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "reason"
+  end
+
+  add_index "ip_owners", ["ip"], name: "index_ip_owners_on_ip", unique: true
 
   create_table "login_histories", id: false, force: true do |t|
     t.string   "ip"
