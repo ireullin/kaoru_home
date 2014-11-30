@@ -4,32 +4,65 @@
 		<h1>Movie <small> reminder</small></h1>
 	</div>
 
-
-	<div class="col-md-6">
-		<%= form_tag action: "index" do %>
-			<div class="input-group">
-			  	<span class="input-group-btn">
-					<select class="form-control">
-				  		<option>1</option>
-				  		<option>2</option>
-				  		<option>3</option>
-					</select>
-				</span>
-				<span class="input-group-btn">
-					<button class="btn btn-primary" type="submit">
-						<span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span>
-					</button>
-				</span>
-			</div>
-		<% end %>
+	<div class="row">
+		<div class="col-md-6">
+			<%= form_tag action: "index" do %>
+				<div class="input-group">
+				  	<span class="input-group-btn">
+						<select class="form-control">
+					  		<option>1</option>
+					  		<option>2</option>
+					  		<option>3</option>
+						</select>
+					</span>
+					<span class="input-group-btn">
+						<button class="btn btn-primary" type="submit">
+							<span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span>
+						</button>
+					</span>
+				</div>
+			<% end %>
+		</div>
 	</div>
+	<br>
 	
-
-
+	<div class="row">
+		<ul class="nav nav-tabs">
+	  		<li role="presentation"><a href="#" class="cls-tab">Home</a></li>
+	  		<li role="presentation"><a href="#" class="cls-tab">Profile</a></li>
+	  		<li role="presentation"><a href="#" class="cls-tab">Messages</a></li>
+		</ul>
+	</div>
 </div>
 
 
 <script language="javascript">
 
+$(document).ready(ready);
+function ready()
+{console.log(arguments.callee.name);
+
+	$(document).one( 'page:before-change', unload);
+	$(document).on( 'click', '.cls-tab',  onClickTab );
+	
+}
+
+
+function unload()
+{
+
+
+}
+
+
+function onClickTab()
+{console.log(arguments.callee.name);
+
+	$('.cls-tab').each(function(index){ $(this).parent().removeClass('active') });
+  	$(this).parent().addClass( "active" );
+}
+
 
 </script>
+
+
