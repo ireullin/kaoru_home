@@ -47,7 +47,11 @@
                 end
             %>
 
-        	<tr class="<%= cls[i%2] %>">
+            <% if row.id == @id -%>
+            <tr class="danger">
+            <% else -%>
+        	<tr class="<%= cls[i%2] -%>">
+            <% end -%>
           		<td><%= row.category %></td>
 				<td><%= row.item %></td>
 				<td><%= row.comment %></td>

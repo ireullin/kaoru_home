@@ -154,16 +154,13 @@ function onSubmitSuccess(e, data, status, xhr)
 	$('#item').val('');
 	$('#price').val('');
 
-	var obj = JSON.parse( data );
-
-	var url = '/money_note/history/' + obj['year'] + '/' + obj['month'];
-	$.get(url, function(table){$('#history').html(table);}  )
+	$('#history').html(data);
 
 	$.post(
 		'/money_note/items',
 	 	{ data: JSON.stringify( g_items )} ,
 	 	function(msg){ console.log(msg); }  
-	 );
+	);
 }
 
 
