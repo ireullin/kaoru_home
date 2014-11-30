@@ -3,7 +3,7 @@ class LoggerController < ApplicationController
 	before_action :check_session
 
 	def index
-		@histories = LoginHistory.order("created_at DESC").limit(30)
+		@histories = LoginHistory.history_with_name
 		@count_ip = LoginHistory.count_ip
 		@count_path = LoginHistory.count_path
 		@ipowner = IpOwner.all
