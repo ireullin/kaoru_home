@@ -2,14 +2,14 @@
 <div class="container-fluid">
 
 	<div class="page-header">
-		<h1>money note</h1>
+		<h1><strong>記帳本</strong></h1>
 	</div>
 
 	<%= form_tag( {action: 'create'}, { id: 'record_form', remote: true }) do %>
 	<div class="row">
 		<div class="col-xs-3">
 			<div class="input-group">
-				<span class="input-group-addon">分類</span>
+				<span class="input-group-addon"><strong>分類</strong></span>
 				<%= text_field_tag 'category', nil, class: "form-control" %>
 				<div class="input-group-btn">
 					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
@@ -20,7 +20,7 @@
 
 		<div class="col-xs-3">
 			<div class="input-group">
-				<span class="input-group-addon">品項</span>
+				<span class="input-group-addon"><strong>品項</strong></span>
 				<%= text_field_tag 'item', nil, class: "form-control" %>
 				<div class="input-group-btn">
 					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
@@ -31,7 +31,7 @@
 	
 		<div class="col-xs-3">
 			<div class="input-group">
-				<span class="input-group-addon">價格</span>
+				<span class="input-group-addon"><strong>價格</strong></span>
 				<%= number_field_tag 'price', nil, class: "form-control" %>
 			</div>
 		</div>
@@ -45,7 +45,7 @@
 	<div class="row">
 		<div class="col-xs-3">
 			<div class="input-group">
-				<span class="input-group-addon">說明</span>
+				<span class="input-group-addon"><strong>說明</strong></span>
 				<%= text_field_tag 'comment', nil, class: "form-control" %>
 			</div>
 		</div>
@@ -54,7 +54,7 @@
 
 		<div class="col-xs-3">
 			<div class="input-group">
-				<span class="input-group-addon">日期</span>
+				<span class="input-group-addon"><strong>日期</strong></span>
 				<%= date_field_tag('expended_at', DateTime.now.strftime("%Y-%m-%d"), class: "form-control" )%>
 			</div>
 		</div>
@@ -120,19 +120,19 @@ function onBeforeSubmit()
 	//console.log("onBeforeSubmit");
 	if( $('#category').val().trim()=="" )
 	{
-		$('#message').html( generate_message("category can't be empty") );
+		$('#message').html( generate_message("分類不可為空白") );
 		return false;
 	}
 	
 	if( $('#item').val().trim()=="" )
 	{
-		$('#message').html( generate_message("item can't be empty") );
+		$('#message').html( generate_message("品項不可為空白") );
 		return false;
 	}
 
 	if( $('#price').val().trim()=="" )
 	{
-		$('#message').html( generate_message("price can't be empty") );
+		$('#message').html( generate_message("價格不可為空白") );
 		return false;
 	}
 
