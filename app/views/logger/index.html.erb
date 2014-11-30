@@ -34,7 +34,15 @@
 			    <tbody>
 			      	<% @count_ip.each do |row| %>
 			        	<tr>
-			          		<td><%= row.ip %>&nbsp;&nbsp;<span class="badge"><%= row.count %></span></td>
+			          		<td>
+			          			<%= row.ip %>&nbsp;&nbsp;
+			          			<span class="badge"><%= row.count %></span>
+								<% unless row.name.blank? -%>
+									<br>
+									<%= row.name %>
+								<% end -%>
+			          			<br>
+			          		</td>
 			        	</tr>
 			      	<% end %>
 			    </tbody>
@@ -73,6 +81,8 @@
 		    <thead>
 		    	<tr>
 		        	<th>ip</th>
+		        	<th>owner</th>
+		        	<th>reason</th>
 		        	<th>path</th>
 		        	<th>agent</th>
 		        	<th>created date</th>
@@ -83,6 +93,8 @@
 		      	<% @histories.each do |row| %>
 		        	<tr>
 		          	<td><%= row.ip %></td>
+		          	<td><%= row.name %></td>
+		          	<td><%= row.reason %></td>
 		          	<td><%= row.path %></td>
 		          	<td><%= row.agent %></td>
 		          	<td><%= row.created_at.localtime.strftime("%Y-%m-%d %H:%M:%S") %></td>
