@@ -14,18 +14,18 @@ class MoneyNoteController < ApplicationController
  		history.price = params[:price]
  		history.expended_at = params[:expended_at]
  		history.save
+ 		@id = history.id
 
  		buff = params[:expended_at].split('-')
- 		respond_to {|format| format.any { render json: {year: buff[0], month: buff[1] } } }
+ 		params[:year] = buff[0]
+ 		params[:month] = buff[1]
+
+ 		render_table
  	end
 
 
  	def history
- 		condition = params[:year].rjust(4,'0') + '-' + params[:month].rjust(2,'0') + '%'
- 		@data = MoneyNoteHistory.where('expended_at like ?', condition).order(expended_at: :desc , category: :asc, updated_at: :desc)
- 		respond_to do |format|
-        	format.html { render :history, layout: false }
-      	end
+ 		render_table
  	end
 
 
@@ -36,5 +36,15 @@ class MoneyNoteController < ApplicationController
  		rc.updated_at = DateTime.now
  		rc.save
  		respond_to {|format| format.any { render json: params[:data].to_json } }
+ 	end
+
+
+ 	private
+ 	def render_table
+ 		condition = params[:year].rjust(4,'0') + '-' + params[:month].rjust(2,'0') + '%'
+ 		@data = MoneyNoteHistory.where('expended_at like ?', condition).order(expended_at: :desc , category: :asc, updated_at: :desc)
+ 		respond_to do |format|
+        	format.html { render :history, layout: false }
+      	end
  	end
 end
