@@ -4,7 +4,7 @@ require 'nokogiri'
 
 $URL = 'www.atmovies.com.tw'
 $movies = Hash.new
-
+$schedule = Array.new
 
 def parse_theater(div)
 	
@@ -40,7 +40,8 @@ def get_content(id, name)
 			
 		end
 
-		p movie
+		#p movie
+		$schedule.push movie
 		
 	end
 end
@@ -48,8 +49,10 @@ end
 
 def get_time
 	$movies.each do |id, name|
+		sleep( 1 )
 		get_content(id, name)
-		return
+		#return
+
 	end
 end
 
@@ -68,9 +71,15 @@ end
 
 
 def main
-	get_movies
-	#p $movies
-	get_time
+		
+	begin
+		get_movies
+		get_time
+		p $schedule
+	rescue Exception => msg  
+		p msg
+	end
+
 end
 
 main if $0==__FILE__
