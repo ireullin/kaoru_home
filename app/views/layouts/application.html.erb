@@ -86,7 +86,6 @@
 
 
 <% # log ip and browser type
-
     data = LoginHistory.new
     data.ip = request.remote_ip
     data.agent = request.env['HTTP_USER_AGENT']
