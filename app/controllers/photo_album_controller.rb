@@ -30,13 +30,17 @@ class PhotoAlbumController < ApplicationController
 		@photo_albums.shared_secret = params[:shared_secret]
 		@photo_albums.photoset_id = params[:photoset_id]
 		@photo_albums.user_id = params[:user_id]
+		@photo_albums.updated_at = Time.now.localtime.strftime("%Y-%m-%d %H:%M:%S")
+		@photo_albums.created_at = Time.now.localtime.strftime("%Y-%m-%d %H:%M:%S")
+		
 
 	    respond_to do |format|
-	      	if @photo_albums.save
-	        	format.html { redirect_to action: 'manage' }
-	      	else
-		        format.html { render :new }
-		    end
+	    	if @photo_albums.save
+        		format.html { redirect_to action: 'manage' }
+        	else
+        		flash[:notice] = @photo_albums.errors.full_messages
+        		format.html { redirect_to action: 'manage'  }
+        	end
 	    end
 	end
 
@@ -63,6 +67,7 @@ class PhotoAlbumController < ApplicationController
 		)
 
 	    respond_to do |format|
+	    	flash[:notice] = @photo_albums.errors.full_messages if @photo_albums.try(:errors)
         	format.html { redirect_to action: 'manage', notice: 'OK' }
 	    end
 	end
