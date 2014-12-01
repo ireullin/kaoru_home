@@ -1,30 +1,54 @@
 require 'net/http'
 require 'nokogiri'
-#require 'iconv'
 
 
 $URL = 'www.atmovies.com.tw'
 $movies = Hash.new
-#$ic = Iconv.new('UTF-8', 'BIG5')
-#$ic = Iconv.new("utf-8//translit//IGNORE","big5")
 
-def get_content(id)
+
+def parse_theater(div)
+	
+	#p div.css("a")[0].content.gsub(/[\r\n\t ]/,'')
+	data = {
+		theater: div.css("a")[0].content.gsub(/[\r\n\t ]/,''),
+		times: []
+	}
+	
+
+	div.css(".col-2").each do |row|
+		times = row.content.gsub(/[\r\n\t]/,'').split(' ')
+		data[:times].concat( times )
+	end
+
+	return data
+end
+
+
+def get_content(id, name)
 	Net::HTTP.start($URL,80) do |http|
-		rsp = http.get("/showtime/showtime.asp?film_id=#{id}&area=a02")
 		
+		movie = { id: id, name: name, theaters: [] }
+
+		rsp = http.get("/showtime/showtime.asp?film_id=#{id}&area=a02")
 		a = rsp.body.encode("UTF-8","CP950", :invalid => :replace, :undef => :replace, :replace => "")
 		#p a
 		html_doc = Nokogiri::HTML(a)
 		html_doc.css('.showtime01').each do |div|
-			p "["+ div.content + "]"
+			
+			theater = parse_theater(div)
+			movie[:theaters].push(theater)
+			
 		end
+
+		p movie
+		
 	end
 end
 
 
 def get_time
 	$movies.each do |id, name|
-		get_content(id)
+		get_content(id, name)
 		return
 	end
 end
