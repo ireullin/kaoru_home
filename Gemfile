@@ -43,3 +43,6 @@ gem "mysql2"
 gem "rinruby"
 
 gem "flickraw"
+
+gem "nokogiri"
+
