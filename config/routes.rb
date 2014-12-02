@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   get 'movie/index'
+  post 'movie/update_schedules'
 
   get  'logger/index'
   
@@ -10,14 +11,6 @@ Rails.application.routes.draw do
   post 'photo_album/update'
   get 'photo_album/delete/:path' => 'photo_album#delete'
   get 'photo_album/edit/:path' => 'photo_album#edit'
-  
-
-  get 'lottery/test'
-
-  get 'drink/index'
-
-  get   'lottery/index'
-
 
   get   'top/index'
 
@@ -26,7 +19,6 @@ Rails.application.routes.draw do
   get   'lottery/newest/:type'          => 'lottery#newest'
   post  'lottery/new'                   => 'lottery#new'
   get   'lottery/history/:type/:page'   => 'lottery#index'
-
 
   get   'lotterystatistic/count/:type' => 'lottery_statistic#count'
   
