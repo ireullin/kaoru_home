@@ -1,7 +1,14 @@
-<div class="container-fluid">
 
+
+	<% if @schedule.nil? %>
+		<h3>此電影已下檔</h3>
+
+	<% else %>
+		<h3><%= @schedule.name %> 放映時間</h3>
+		<br>
 		<% theaters = JSON.parse(@schedule.schedules) %>
 		<% theaters.each_with_index do |row,i| %>
+			
 			<% if i%6==5 %>
 			<div class="row">
 			<% end %>
@@ -28,6 +35,6 @@
 			<% end %>
 
 		<% end %>
-	</div>
-</div>
+	<% end %>
+
 

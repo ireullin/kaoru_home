@@ -3,15 +3,36 @@ class MovieController < ApplicationController
 	skip_before_action :verify_authenticity_token, only: [:update_schedules]
 
 	def index
-		@movies = MovieSchedules.select(:id, :name)
+		@schedules = MovieSchedules.select(:id, :name)
+		@movies = MovieHistories.where(enable: 1)
 	end
 
 
 	def schedule
-		#, layout: false
-		#if not find?
 		@schedule = MovieSchedules.where(id: params[:id]).first
-		respond_to {|format| format.html { render :schedule } }
+		respond_to {|format| format.html { render :schedule, layout: false } }
+	end
+
+
+	def create
+		@movie = MovieHistories.find_or_create_by(movie_id: params[:id])
+		@movie.movie_id = params[:id]
+		@movie.name = params[:name]
+		@movie.enable = 1
+		@movie.save
+
+		respond_to {|format| format.any { render json: {msg: 'success', status: 0 } } }
+	end
+
+
+	def delete
+		@movie = MovieHistories.find_or_create_by(movie_id: params[:id])
+		@movie.movie_id = params[:id]
+		@movie.name = params[:name]
+		@movie.enable = 0
+		@movie.save
+
+		respond_to {|format| format.any { render json: {msg: 'success', status: 0 } } }
 	end
 
 

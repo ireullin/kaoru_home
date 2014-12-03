@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   get 'movie/index'
   get 'movie/schedule/:id' => 'movie#schedule'
   post 'movie/update_schedules'
+  post 'movie/create'
+  post 'movie/delete'
 
   get  'logger/index'
   
