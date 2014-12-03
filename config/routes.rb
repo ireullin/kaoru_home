@@ -1,8 +1,16 @@
 Rails.application.routes.draw do
+
   get 'money_note' => 'money_note#index'
   get 'money_note/history/:year/:month' => 'money_note#history'
   post 'money_note/create'
   post 'money_note/items'
+
+  get 'movie/index'
+  get 'movie/schedule/:id' => 'movie#schedule'
+  post 'movie/update_schedules'
+  post 'movie/create'
+  post 'movie/delete'
+
 
   get  'logger/index'
   
@@ -13,14 +21,6 @@ Rails.application.routes.draw do
   post 'photo_album/update'
   post 'photo_album/delete/:path' => 'photo_album#delete'
   get 'photo_album/edit/:path' => 'photo_album#edit'
-  
-
-  get 'lottery/test'
-
-  get 'drink/index'
-
-  get   'lottery/index'
-
 
   get   'top/index'
   get   'top/login'
@@ -33,7 +33,6 @@ Rails.application.routes.draw do
   get   'lottery/newest/:type'          => 'lottery#newest'
   post  'lottery/new'                   => 'lottery#new'
   get   'lottery/history/:type/:page'   => 'lottery#index'
-
 
   get   'lotterystatistic/count/:type' => 'lottery_statistic#count'
   
