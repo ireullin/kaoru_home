@@ -1,25 +1,32 @@
 <div class="container-fluid">
 
-	<div class="row">
-
 		<% theaters = JSON.parse(@schedule.schedules) %>
-		<% theaters.each do |row| %>
-		<div class="col-md-2">
-			<div class="list-group">
-			  	<div class="list-group-item active"><%= row['theater'] %></div>
-			  
-		  		<div class="list-group-item">
-		  			<% row['times'].each do |sub_row| %>
-		  				<% unless sub_row.include?(':') %>
-			  				<h4 class="list-group-item-heading"><%= sub_row %></h4>
-			  			<% else %>
-		    				<p class="list-group-item-text"><%= sub_row %></p>
-		    			<% end %>
-		    		<% end %>
-			    </div>
-			  
+		<% theaters.each_with_index do |row,i| %>
+			<% if i%6==5 %>
+			<div class="row">
+			<% end %>
+
+				<div class="col-md-2">
+					<div class="list-group">
+					  	<div class="list-group-item active"><%= row['theater'] %></div>
+					  
+				  		<div class="list-group-item">
+				  			<% row['times'].each do |sub_row| %>
+				  				<% unless sub_row.include?(':') %>
+					  				<h4 class="list-group-item-heading"><%= sub_row %></h4>
+					  			<% else %>
+				    				<p class="list-group-item-text"><%= sub_row %></p>
+				    			<% end %>
+				    		<% end %>
+					    </div>
+					  
+					</div>
+				</div>
+			
+			<% if i%6==5 %>
 			</div>
-		</div>
+			<% end %>
+
 		<% end %>
 	</div>
 </div>
