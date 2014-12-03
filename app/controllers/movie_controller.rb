@@ -3,8 +3,17 @@ class MovieController < ApplicationController
 	skip_before_action :verify_authenticity_token, only: [:update_schedules]
 
 	def index
-		
+		@movies = MovieSchedules.select(:id, :name)
 	end
+
+
+	def schedule
+		#, layout: false
+		#if not find?
+		@schedule = MovieSchedules.where(id: params[:id]).first
+		respond_to {|format| format.html { render :schedule } }
+	end
+
 
 	def update_schedules
 		

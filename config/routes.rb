@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   get 'movie/index'
+  get 'movie/schedule/:id' => 'movie#schedule'
   post 'movie/update_schedules'
 
   get  'logger/index'

@@ -9,14 +9,14 @@
 			<%= form_tag action: "index" do %>
 				<div class="input-group">
 				  	<span class="input-group-btn">
-						<select class="form-control">
-					  		<option>1</option>
-					  		<option>2</option>
-					  		<option>3</option>
+						<select class="form-control" id="sel_movies" >
+					  		<% @movies.each do |row| %>
+					  		<option value="<%= row.id %>"><%= row.name %></option>
+					  		<% end %>
 						</select>
 					</span>
 					<span class="input-group-btn">
-						<button class="btn btn-primary" type="submit">
+						<button class="btn btn-primary" type="button" id="btn_pin" >
 							<span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span>
 						</button>
 					</span>
@@ -44,7 +44,7 @@ function ready()
 
 	$(document).one( 'page:before-change', unload);
 	$(document).on( 'click', '.cls-tab',  onClickTab );
-	
+	$(document).on( 'click', '#btn_pin',  onClickPin );
 }
 
 
@@ -52,6 +52,13 @@ function unload()
 {
 
 
+}
+
+
+function onClickPin()
+{
+	var id = $( "#sel_movies option:selected" ).val();
+	console.log(id);
 }
 
 
