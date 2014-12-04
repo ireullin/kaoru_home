@@ -78,7 +78,7 @@ def main
 		#puts $schedule.to_json
 
 
-		uri = URI('http://127.0.0.1:3000/movie/update_schedules.json')
+		uri = URI('http://127.0.0.1/movie/update_schedules.json')
 		res = Net::HTTP.post_form(uri, { data: $schedule.to_json})
 		puts res.body
 
