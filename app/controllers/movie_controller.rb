@@ -3,13 +3,13 @@ class MovieController < ApplicationController
 	skip_before_action :verify_authenticity_token, only: [:update_schedules]
 
 	def index
-		@schedules = MovieSchedules.select(:id, :name)
+		@schedules = MovieSchedules.select(:movie_id, :name)
 		@movies = MovieHistories.where(enable: 1)
 	end
 
 
 	def schedule
-		@schedule = MovieSchedules.where(id: params[:id]).first
+		@schedule = MovieSchedules.where(movie_id: params[:id]).first
 		respond_to {|format| format.html { render :schedule, layout: false } }
 	end
 
@@ -47,7 +47,7 @@ class MovieController < ApplicationController
 		MovieSchedules.delete_all
 		obj.each do | movie |
 			row = MovieSchedules.new
-			row.id = movie['id']
+			row.movie_id = movie['movie_id']
 			row.name = movie['name']
 			row.schedules = movie['theaters'].to_json
 			row.created_at = Time.now.localtime.strftime("%Y-%m-%d %H:%M:%S")

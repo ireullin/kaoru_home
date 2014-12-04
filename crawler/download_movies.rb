@@ -28,7 +28,7 @@ end
 def get_content(id, name)
 	Net::HTTP.start($URL,80) do |http|
 		
-		movie = { id: id, name: name, theaters: [] }
+		movie = { movie_id: id, name: name, theaters: [] }
 
 		rsp = http.get("/showtime/showtime.asp?film_id=#{id}&area=a02")
 		a = rsp.body.encode("UTF-8","CP950", :invalid => :replace, :undef => :replace, :replace => "")
@@ -53,7 +53,6 @@ def get_time
 		sleep( 2 )
 		get_content(id, name)
 		#return
-
 	end
 end
 
@@ -77,6 +76,7 @@ def main
 		get_movies
 		get_time
 		#puts $schedule.to_json
+
 
 		uri = URI('http://127.0.0.1:3000/movie/update_schedules.json')
 		res = Net::HTTP.post_form(uri, { data: $schedule.to_json})
