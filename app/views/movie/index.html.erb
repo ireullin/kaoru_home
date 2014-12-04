@@ -10,6 +10,7 @@
 				<div class="input-group">
 				  	<span class="input-group-btn">
 						<select class="form-control" id="sel_movies" >
+							<option value="">請選擇你想追蹤的電影時刻</option>
 					  		<% @schedules.each do |row| %>
 					  		<option value="<%= row.id %>"><%= row.name %></option>
 					  		<% end %>
@@ -31,7 +32,7 @@
 		</ul>
 	</div>
 	<br>
-	<br>
+	
 	<div id="div_schedule">
 	</div>
 </div>
@@ -103,6 +104,8 @@ function onClickPin()
 {
 	var id = $( "#sel_movies option:selected" ).val();
 	var name = $( "#sel_movies option:selected" ).text();
+	if(id=="")
+		return;
 	
 	if( $('#'+id).length==0 )
 	{

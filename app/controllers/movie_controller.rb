@@ -38,7 +38,10 @@ class MovieController < ApplicationController
 
 	def update_schedules
 		
-		#return unless filter_ip
+		unless request.remote_ip == '127.0.0.1'
+            respond_to {|format| format.json { render json: {msg: 'illegal ip', status: 1 } } }
+            return false
+        end
 
 		obj = JSON.parse(params[:data])
 		MovieSchedules.delete_all
@@ -54,12 +57,4 @@ class MovieController < ApplicationController
 		respond_to {|format| format.json { render json: {msg: 'success', status: 0 } } }
 	end
 
-
-	private
-    def filter_ip
-    	unless request.remote_ip == '127.0.0.1'
-            respond_to {|format| format.json { render json: {msg: 'illegal ip', status: 1 } } }
-            return false
-        end
-    end
 end

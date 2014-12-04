@@ -29,10 +29,12 @@ Rails.application.routes.draw do
   get   'top/first'
   post  'top/record_name'
 
+
+  get   'lottery/history/:type/:page'   => 'lottery#index'
   get   'lottery/statistic/:type'       => 'lottery#statistic'
   get   'lottery/newest/:type'          => 'lottery#newest'
   post  'lottery/new'                   => 'lottery#new'
-  get   'lottery/history/:type/:page'   => 'lottery#index'
+  
 
   get   'lotterystatistic/count/:type' => 'lottery_statistic#count'
   
