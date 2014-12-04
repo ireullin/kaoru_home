@@ -40,8 +40,6 @@
 
 <script language="javascript">
 
-
-
 $(document).ready(ready);
 function ready()
 {console.log(arguments.callee.name);
@@ -95,7 +93,15 @@ function onClickTab()
 		g_removeFlag = false;
 		$('.cls-tab').each(function(index){ $(this).parent().removeClass('active') });
 	  	$(this).parent().addClass( "active" );
-	  	$.get('/movie/schedule/'+id, function(d){ $('#div_schedule').html(d); } );
+	  	$.get(
+	  		'/movie/schedule/'+id, 
+	  		function(d)
+	  		{ 
+	  			$('#div_schedule').css('display','none');
+	  			$('#div_schedule').html(d);
+	  			$('#div_schedule').fadeIn( 2000 );
+	  		}
+	  	);
   	}
 }
 
@@ -131,10 +137,4 @@ function generate_tab(id, name)
 	].join('');
 }
 
-
-
-
-
 </script>
-
-

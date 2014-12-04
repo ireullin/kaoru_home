@@ -50,7 +50,7 @@ end
 
 def get_time
 	$movies.each do |id, name|
-		sleep( 1 )
+		sleep( 2 )
 		get_content(id, name)
 		#return
 
