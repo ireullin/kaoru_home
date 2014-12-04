@@ -9,14 +9,15 @@
 			<%= form_tag action: "index" do %>
 				<div class="input-group">
 				  	<span class="input-group-btn">
-						<select class="form-control">
-					  		<option>1</option>
-					  		<option>2</option>
-					  		<option>3</option>
+						<select class="form-control" id="sel_movies" >
+							<option value="">請選擇你想追蹤的電影時刻</option>
+					  		<% @schedules.each do |row| %>
+					  		<option value="<%= row.movie_id %>"><%= row.name %></option>
+					  		<% end %>
 						</select>
 					</span>
 					<span class="input-group-btn">
-						<button class="btn btn-primary" type="submit">
+						<button class="btn btn-primary" type="button" id="btn_pin" >
 							<span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span>
 						</button>
 					</span>
@@ -25,13 +26,14 @@
 		</div>
 	</div>
 	<br>
-	
+	<br>
 	<div class="row">
-		<ul class="nav nav-tabs">
-	  		<li role="presentation"><a href="#" class="cls-tab">Home</a></li>
-	  		<li role="presentation"><a href="#" class="cls-tab">Profile</a></li>
-	  		<li role="presentation"><a href="#" class="cls-tab">Messages</a></li>
+		<ul class="nav nav-tabs" id="tabs_movies">
 		</ul>
+	</div>
+	<br>
+	
+	<div id="div_schedule">
 	</div>
 </div>
 
@@ -43,26 +45,96 @@ function ready()
 {console.log(arguments.callee.name);
 
 	$(document).one( 'page:before-change', unload);
-	$(document).on( 'click', '.cls-tab',  onClickTab );
 	
+	$(document).on( 'click', 'a.cls-tab',  onClickTab );
+	$(document).on( 'click', 'span.glyphicon-remove',  onClickRemove );
+	$(document).on( 'click', '#btn_pin',  onClickPin );
+
+	<% @movies.each do |row| %>
+	$('#tabs_movies').append( generate_tab("<%= row.movie_id %>" , "<%= row.name %>" ) );
+	<% end %>
+
+	$('a.cls-tab').first().trigger('click');
 }
 
 
 function unload()
 {
+	$(document).off( 'click', 'a.cls-tab');
+	$(document).off( 'click', 'span.glyphicon-remove');
+	$(document).off( 'click', '#btn_pin');
+}
 
 
+var g_removeFlag = false; // bad way :(
+function onClickRemove()
+{console.log(arguments.callee.name);
+	g_removeFlag = true;
 }
 
 
 function onClickTab()
 {console.log(arguments.callee.name);
 
-	$('.cls-tab').each(function(index){ $(this).parent().removeClass('active') });
-  	$(this).parent().addClass( "active" );
+	var id = $(this).prop('id');
+	var name = $(this).text();
+
+	if( g_removeFlag )
+	{
+		g_removeFlag = false;
+		$(this).parents('li').remove();
+		$('a.cls-tab').first().trigger('click');
+
+		$.ajaxSetup({headers: { "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content') }  });
+		$.post( '/movie/delete', { id: id, name: name },  function( d ) {console.log( d );});
+	}
+	else
+	{
+		g_removeFlag = false;
+		$('.cls-tab').each(function(index){ $(this).parent().removeClass('active') });
+	  	$(this).parent().addClass( "active" );
+	  	$.get(
+	  		'/movie/schedule/'+id, 
+	  		function(d)
+	  		{ 
+	  			$('#div_schedule').css('display','none');
+	  			$('#div_schedule').html(d);
+	  			$('#div_schedule').fadeIn( 2000 );
+	  		}
+	  	);
+  	}
 }
 
 
+function onClickPin()
+{
+	var id = $( "#sel_movies option:selected" ).val();
+	var name = $( "#sel_movies option:selected" ).text();
+	if(id=="")
+		return;
+	
+	if( $('#'+id).length==0 )
+	{
+		$('#tabs_movies').append( generate_tab(id,name) );
+
+		$.ajaxSetup({headers: { "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content') }  });
+		$.post( '/movie/create', { id: id, name: name },  function( d ) {console.log( d );});
+	}
+	
+	$('#'+id).trigger('click');	
+}
+
+
+function generate_tab(id, name)
+{
+	return [
+		'<li role="presentation">',
+			'<a href="#" class="cls-tab" id="'+ id +'" >',
+				name+'&nbsp',
+				'<span class="glyphicon glyphicon-remove"></span>',
+			'</a>',
+		'</li>'
+	].join('');
+}
+
 </script>
-
-

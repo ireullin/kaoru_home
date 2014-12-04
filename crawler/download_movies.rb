@@ -1,5 +1,6 @@
 require 'net/http'
 require 'nokogiri'
+require 'json'
 
 
 $URL = 'www.atmovies.com.tw'
@@ -27,7 +28,7 @@ end
 def get_content(id, name)
 	Net::HTTP.start($URL,80) do |http|
 		
-		movie = { id: id, name: name, theaters: [] }
+		movie = { movie_id: id, name: name, theaters: [] }
 
 		rsp = http.get("/showtime/showtime.asp?film_id=#{id}&area=a02")
 		a = rsp.body.encode("UTF-8","CP950", :invalid => :replace, :undef => :replace, :replace => "")
@@ -49,10 +50,9 @@ end
 
 def get_time
 	$movies.each do |id, name|
-		sleep( 1 )
+		sleep( 2 )
 		get_content(id, name)
 		#return
-
 	end
 end
 
@@ -75,9 +75,16 @@ def main
 	begin
 		get_movies
 		get_time
-		p $schedule
+		#puts $schedule.to_json
+
+
+		uri = URI('http://127.0.0.1:3000/movie/update_schedules.json')
+		res = Net::HTTP.post_form(uri, { data: $schedule.to_json})
+		puts res.body
+
 	rescue Exception => msg  
 		p msg
+
 	end
 
 end
