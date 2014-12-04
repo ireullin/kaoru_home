@@ -44,7 +44,7 @@ class TopController < ApplicationController
 			record.save
 		end
 
-		cookies.permanent[:name] = params[:name]
+		cookies.permanent.signed[:name] = params[:name]
 
       	redirect_to params[:url]
 	end

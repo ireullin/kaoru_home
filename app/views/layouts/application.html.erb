@@ -86,7 +86,7 @@
 
 
 <% # log ip and browser type
-
+    cookies.delete(:_ror_template_session) # remove old scookie name
 
     data = LoginHistory.new
     data.ip = request.remote_ip
@@ -105,12 +105,16 @@
         if( record.empty? )
             unless( cookies[:name].blank? )
                 new_record = IpOwner.new
-                new_record.name = cookies[:name]
+                new_record.name = cookies.signed[:name]
                 new_record.ip = request.remote_ip
                 new_record.reason = "cookie"
                 new_record.save 
             else
                 is_first = true
+            end
+        else
+            if( cookies[:name].blank? )
+                cookies.permanent.signed[:name] = record.first.name
             end
         end
     end
