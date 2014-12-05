@@ -2,41 +2,75 @@
 
 
 <div class="container-fluid">
-  <div class="page-header">
-    <h1>
-      <%= params[:type]=='superlottos' ? '威力彩各期獎號' : '大樂透各期獎號' %>
-      <small><%= params[:type]=='superlottos' ? '(每周一四開獎)' : '(每周二五開獎)' %></small>
-    </h1>
-  </div>
+    <div class="page-header">
+        <h1>
+            <%= params[:type]=='superlottos' ? '威力彩各期獎號' : '大樂透各期獎號' %>
+            <small><%= params[:type]=='superlottos' ? '(每周一四開獎)' : '(每周二五開獎)' %></small>
+        </h1>
+    </div>
   
-  <%= paginate @data, :window => 2 %>
-  <table class="table table-hover table-striped">
-    <thead>
-      <tr>
-        <th>期別</th>
-        <th colspan="6">一般號</th>
-        <th>特別號</th>
-        <th>開獎日</th>
-        <th>下載時間</th>
-      </tr>
-    </thead>
 
-    <tbody>
-      <% @data.each do |row| %>
-        <tr>
-          <td><%= row.term %></td>
-          <td><%= row.no1 %></td>
-          <td><%= row.no2 %></td>
-          <td><%= row.no3 %></td>
-          <td><%= row.no4 %></td>
-          <td><%= row.no5 %></td>
-          <td><%= row.no6 %></td>
-          <td><%= row.special %></td>
-          <td><%= row.announced_at %></td>
-          <td><%= row.created_at.localtime.strftime("%Y-%m-%d %H:%M:%S") %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-  <%= paginate @data, :window => 2 %>
+    
+    <ul class="nav navbar-nav">
+        <% clone_params =  params.clone %>
+        
+        <% clone_params[:page] = 1 %>
+        <li><a href="<%= url_for clone_params %>">First</a></li>
+        
+        <% unless @data.first_page? %>
+            <% clone_params[:page] = @data.prev_page %>
+            <li><a href="<%= url_for clone_params %>">Prev</a></li>
+        <% end %>
+
+         <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Page <%= params[:page] %> <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+            <% 1.upto( @data.total_pages ) do |i| %>
+                <% clone_params[:page] = i %>
+                <li><a href="<%= url_for clone_params %>"><%= i %></a></li>
+            <% end %>
+            </ul>
+        </li>
+
+        <% unless @data.last_page? %>
+            <% clone_params[:page] = @data.next_page %>
+            <li><a href="<%= url_for clone_params %>">Next</a></li>
+        <% end %>
+
+        <% clone_params[:page] = @data.total_pages %>
+        <li><a href="<%= url_for clone_params %>">Last</a></li>
+     </ul>
+    
+
+
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th>期別</th>
+                <th colspan="6">一般號</th>
+                <th>特別號</th>
+                <th>開獎日</th>
+                <th>下載時間</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <% @data.each do |row| %>
+                <tr>
+                    <td><%= row.term %></td>
+                    <td><%= row.no1 %></td>
+                    <td><%= row.no2 %></td>
+                    <td><%= row.no3 %></td>
+                    <td><%= row.no4 %></td>
+                    <td><%= row.no5 %></td>
+                    <td><%= row.no6 %></td>
+                    <td><%= row.special %></td>
+                    <td><%= row.announced_at %></td>
+                    <td><%= row.created_at.localtime.strftime("%Y-%m-%d %H:%M:%S") %></td>
+                </tr>
+            <% end %>
+        </tbody>
+    </table>
+
+
 </div>
