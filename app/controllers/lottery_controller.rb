@@ -8,9 +8,7 @@ class LotteryController < ApplicationController
 		elsif params[:type]=='lottery649s'
 			@data = Lottery649s.order(term: :desc).page(params[:page]).per(10)
 		else
-      respond_to do |format|
-        format.any { render :file => "#{Rails.root}/public/404.html",  :status => 404, :layout => false }
-      end
+      redirect_to '/error.html'
 		end
 	end
 
@@ -89,9 +87,7 @@ class LotteryController < ApplicationController
             @normal = LotteryStatistic.where(statistic_type: 'lottery649s_count').first
             @normal['context'] = JSON.parse(@normal['context'])
         else
-            respond_to do |format|
-                format.any { render :file => "#{Rails.root}/public/404.html",  :status => 404 }
-            end
+            redirect_to '/error.html'
         end
 
 

@@ -28,9 +28,7 @@ class TopController < ApplicationController
 			rec.agent = request.env['HTTP_USER_AGENT']
 			rec.save
 
-			respond_to do |format|
-        		format.any { render file: "#{Rails.root}/public/500.html",  status: 500, layout: false }
-      		end
+			redirect_to '/error.html'
       	else
       		
       		rec = VarifyPasswordHistory.new
