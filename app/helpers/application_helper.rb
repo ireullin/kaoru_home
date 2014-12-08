@@ -44,4 +44,42 @@ module ApplicationHelper
 
 	    return buf.join('').html_safe
 	end
+
+	
+	def record_login_history
+		data = LoginHistory.new
+    	data.ip = request.remote_ip
+    	data.agent = request.env['HTTP_USER_AGENT']
+    	data.path = request.env['PATH_INFO']
+    	data.save
+	end
+
+
+	def set_user_cookie?
+		 is_first = false
+
+	    if( request.remote_ip != "127.0.0.1" and request.remote_ip !~ /192\.168\.\d{1,3}\.\d{1,3}/  )
+	        record = IpOwner.where(ip: request.remote_ip)
+
+	        if( record.empty? )
+	            unless( cookies[:name].blank? )
+	                new_record = IpOwner.new
+	                new_record.name = cookies.signed[:name]
+	                new_record.ip = request.remote_ip
+	                new_record.reason = "cookie"
+	                new_record.save 
+	            else
+	                is_first = true
+	            end
+	        else
+	            if( cookies[:name].blank? )
+	                cookies.permanent.signed[:name] = record.first.name
+	            end
+	        end
+	    end
+
+	    return is_first
+	end
+
+	
 end

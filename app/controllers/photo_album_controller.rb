@@ -1,6 +1,6 @@
 class PhotoAlbumController < ApplicationController
 
-	before_action :check_session, :except => [:index]
+	before_action :must_login, :except => [:index]
 
 	def index
 		@data = PhotoAlbum.where(path: params[:path]).first
@@ -81,13 +81,4 @@ class PhotoAlbumController < ApplicationController
 	    end
 	end
 
-
-	private
-	def check_session
-		if session[:account].blank?
-			respond_to do |format|
-        		format.any { render file: "#{Rails.root}/public/500.html",  status: 500, layout: false }
-      		end
-	    end
-	end
 end

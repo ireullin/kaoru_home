@@ -1,6 +1,6 @@
 class LoggerController < ApplicationController
 	
-	before_action :check_session
+	before_action :must_login
 
 	def index
 		@histories = LoginHistory.history_with_name
@@ -9,13 +9,4 @@ class LoggerController < ApplicationController
 		@ipowner = IpOwner.all
 	end
 
-	private
-	def check_session
-		if session[:account].blank?
-			respond_to do |format|
-        		format.any { render file: "#{Rails.root}/public/500.html",  status: 500, layout: false }
-      		end
-	    end
-	end
-	
 end
