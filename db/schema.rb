@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141204071940) do
+ActiveRecord::Schema.define(version: 20141208085445) do
 
   create_table "food_menus", id: false, force: true do |t|
     t.string   "food_type"
@@ -122,6 +122,16 @@ ActiveRecord::Schema.define(version: 20141204071940) do
   end
 
   add_index "superlottos", ["term"], name: "sqlite_autoindex_superlottos_1", unique: true
+
+  create_table "varify_password_histories", force: true do |t|
+    t.string   "account"
+    t.string   "password"
+    t.integer  "result"
+    t.string   "ip"
+    t.text     "agent"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "weathers", id: false, force: true do |t|
     t.date     "weather_date"
