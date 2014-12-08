@@ -50,7 +50,7 @@ class MovieController < ApplicationController
 			row.movie_id = movie['movie_id']
 			row.name = movie['name']
 			row.schedules = movie['theaters'].to_json
-			row.created_at = Time.now.localtime.strftime("%Y-%m-%d %H:%M:%S")
+			row.created_at = Time.now.strftime("%Y-%m-%d %H:%M:%S")
 			row.save
 		end
 

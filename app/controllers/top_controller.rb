@@ -19,10 +19,26 @@ class TopController < ApplicationController
 
 	def varify
 		if( params[:account]!="ireullin" || params[:password]!="0933726835")
-			respond_to do |format|
-        		format.any { render file: "#{Rails.root}/public/500.html",  status: 500, layout: false }
-      		end
+			
+			rec = VarifyPasswordHistory.new
+			rec.account = params[:account]
+			rec.password = params[:password]
+			rec.result = 1
+			rec.ip = request.remote_ip
+			rec.agent = request.env['HTTP_USER_AGENT']
+			rec.save
+
+			redirect_to '/error.html'
       	else
+      		
+      		rec = VarifyPasswordHistory.new
+			rec.account = params[:account]
+			rec.password = 'itsok'
+			rec.result = 0
+			rec.ip = request.remote_ip
+			rec.agent = request.env['HTTP_USER_AGENT']
+			rec.save
+
       		session[:account] = params[:account]
 	      	redirect_to params[:url]
 	    end
@@ -44,7 +60,7 @@ class TopController < ApplicationController
 			record.save
 		end
 
-		cookies.permanent[:name] = params[:name]
+		cookies.permanent.signed[:name] = params[:name]
 
       	redirect_to params[:url]
 	end
