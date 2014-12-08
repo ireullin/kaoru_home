@@ -12,8 +12,11 @@ module ApplicationHelper
 	        
 	    unless rec.first_page?
 	        clone_params[:page] = rec.prev_page
-	        buf.push '<li><a href="' + url_for(clone_params) + '">Prev</a></li>'
+	    else
+	    	clone_params[:page] = 1
 	    end
+
+	    buf.push '<li><a href="' + url_for(clone_params) + '">Prev</a></li>'
 
 	    buf.push '<li class="dropdown">'
 	    buf.push '<a href="#" class="dropdown-toggle" data-toggle="dropdown">Page ' + params[:page] + '<span class="caret"></span></a>'
@@ -28,13 +31,17 @@ module ApplicationHelper
 
         unless rec.last_page?
             clone_params[:page] = rec.next_page
-            buf.push '<li><a href="' + url_for(clone_params) + '">Next</a></li>'
+        else
+        	clone_params[:page] = rec.total_pages
         end
+
+        buf.push '<li><a href="' + url_for(clone_params) + '">Next</a></li>'
+        
 
 	    clone_params[:page] = rec.total_pages
 	    buf.push '<li><a href="' + url_for(clone_params) + '">Last</a></li>'
 	    buf.push '</ul>'
 
-	    return buf.join('')
+	    return buf.join('').html_safe
 	end
 end
