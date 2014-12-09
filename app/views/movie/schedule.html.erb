@@ -9,7 +9,7 @@
 				<%= @schedule.name %> 放映時間
 			</a>
 			<br>
-			<small>最後更新在<%= @schedule.created_at.localtime.strftime("%Y-%m-%d %H:%M:%S") %></small>
+			<small>最後更新在<%= @schedule.created_at.strftime("%Y-%m-%d %H:%M:%S") %></small>
 		</h3>
 		<br>
 		<% theaters = JSON.parse(@schedule.schedules) %>
