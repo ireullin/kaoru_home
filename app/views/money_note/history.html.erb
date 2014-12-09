@@ -21,6 +21,7 @@
 
 <% 
     sum = 0.0 
+    day_sum = 0.0
     cls=['warning','']
     i = 0
     last_expended_at = ''
@@ -33,6 +34,7 @@
 			<th>品項</th>
 			<th>說明</th>
 			<th>價格</th>
+            <th>當日總消費</th>
 			<th>消費日期</th>
 			<th>紀錄時間</th>
       	</tr>
@@ -44,6 +46,7 @@
                 if(last_expended_at != row.expended_at)
                     last_expended_at = row.expended_at
                     i+=1
+                    day_sum = 0
                 end
             %>
 
@@ -56,6 +59,8 @@
 				<td><%= row.item %></td>
 				<td><%= row.comment %></td>
 				<td><%= row.price %></td>
+                <% day_sum += row.price  %>
+                <td><%= day_sum %></td>
 				<td><%= row.expended_at %></td>
 				<td><%= row.updated_at.localtime.strftime("%Y-%m-%d %H:%M:%S") %></td>
                 <% sum += row.price %>
@@ -66,3 +71,4 @@
 </table>
 
 <div class="alert alert-info" role="alert">總消費金額 <strong><%= sum %></strong> 元</div>
+
