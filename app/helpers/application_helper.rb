@@ -1,5 +1,5 @@
 module ApplicationHelper
-	def kaminari_with_dropdown(rec)
+	def kaminari_with_dropdown(rec, dropdown: true)
 
 		buf = Array.new
 
@@ -18,7 +18,12 @@ module ApplicationHelper
 
 	    buf.push '<li><a href="' + url_for(clone_params) + '">Prev</a></li>'
 
-	    buf.push '<li class="dropdown">'
+	    if dropdown
+	    	buf.push '<li class="dropdown">'
+	    else
+	    	buf.push '<li class="dropup">'
+	    end
+
 	    buf.push '<a href="#" class="dropdown-toggle" data-toggle="dropdown">Page ' + params[:page] + '<span class="caret"></span></a>'
 	    buf.push '<ul class="dropdown-menu" role="menu">'
 	    1.upto( rec.total_pages ) do |i|
