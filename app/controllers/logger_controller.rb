@@ -14,7 +14,7 @@ class LoggerController < ApplicationController
 			.select('login_histories.* , ip_owners.name, ip_owners.reason')
 			.joins('LEFT JOIN ip_owners ON login_histories.ip = ip_owners.ip')
 			.order('login_histories.created_at DESC')
-			.page(1).per(50)
+			.page( params[:page] ).per(50)
 	end
 
 end
