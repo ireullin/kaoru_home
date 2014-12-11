@@ -90,7 +90,7 @@ function ready()
 	refreshCategory();
 
 	var d = new Date();
-	$.get('/money_note/history/'+ d.getFullYear() + '/' + (d.getMonth()+1) , function(table){$('#history').html(table);}  )
+	$.get('/money_note/history/'+ d.getFullYear() + '/' + (d.getMonth()+1) , refreshTable );
 }
 
 
@@ -98,10 +98,15 @@ function onChangeYearMonth()
 {
 	var url = '/money_note/history/' + $('#sel_year option:selected').val() + '/' + $('#sel_month option:selected').val();
 	//console.log(url);
-	$.get(url, function(table){$('#history').html(table);}  )
+	$.get(url, refreshTable);
 
 }
 
+
+function refreshTable(table)
+{
+	$('#history').html(table);
+}
 
 function generate_message(msg)
 {
@@ -153,9 +158,9 @@ function onSubmitSuccess(e, data, status, xhr)
 	refreshCategory();
 	$('#item').val('');
 	$('#price').val('');
-
-	$('#history').html(data);
-
+	$('#comment').val('');
+	refreshTable(data);
+	
 	$.post(
 		'/money_note/items',
 	 	{ data: JSON.stringify( g_items )} ,

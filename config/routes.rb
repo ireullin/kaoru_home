@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
 
   get  'logger/index'
+  get  'logger/history/:page' => 'logger#history'
   
   get 'photo_album/photoset/:path' => 'photo_album#index'
   get 'photo_album/manage'
