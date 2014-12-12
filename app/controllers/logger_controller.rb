@@ -17,4 +17,9 @@ class LoggerController < ApplicationController
 			.page( params[:page] ).per(50)
 	end
 
+
+	def varify_password_history
+		@varify = VarifyPasswordHistory.order('updated_at desc').page( params[:page] ).per(50)
+	end
+
 end
