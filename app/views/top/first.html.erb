@@ -34,8 +34,33 @@
 		<div class="input-group">
 		    <%= text_field_tag('name', nil, class: "form-control", placeholder: "What's your name?" ) %>
 		    <span class="input-group-btn">
-		        <%= submit_tag "Nice to meet you!!", class: "btn btn-primary" %>
+		        <%= submit_tag "Nice to meet you!!", class: "btn btn-primary", id: 'id_submit' %>
 		    </span>
 		</div>
 	<% end %>
 </div>
+
+<script language="javascript">
+$(document).ready(ready);
+function ready()
+{
+	$(document).one( 'page:before-change', unload);
+	$(document).on( 'click', '#id_submit', onSubmit );
+}
+
+function onSubmit()
+{
+	var name = $.trim( $('#name').val() );
+	if( name.length==0 )
+		return false;
+
+	return true;
+}
+
+function unload()
+{
+	$(document).off( 'click', '#id_submit');
+}
+
+
+</script>
