@@ -53,6 +53,12 @@ class TopController < ApplicationController
 
 
 	def record_name
+
+		if params[:name].blank?
+			redirect_to '/error.html' 
+			return
+		end
+
 		IpOwner.find_or_initialize_by(ip: request.remote_ip ) do |record|
 			record.name = params[:name]
 			record.ip = request.remote_ip
