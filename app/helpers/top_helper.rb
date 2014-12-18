@@ -1,12 +1,12 @@
 module TopHelper
 	def news(subtitle)
 
-		row = IpOwner.where(ip: request.remote_ip).first
-		if row.blank?
+		#row = IpOwner.where(ip: request.remote_ip).first
+		#if row.blank?
 			title = "最新消息"
-		else
-			title = row.name + " 你好"
-		end
+		#else
+		#	title = row.name + " 你好"
+		#end
 		
 
 		%Q(

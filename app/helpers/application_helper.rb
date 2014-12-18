@@ -8,7 +8,7 @@ module ApplicationHelper
 	    clone_params =  params.clone
 	    clone_params[:page] = 1
 	    
-	    buf.push '<li><a href="' + url_for(clone_params) + '">First</a></li>'
+	    buf.push '<li><a href="' + full_url(url_for(clone_params)) + '">First</a></li>'
 	        
 	    unless rec.first_page?
 	        clone_params[:page] = rec.prev_page
@@ -16,7 +16,7 @@ module ApplicationHelper
 	    	clone_params[:page] = 1
 	    end
 
-	    buf.push '<li><a href="' + url_for(clone_params) + '">Prev</a></li>'
+	    buf.push '<li><a href="' + full_url(url_for(clone_params)) + '">Prev</a></li>'
 
 	    if dropdown
 	    	buf.push '<li class="dropdown">'
@@ -28,7 +28,7 @@ module ApplicationHelper
 	    buf.push '<ul class="dropdown-menu" role="menu">'
 	    1.upto( rec.total_pages ) do |i|
 	        clone_params[:page] = i
-	        buf.push '<li><a href="' + url_for(clone_params) + '">' + i.to_s + '</a></li>'
+	        buf.push '<li><a href="' + full_url(url_for(clone_params)) + '">' + i.to_s + '</a></li>'
 	    end
 	    
 	    buf.push '</ul>'
@@ -40,11 +40,11 @@ module ApplicationHelper
         	clone_params[:page] = rec.total_pages
         end
 
-        buf.push '<li><a href="' + url_for(clone_params) + '">Next</a></li>'
+        buf.push '<li><a href="' + full_url(url_for(clone_params)) + '">Next</a></li>'
         
 
 	    clone_params[:page] = rec.total_pages
-	    buf.push '<li><a href="' + url_for(clone_params) + '">Last</a></li>'
+	    buf.push '<li><a href="' + full_url(url_for(clone_params)) + '">Last</a></li>'
 	    buf.push '</ul>'
 
 	    return buf.join('').html_safe
@@ -86,5 +86,12 @@ module ApplicationHelper
 	    return is_first
 	end
 
-	
+
+	def full_url(path)
+		if path[0]=='/'
+			return root_url + path[1..-1]
+		else
+			return root_url + path
+		end
+	end
 end

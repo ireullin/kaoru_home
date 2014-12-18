@@ -5,13 +5,13 @@
 <!-- I dont know why can't use form_tag -->
 <% 
 if @data.blank? 
-	action = 'create'
+	action = 'photo_album/create'
 else
-	action = 'update'
+	action = 'photo_album/update'
 end
 %>
 
-<%= form_tag action: action do %>
+<%= form_tag(full_url(action)) do %>
   	<div class="form-group" <%= 'style=display:none' unless @data.blank? %> >
   		<%= label_tag('path')%>
   		<%= text_field_tag('path', @data.try(:path) , class: "form-control" ) %>

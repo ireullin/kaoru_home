@@ -5,7 +5,7 @@
 		<h1><strong>記帳本</strong></h1>
 	</div>
 
-	<%= form_tag( {action: 'create'}, { id: 'record_form', remote: true }) do %>
+	<%= form_tag( full_url('money_note/create'), { id: 'record_form', remote: true }) do %>
 	<div class="row">
 		<div class="col-xs-3">
 			<div class="input-group">
@@ -90,13 +90,13 @@ function ready()
 	refreshCategory();
 
 	var d = new Date();
-	$.get('/money_note/history/'+ d.getFullYear() + '/' + (d.getMonth()+1) , refreshTable );
+	$.get( "<%= full_url '/money_note/history/' %>" + d.getFullYear() + '/' + (d.getMonth()+1) , refreshTable );
 }
 
 
 function onChangeYearMonth()
 {
-	var url = '/money_note/history/' + $('#sel_year option:selected').val() + '/' + $('#sel_month option:selected').val();
+	var url = "<%= full_url '/money_note/history/' %>"+ $('#sel_year option:selected').val() + '/' + $('#sel_month option:selected').val();
 	//console.log(url);
 	$.get(url, refreshTable);
 
@@ -162,7 +162,7 @@ function onSubmitSuccess(e, data, status, xhr)
 	refreshTable(data);
 	
 	$.post(
-		'/money_note/items',
+		"<%= full_url '/money_note/items' %>",
 	 	{ data: JSON.stringify( g_items )} ,
 	 	function(msg){ console.log(msg); }  
 	);

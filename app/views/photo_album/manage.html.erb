@@ -20,7 +20,7 @@
 		    <thead>
 		    	<tr>
 		    		<th>
-		    			<a class="fancybox fancybox.ajax fancy_album_form" href="/photo_album/new">
+		    			<a class="fancybox fancybox.ajax fancy_album_form" href="<%= full_url '/photo_album/new' %>">
 							<span class="glyphicon glyphicon-plus"></span>
 						</a>
 		    		</th>
@@ -40,10 +40,10 @@
 		      	<% @photo_albums.each do |row| %>
 		        	<tr>
 		        		<td>
-		        			<a class="fancybox fancybox.ajax fancy_album_form" href="/photo_album/edit/<%= row.path %>" >
+		        			<a class="fancybox fancybox.ajax fancy_album_form" href="<%= full_url ('/photo_album/edit/') + row.path %>" >
 		        				<span class="glyphicon glyphicon-file"></span>
 		        			</a>
-		        			<a href="/photo_album/delete/<%= row.path %>" data-confirm="確認刪除?" data-method="post" >
+		        			<a href="<%= full_url('/photo_album/delete/') + row.path %>" data-confirm="確認刪除?" data-method="post" >
 		        				<span class="glyphicon glyphicon-remove"></span>
 		        			</a>
 		        		</td>

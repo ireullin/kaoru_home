@@ -28,7 +28,7 @@ class TopController < ApplicationController
 			rec.agent = request.env['HTTP_USER_AGENT']
 			rec.save
 
-			redirect_to '/error.html'
+			redirect_to( full_url '/error.html' )
       	else
       		
       		rec = VarifyPasswordHistory.new

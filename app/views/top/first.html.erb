@@ -25,7 +25,7 @@
 	</div>
 
 	<br>
-	<%= form_tag action: 'record_name' do %>
+	<%= form_tag( full_url('top/record_name')) do %>
 		<div class="form-group" style="display: none;">
 			<%= label_tag 'url' %>
 			<%= text_field_tag('url', request.env['HTTP_REFERER'], class: "form-control" ) %>

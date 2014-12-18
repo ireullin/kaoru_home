@@ -86,7 +86,7 @@ function onClickTab()
 		$('a.cls-tab').first().trigger('click');
 
 		$.ajaxSetup({headers: { "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content') }  });
-		$.post( '/movie/delete', { id: id, name: name },  function( d ) {console.log( d );});
+		$.post( '<%= full_url "/movie/delete" %>', { id: id, name: name },  function( d ) {console.log( d );});
 	}
 	else
 	{
@@ -94,7 +94,7 @@ function onClickTab()
 		$('.cls-tab').each(function(index){ $(this).parent().removeClass('active') });
 	  	$(this).parent().addClass( "active" );
 	  	$.get(
-	  		'/movie/schedule/'+id, 
+	  		'<%= full_url "/movie/schedule/" %>'+id, 
 	  		function(d)
 	  		{ 
 	  			$('#div_schedule').css('display','none');
@@ -118,7 +118,7 @@ function onClickPin()
 		$('#tabs_movies').append( generate_tab(id,name) );
 
 		$.ajaxSetup({headers: { "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content') }  });
-		$.post( '/movie/create', { id: id, name: name },  function( d ) {console.log( d );});
+		$.post( '<%= full_url "/movie/create" %>', { id: id, name: name },  function( d ) {console.log( d );});
 	}
 	
 	$('#'+id).trigger('click');	

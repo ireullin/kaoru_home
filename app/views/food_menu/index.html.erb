@@ -139,9 +139,9 @@ function send()
 	console.log( json );
 
 	<% if params[:type]=='drink' %>
-	var url = "/foodmenu/update/drink.json";
+	var url = "<%= full_url '/foodmenu/update/drink.json' %>";
 	<% else %>
-	var url = "/foodmenu/update/food.json";
+	var url = "<%= full_url '/foodmenu/update/food.json' %>";
 	<% end %>
 
 	$.ajaxSetup({headers: { "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content') }  });

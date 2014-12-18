@@ -15,11 +15,11 @@
 
 <div style="position: absolute; top: 5px; right: 30px;">
     <% if session[:account].blank? %>
-    <a id="id_login" href="/top/login" style="color: white;" class="fancybox fancybox.ajax">登入</a>
+    <a id="id_login" href="<%= full_url '/top/login' %>" style="color: white;" class="fancybox fancybox.ajax">登入</a>
     <% else %>
-    <a href="/top/logout" style="color: white;">登出</a>
+    <a href="<%= full_url '/top/logout' %>" style="color: white;">登出</a>
     <% end %>
-    <a id="id_first" href="/top/first" style="color: white; display: none" class="fancybox fancybox.ajax">first</a>
+    <a id="id_first" href="<%= full_url '/top/first' %>" style="color: white; display: none" class="fancybox fancybox.ajax">first</a>
 </div>
 
 <nav class="navbar navbar-default" role="navigation">
@@ -39,27 +39,27 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-        <li><a href="/top/index">首頁</a></li>
+        <li><a href="<%= full_url '/top/index' %>">首頁</a></li>
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">相本<span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
             <% albums = PhotoAlbum.all %>
             <% albums.each do |album| %>
-              <li><a href="/photo_album/photoset/<%= album.path %>" ><%= album.name %></a></li>
+              <li><a href="<%= full_url('/photo_album/photoset/' + album.path) %>" ><%= album.name %></a></li>
             <% end %>
             </ul>
         </li>
-        <li><a href="/foodmenu/index/drink">酒單</a></li>
+        <li><a href="<%= full_url '/foodmenu/index/drink' %>">酒單</a></li>
         <!--<li><a href="/foodmenu/index/food">菜單</a></li>-->
-        <li><a href="/movie/index">電影</a></li>
+        <li><a href="<%= full_url '/movie/index' %>">電影</a></li>
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">樂透<span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
-                <li><a href="/lottery/history/superlottos/1">威力彩各期獎號</a></li>
-                <li><a href="/lottery/statistic/superlottos">威力彩統計方法</a></li>
+                <li><a href="<%= full_url '/lottery/history/superlottos/1' %>">威力彩各期獎號</a></li>
+                <li><a href="<%= full_url '/lottery/statistic/superlottos' %>">威力彩統計方法</a></li>
                 <li class="divider"></li>
-                <li><a href="/lottery/history/lottery649s/1">大樂透各期獎號</a></li>
-                <li><a href="/lottery/statistic/lottery649s">大樂透統計方法</a></li>
+                <li><a href="<%= full_url '/lottery/history/lottery649s/1' %>">大樂透各期獎號</a></li>
+                <li><a href="<%= full_url '/lottery/statistic/lottery649s' %>">大樂透統計方法</a></li>
             </ul>
         </li>
 
@@ -67,10 +67,10 @@
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">管理工具<span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
-                <li><a href="/photo_album/manage">相簿管理</a></li>
-                <li><a href="/logger/index">使用統計</a></li>
-                <li><a href="/logger/history/1">瀏覽紀錄</a></li>
-                <li><a href="/logger/varify/1">登入紀錄</a></li>
+                <li><a href="<%= full_url '/photo_album/manage' %>">相簿管理</a></li>
+                <li><a href="<%= full_url '/logger/index' %>">使用統計</a></li>
+                <li><a href="<%= full_url '/logger/history/1' %>">瀏覽紀錄</a></li>
+                <li><a href="<%= full_url '/logger/varify/1' %>">登入紀錄</a></li>
             </ul>
         </li>
         <% end %>
