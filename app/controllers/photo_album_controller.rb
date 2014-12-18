@@ -36,10 +36,10 @@ class PhotoAlbumController < ApplicationController
 
 	    respond_to do |format|
 	    	if @photo_albums.save
-        		format.html { redirect_to action: 'manage' }
+        		format.html { redirect_to(full_url 'photo_album/manage') }
         	else
         		flash[:notice] = @photo_albums.errors.full_messages
-        		format.html { redirect_to action: 'manage'  }
+        		format.html { redirect_to(full_url 'photo_album/manage') }
         	end
 	    end
 	end
@@ -68,7 +68,7 @@ class PhotoAlbumController < ApplicationController
 
 	    respond_to do |format|
 	    	flash[:notice] = @photo_albums.errors.full_messages if @photo_albums.try(:errors)
-        	format.html { redirect_to action: 'manage', notice: 'OK' }
+        	format.html { redirect_to(full_url('photo_album/manage')) }
 	    end
 	end
 
@@ -77,7 +77,7 @@ class PhotoAlbumController < ApplicationController
 		PhotoAlbum.where(:path => params[:path]).delete_all
 
 		respond_to do |format|
-        	format.html { redirect_to action: 'manage' }
+        	format.html { redirect_to(full_url('photo_album/manage')) }
 	    end
 	end
 

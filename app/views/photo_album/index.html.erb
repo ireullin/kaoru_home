@@ -87,7 +87,7 @@ function onGetInfo(data)
 
 	$('#id_progress_bar').attr('aria-valuemax', totalCount);
 
-	g_totalPage = Math.ceil(totalCount / g_prePage);
+	g_totalPage = Math.ceil(totalCount / g_prePage) + 1 ; // I dont know why to need +1 to get all photos.
 	getPhotos();
 	g_timer = setInterval(getPhotos, 1000);
 }
@@ -112,8 +112,8 @@ function onGetPhotos(data)
 	var obj = JSON.parse(data);
 	for(i in obj.photoset.photo)
 	{
-		$('#photowall').append( generatePicTag( obj.photoset.photo[i] ) );
-		$('#'+obj.photoset.photo[i].id).fadeIn( 5000 );
+		$('#photowall').prepend( generatePicTag( obj.photoset.photo[i] ) );
+		$('#'+obj.photoset.photo[i].id).fadeIn( 1000 );
 
 
 		var valuenow = $('#id_progress_bar').attr('aria-valuenow');

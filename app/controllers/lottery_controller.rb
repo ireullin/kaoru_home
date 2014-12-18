@@ -8,7 +8,7 @@ class LotteryController < ApplicationController
 		elsif params[:type]=='lottery649s'
 			@data = Lottery649s.order(term: :desc).page(params[:page]).per(50)
 		else
-      redirect_to '/error.html'
+      redirect_to( full_url '/error.html' )
 		end
 	end
 
@@ -87,7 +87,7 @@ class LotteryController < ApplicationController
             @normal = LotteryStatistic.where(statistic_type: 'lottery649s_count').first
             @normal['context'] = JSON.parse(@normal['context'])
         else
-            redirect_to '/error.html'
+            redirect_to( full_url '/error.html' )
         end
 
 
