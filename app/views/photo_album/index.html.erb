@@ -29,14 +29,13 @@
 <script language="javascript">
 $(document).ready(ready);
 
-var g_totalPage = 0;
 var g_page = 1;
 var g_prePage = 100;
 var g_timer = null;
 
 
 function ready()
-{console.log(arguments.callee.name);
+{//console.log(arguments.callee.name);
 
 	$(document).one( 'page:before-change', unload);
 	$(document).on( 'click', '#btn_order',  onClickOrder );
@@ -84,12 +83,13 @@ function onGetInfo(data)
 	console.log(data);
 	var obj = JSON.parse(data);
 	var totalCount = obj.photoset.photos;
+	console.log('totalCount='+totalCount);
 
 	$('#id_progress_bar').attr('aria-valuemax', totalCount);
 
-	g_totalPage = Math.ceil(totalCount / g_prePage) + 1 ; // I dont know why to need +1 to get all photos.
+	g_page = Math.ceil(totalCount / g_prePage)
 	getPhotos();
-	g_timer = setInterval(getPhotos, 1000);
+	g_timer = setInterval(getPhotos, 1500);
 }
 
 
@@ -112,8 +112,8 @@ function onGetPhotos(data)
 	var obj = JSON.parse(data);
 	for(i in obj.photoset.photo)
 	{
-		$('#photowall').prepend( generatePicTag( obj.photoset.photo[i] ) );
-		$('#'+obj.photoset.photo[i].id).fadeIn( 1000 );
+		$('#photowall').append( generatePicTag( obj.photoset.photo[i] ) );
+		$('#'+obj.photoset.photo[i].id).fadeIn( 5000 );
 
 
 		var valuenow = $('#id_progress_bar').attr('aria-valuenow');
@@ -122,17 +122,18 @@ function onGetPhotos(data)
 		$('#id_progress_bar').css('width', valuenow/valuemax*100 + '%' );
 	}
 	//$('.fancybox').fadeIn( 2000 );
+	g_page--;
 
-	if( g_totalPage ==  g_page)
+	if( 0 ==  g_page)
 	{
 		clearInterval(g_timer);
 		setTimeout(function(){
 			$('#id_progress_bar').text('完成');
 			$('#id_progress').slideUp( 1500 );
 		}, 1000);
+
+		console.log( 'realCount=' + $('.flickphoto').length );
 	}
-	else
-		g_page++;
 }
 
 
@@ -142,7 +143,7 @@ function generatePicTag(info)
 	//var url = generateSmallPic(info);
  	arr = [
 	'<a id="'+info.id+'" class="fancybox fancypic" rel="kaoru_gallery" href="'+generateLargePic(info)+'" style="display:none;" >',
-   		'<img src="'+generateSmallPic(info)+'" style="padding: 3px; border: 1px solid #D8D8D8; margin: 3px;" >',
+   		'<img class="flickphoto" src="'+generateSmallPic(info)+'" style="padding: 3px; border: 1px solid #D8D8D8; margin: 3px;" >',
    		//'<img src="'+generateSmallPic(info)+'" class="img-thumbnail" style="margin: 3px;" >',
 	'</a>'
 	];
@@ -188,7 +189,7 @@ function getFlickr(method, callback, data)
 
 
 function initFancybox()
-{console.log(arguments.callee.name);
+{//console.log(arguments.callee.name);
 
 	$(".fancypic").fancybox({
 		"parent"      : 'body',
@@ -205,7 +206,7 @@ function initFancybox()
 
 
 function onClickOrder()
-{console.log(arguments.callee.name);
+{//console.log(arguments.callee.name);
 
 	$(".fancypic").fancybox({
 		"parent"      : 'body',
