@@ -13,7 +13,7 @@ end
 
 def insert_to_db(data)
 	
-	uri = URI('http://127.0.0.1/weather/update')
+	uri = URI('http://127.0.0.1/kaoru/weather/update')
 	res = Net::HTTP.post_form(uri, { data: data.to_json})
 	puts res.body
 end

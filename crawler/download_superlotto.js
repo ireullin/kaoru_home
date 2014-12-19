@@ -1,7 +1,7 @@
 #!/usr/bin/env phantomjs
 
 var g_webpage = {};
-var APIURL = 'http://127.0.0.1';
+var APIURL = 'http://127.0.0.1/kaoru';
 
 function onConsoleMessage(message)
 {
