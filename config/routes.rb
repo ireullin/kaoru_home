@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'cookie_collector/empty_img'
+
   get 'money_note' => 'money_note#index'
   get 'money_note/history/:year/:month' => 'money_note#history'
   post 'money_note/create'

@@ -1,0 +1,2 @@
+module CookieCollectorHelper
+end
