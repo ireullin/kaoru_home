@@ -6,6 +6,17 @@
 	</div>
 
 
+	<div class="checkbox">
+    	<label>
+      		<input id="chk_first" type="checkbox">從第一張開始撥放
+    	</label>
+    	&nbsp&nbsp&nbsp
+    	<label>
+      		<input id="chk_effect" type="checkbox">關閉特效
+    	</label>
+  	</div>
+
+
 	<div class="alert alert-info" role="alert">
 		<button id="btn_order" type="button" class="btn btn-primary">
 			<span class="glyphicon glyphicon-play"></span>
@@ -13,7 +24,7 @@
 		<strong>&nbsp&nbspDo you wanna play it?</strong>
 	</div>
 
-
+	
 	<div class="progress" id="id_progress">
   		<div id="id_progress_bar" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
     		相片牆下載中
@@ -40,13 +51,19 @@ function ready()
 	$(document).one( 'page:before-change', unload);
 	$(document).on( 'click', '#btn_order',  onClickOrder );
 	$(document).on( 'mouseover', '.fancypic', onPhotoOver);
+	$(document).on( 'click', '#chk_effect', onDisableEffect);
 
 	initFancybox();
 	getFlickr('flickr.photosets.getInfo', onGetInfo, {photoset_id: $.cookie('photoset_id')});
-
-	
 }
 
+function onDisableEffect()
+{
+	if($("#chk_effect").prop("checked"))
+		$(document).off( 'mouseover', '.fancypic');
+	else
+		$(document).on( 'mouseover', '.fancypic', onPhotoOver);		
+}
 
 function onPhotoOver()
 {
@@ -124,7 +141,8 @@ function onGetPhotos(data)
 	//$('.fancybox').fadeIn( 2000 );
 	g_page--;
 
-	if( 0 ==  g_page)
+	//if( 0 ==  g_page)
+	if( 0 ==  0)
 	{
 		clearInterval(g_timer);
 		setTimeout(function(){
@@ -224,7 +242,14 @@ function onClickOrder()
   		"afterClose"  : initFancybox
 	});
 
-	$(".fancypic").first().trigger('click');
+	var ran = 0;
+	if($("#chk_first").prop("checked")==false)
+	{
+		var len = $(".fancypic").length;
+		ran = Math.floor(Math.random() * len);
+	}
+
+	$(".fancypic:eq("+ran+")").trigger('click');
 }
 
 
