@@ -64,8 +64,18 @@
 	<% end %>
 	
 	<br>
-	
-	
+	<br>
+
+	<div class="row">
+		<div class="col-xs-4">
+			<div id="pie_chart" style="width: 100%; height: 200px;"></div>
+		</div>
+		<div class="col-xs-8">
+			<div id="bar_chart" style="width: 100%; height: 200px;"></div>
+		</div>
+	</div>
+
+	<br>
 
 	<div id="history">
 	</div>
@@ -75,6 +85,9 @@
 <script language="javascript">
 
 var g_items = JSON.parse("<%= @items[:items] %>".replace(/&quot;/g,'"'));
+var g_piechart = null;
+var g_colchart = null;
+
 
 $(document).ready(ready);
 function ready()
@@ -91,15 +104,30 @@ function ready()
 
 	var d = new Date();
 	$.get( "<%= full_url '/money_note/history/' %>" + d.getFullYear() + '/' + (d.getMonth()+1) , refreshTable );
+	$.get( "<%= full_url '/money_note/rate/' %>" + d.getFullYear() + '/' + (d.getMonth()+1)+'.json' , refreshRate );
 }
 
 
 function onChangeYearMonth()
 {
-	var url = "<%= full_url '/money_note/history/' %>"+ $('#sel_year option:selected').val() + '/' + $('#sel_month option:selected').val();
-	//console.log(url);
-	$.get(url, refreshTable);
+	var url1 = "<%= full_url '/money_note/history/' %>"+ $('#sel_year option:selected').val() + '/' + $('#sel_month option:selected').val();
+	$.get(url1, refreshTable);
 
+	var url2 = "<%= full_url '/money_note/rate/' %>"+ $('#sel_year option:selected').val() + '/' + $('#sel_month option:selected').val() + '.json';
+	$.get(url2, refreshRate);
+	console.log( url2 );
+}
+
+function refreshRate(data)
+{
+	console.log( 'refreshRate' );
+	g_piechart.dataProvider = data;
+	g_piechart.write("pie_chart");
+	g_piechart.validateData();
+
+	g_colchart.dataProvider = data;
+	g_colchart.write("bar_chart");
+	g_colchart.validateData();
 }
 
 
@@ -160,6 +188,7 @@ function onSubmitSuccess(e, data, status, xhr)
 	$('#price').val('');
 	$('#comment').val('');
 	refreshTable(data);
+	onChangeYearMonth();
 	
 	$.post(
 		"<%= full_url '/money_note/items' %>",
@@ -219,5 +248,69 @@ function refreshItem(category)
 		$('#sel_item').append( '<li><a class="a_item" hrep="#">'+ item + '</a></li>' );
 }
 
+AmCharts.ready(function () {
+    // PIE CHART
+    g_piechart = new AmCharts.AmPieChart();
+    //g_piechart.dataProvider = chartData;
+    g_piechart.titleField = "category";
+    g_piechart.valueField = "sum_price";
+    g_piechart.outlineColor = "#FFFFFF";
+    g_piechart.outlineAlpha = 0.8;
+    g_piechart.outlineThickness = 2;
+    g_piechart.balloonText = "[[category]]<br><span style='font-size:14px'><b>[[sum_price]]</b> ([[percents]]%)</span>";
+    // this makes the chart 3D
+    g_piechart.depth3D = 5;
+    g_piechart.angle = 30;
+
+    // WRITE
+    //g_piechart.write("chartdiv");
+});
+
+
+AmCharts.ready(function () {
+    // SERIAL CHART
+    g_colchart = new AmCharts.AmSerialChart();
+    //g_colchart.dataProvider = chartData;
+    g_colchart.categoryField = "category";
+    // the following two lines makes chart 3D
+    g_colchart.depth3D = 20;
+    g_colchart.angle = 30;
+
+    // AXES
+    // category
+    var categoryAxis = g_colchart.categoryAxis;
+    categoryAxis.labelRotation = 90;
+    categoryAxis.dashLength = 5;
+    categoryAxis.gridPosition = "start";
+
+    // value
+    var valueAxis = new AmCharts.ValueAxis();
+    valueAxis.title = "Visitors";
+    valueAxis.dashLength = 5;
+    g_colchart.addValueAxis(valueAxis);
+
+    // GRAPH
+    var graph = new AmCharts.AmGraph();
+    graph.valueField = "sum_price";
+    graph.colorField = "color";
+    graph.balloonText = "<span style='font-size:14px'>[[category]]: <b>[[sum_price]]</b></span>";
+    graph.type = "column";
+    graph.lineAlpha = 0;
+    graph.fillAlphas = 1;
+    g_colchart.addGraph(graph);
+
+    // CURSOR
+    var chartCursor = new AmCharts.ChartCursor();
+    chartCursor.cursorAlpha = 0;
+    chartCursor.zoomable = false;
+    chartCursor.categoryBalloonEnabled = false;
+    g_colchart.addChartCursor(chartCursor);
+
+    g_colchart.creditsPosition = "top-right";
+
+
+    // WRITE
+    //g_colchart.write("chartdiv");
+});
 
 </script>
