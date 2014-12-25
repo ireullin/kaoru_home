@@ -24,6 +24,18 @@ class MoneyNoteController < ApplicationController
  	end
 
 
+ 	def rate
+ 		condition = params[:year].rjust(4,'0') + '-' + params[:month].rjust(2,'0') + '%'
+ 		@data = MoneyNoteHistory
+ 			.select('category, sum(price) as sum_price')
+ 			.where('expended_at like ?', condition)
+ 			.group('category')
+
+ 		respond_to do |format|
+        	format.json { render json: @data }
+      	end
+ 	end
+
  	def history
  		render_table
  	end
