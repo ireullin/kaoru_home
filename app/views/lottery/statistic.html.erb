@@ -129,68 +129,56 @@
 
 <script language="javascript">
 
-var g_bubblechart = null;
-
 $(document).ready(ready);
 function ready()
 {
   console.log('ready');
-  //if(g_bubblechart==null)
-  //    g_bubblechart = new AmCharts.AmXYChart();
-
  
+  var url = "<%= full_url('/lottery/bubblechart/'+params[:type]+'.json') %>";
+  console.log(url);
+  $.get(url, function(data){
+    var g_bubblechart = AmCharts.makeChart("chartdiv", 
+    {
+      "type": "xy",
+      "pathToImages": "<%=full_url('/amcharts/images/')%>",
+      "theme": "light",
+      "dataProvider" : data,
+      "valueAxes": 
+      [
+        {
+          "title": "獎號",
+          "position":"bottom",
+          "axisAlpha": 0
+        },
+        {
+          "title": "月份",
+          "minMaxMultiplier": 1,
+          "axisAlpha": 0,
+          "position": "left"
+        }
+      ],
+      "startDuration": 1.5,
+      "graphs": 
+      [
+        {
+          "balloonText": "<b>[[y]]</b>月份  獎號:<b>[[x]]</b> <br>出現<b>[[value]]</b>次",
+          "bullet": "circle",
+          "bulletBorderAlpha": 0.2,
+          "bulletAlpha": 0.8,
+          "lineAlpha": 0,
+          "fillAlphas": 0,
+          "valueField": "count",
+          "xField": "number",
+          "yField": "month",
+          //"maxBulletSize": 70
+        }
+      ],
+      "marginLeft": 46,
+      "marginBottom": 35,
+      "chartScrollbar": {},
+      "chartCursor": {} 
+    });
+  });
 
-AmCharts.ready(function () {   
-    console.log('AmCharts.ready');
-
-    // XY Chart
-    if(g_bubblechart==null)
-      g_bubblechart = new AmCharts.AmXYChart();
-
-    g_bubblechart.pathToImages = "<%=full_url('/amcharts/images/')%>";
-    //g_bubblechart.pathToImages = '/amcharts/images';
-    //g_bubblechart.dataProvider = chartData;
-    
-     var url = "<%= full_url('/lottery/bubblechart/'+params[:type]+'.json') %>";
-    console.log(url);
-
-    $.get(url, function(data){
-      console.log(data);
-      g_bubblechart.dataProvider = data;
-      g_bubblechart.write("chartdiv");
-      g_bubblechart.validateData();
-    }); 
-
-
-    g_bubblechart.startDuration = 1.5;
-
-    // AXES
-    // X
-    var xAxis = new AmCharts.ValueAxis();
-    xAxis.title = "獎號";
-    xAxis.position = "bottom";
-    xAxis.autoGridCount = true;
-    g_bubblechart.addValueAxis(xAxis);
-
-    // Y
-    var yAxis = new AmCharts.ValueAxis();
-    yAxis.title = "月份";
-    yAxis.position = "left";
-    yAxis.autoGridCount = true;
-    g_bubblechart.addValueAxis(yAxis);
-
-    // GRAPH
-    var graph = new AmCharts.AmGraph();
-    graph.valueField = "value"; // valueField responsible for the size of a bullet
-    graph.xField = "x";
-    graph.yField = "y";
-    graph.lineAlpha = 0;
-    graph.bullet = "bubble";
-    graph.balloonText = "獎號:<b>[[x]]</b> 月份:<b>[[y]]</b><br>出現次數:<b>[[value]]</b>"
-    g_bubblechart.addGraph(graph);
-
-    // WRITE
-    g_bubblechart.write("chartdiv");
-});
 }
 </script>

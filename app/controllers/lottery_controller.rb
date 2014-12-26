@@ -124,7 +124,7 @@ class LotteryController < ApplicationController
         arr = []
         @map_buff.each do |k,v|
             t = k.split('-')
-            arr << {x: t[1], y: t[0], value: v }
+            arr << {number: t[1], month: t[0], count: v }
         end
         return arr
     end
