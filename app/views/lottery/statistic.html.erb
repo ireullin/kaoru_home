@@ -119,4 +119,66 @@
     </tbody>
   </table>
 
+  <br>
+  <br>
+  <h3>獎號根據月份分佈</h3>
+  <div id="chartdiv" style="width: 100%; height: 600px;"></div>
+
 </div>
+
+
+<script language="javascript">
+
+$(document).ready(ready);
+function ready()
+{
+  console.log('ready');
+ 
+  var url = "<%= full_url('/lottery/bubblechart/'+params[:type]+'.json') %>";
+  console.log(url);
+  $.get(url, function(data){
+    var g_bubblechart = AmCharts.makeChart("chartdiv", 
+    {
+      "type": "xy",
+      "pathToImages": "<%=full_url('/amcharts/images/')%>",
+      "theme": "light",
+      "dataProvider" : data,
+      "valueAxes": 
+      [
+        {
+          "title": "獎號",
+          "position":"bottom",
+          "axisAlpha": 0
+        },
+        {
+          "title": "月份",
+          "minMaxMultiplier": 1,
+          "axisAlpha": 0,
+          "position": "left"
+        }
+      ],
+      "startDuration": 1.5,
+      "graphs": 
+      [
+        {
+          "balloonText": "<b>[[y]]</b>月份  獎號:<b>[[x]]</b> <br>出現<b>[[value]]</b>次",
+          "bullet": "circle",
+          "bulletBorderAlpha": 0.2,
+          "bulletAlpha": 0.8,
+          "lineAlpha": 0,
+          "fillAlphas": 0,
+          "valueField": "count",
+          "xField": "number",
+          "yField": "month",
+          //"maxBulletSize": 70
+        }
+      ],
+      "marginLeft": 46,
+      "marginBottom": 35,
+      "chartScrollbar": {},
+      "chartCursor": {} 
+    });
+  });
+
+}
+</script>

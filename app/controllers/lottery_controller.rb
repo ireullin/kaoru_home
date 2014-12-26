@@ -8,7 +8,7 @@ class LotteryController < ApplicationController
 		elsif params[:type]=='lottery649s'
 			@data = Lottery649s.order(term: :desc).page(params[:page]).per(50)
 		else
-      redirect_to( full_url '/error.html' )
+            redirect_to( full_url '/error.html' )
 		end
 	end
 
@@ -24,7 +24,7 @@ class LotteryController < ApplicationController
 
 
   		respond_to do |format|
-    	  format.json { render :json => @data.to_json  }
+    	   format.json { render :json => @data.to_json  }
         end
 	end
 
@@ -72,7 +72,6 @@ class LotteryController < ApplicationController
 
 
     def statistic
-
         if params[:type]=='superlottos'
             @high_ral = LotteryStatistic.where(statistic_type: 'superlottos_count_high_ral').first
             @high_ral['context'] = JSON.parse(@high_ral['context'])
@@ -89,9 +88,55 @@ class LotteryController < ApplicationController
         else
             redirect_to( full_url '/error.html' )
         end
-
-
     end
     
 
+    def bubble_chart
+
+        if params[:type]=='superlottos'
+            @data = Superlottos.all
+        elsif params[:type]=='lottery649s'
+            @data = Lottery649s.all
+        else
+            redirect_to( full_url '/error.html' )
+        end
+
+        @map_buff = {}
+        @data.each do |row|
+            month = row.announced_at.month.to_s
+            
+            fill_to_buff(month, row.no1)
+            fill_to_buff(month, row.no2)
+            fill_to_buff(month, row.no3)
+            fill_to_buff(month, row.no4)
+            fill_to_buff(month, row.no5)
+            fill_to_buff(month, row.no6)
+        end
+
+        respond_to do |format|
+            format.json { render json: convert_to_bubblechart_data }
+        end
+    end
+
+
+    private
+    def convert_to_bubblechart_data
+        arr = []
+        @map_buff.each do |k,v|
+            t = k.split('-')
+            arr << {number: t[1], month: t[0], count: v }
+        end
+        return arr
+    end
+
+
+    def fill_to_buff(month, no)
+        key = "#{month}-#{no}"
+
+        if @map_buff.has_key?(key) 
+            @map_buff[key] = @map_buff[key] + 1
+        else
+            @map_buff[key] =  1
+        end
+    end
 end
