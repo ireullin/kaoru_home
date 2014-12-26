@@ -97,6 +97,6 @@ module ApplicationHelper
 
 
 	def fullurl_for(options = nil)
-		return full_url( url_for(options) )
+		return url_for(options)
 	end
 end
