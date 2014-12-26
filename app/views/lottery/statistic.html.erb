@@ -119,4 +119,78 @@
     </tbody>
   </table>
 
+  <br>
+  <br>
+  <h3>獎號根據月份分佈</h3>
+  <div id="chartdiv" style="width: 100%; height: 600px;"></div>
+
 </div>
+
+
+<script language="javascript">
+
+var g_bubblechart = null;
+
+$(document).ready(ready);
+function ready()
+{
+  console.log('ready');
+  //if(g_bubblechart==null)
+  //    g_bubblechart = new AmCharts.AmXYChart();
+
+ 
+
+AmCharts.ready(function () {   
+    console.log('AmCharts.ready');
+
+    // XY Chart
+    if(g_bubblechart==null)
+      g_bubblechart = new AmCharts.AmXYChart();
+
+    g_bubblechart.pathToImages = "<%=full_url('/amcharts/images/')%>";
+    //g_bubblechart.pathToImages = '/amcharts/images';
+    //g_bubblechart.dataProvider = chartData;
+    
+     var url = "<%= full_url('/lottery/bubblechart/'+params[:type]+'.json') %>";
+    console.log(url);
+
+    $.get(url, function(data){
+      console.log(data);
+      g_bubblechart.dataProvider = data;
+      g_bubblechart.write("chartdiv");
+      g_bubblechart.validateData();
+    }); 
+
+
+    g_bubblechart.startDuration = 1.5;
+
+    // AXES
+    // X
+    var xAxis = new AmCharts.ValueAxis();
+    xAxis.title = "獎號";
+    xAxis.position = "bottom";
+    xAxis.autoGridCount = true;
+    g_bubblechart.addValueAxis(xAxis);
+
+    // Y
+    var yAxis = new AmCharts.ValueAxis();
+    yAxis.title = "月份";
+    yAxis.position = "left";
+    yAxis.autoGridCount = true;
+    g_bubblechart.addValueAxis(yAxis);
+
+    // GRAPH
+    var graph = new AmCharts.AmGraph();
+    graph.valueField = "value"; // valueField responsible for the size of a bullet
+    graph.xField = "x";
+    graph.yField = "y";
+    graph.lineAlpha = 0;
+    graph.bullet = "bubble";
+    graph.balloonText = "獎號:<b>[[x]]</b> 月份:<b>[[y]]</b><br>出現次數:<b>[[value]]</b>"
+    g_bubblechart.addGraph(graph);
+
+    // WRITE
+    g_bubblechart.write("chartdiv");
+});
+}
+</script>

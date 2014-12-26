@@ -35,6 +35,7 @@ Rails.application.routes.draw do
 
   get   'lottery/history/:type/:page'   => 'lottery#index'
   get   'lottery/statistic/:type'       => 'lottery#statistic'
+  get   'lottery/bubblechart/:type'     => 'lottery#bubble_chart'
   get   'lottery/newest/:type'          => 'lottery#newest'
   post  'lottery/new'                   => 'lottery#new'
   
