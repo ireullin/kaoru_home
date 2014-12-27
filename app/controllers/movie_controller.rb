@@ -14,6 +14,50 @@ class MovieController < ApplicationController
 	end
 
 
+	def theater
+
+		theaters = []
+		MovieTheater.select('theater_name').where(enable: 1).each{|r| theaters << r.theater_name }
+
+		
+		tmp =[]
+		move_schedules = MovieSchedules.all
+		theaters.each do | theater_name  |
+
+			tmp << {theater_name: theater_name, movies: [] }
+
+			move_schedules.each do |s|
+
+				rc = extract_theater(theater_name, s.schedules)
+				next if rc.nil?
+
+				tmp[-1][:movies] << {
+					id: s.movie_id,
+					name: s.name,
+					times: rc
+				}
+
+			end
+		end
+		
+		
+		respond_to {|format| format.any { render json: tmp } }
+	end
+
+
+	def extract_theater(theater_name, schedule)
+		
+		return nil unless schedule.include?( theater_name )
+
+		sch_obj = JSON.parse(schedule)
+		sch_obj.each do |s|
+			return s['times'] if s['theater'] == theater_name
+		end
+
+		return nil
+	end
+
+
 	def create
 		@movie = MovieHistories.find_or_create_by(movie_id: params[:id])
 		@movie.movie_id = params[:id]
