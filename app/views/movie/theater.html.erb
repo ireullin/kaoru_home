@@ -1,0 +1,77 @@
+<div class="container-fluid">
+
+	<div class="page-header">
+		<h1><small>Favorite </small> Theaters</h1>
+	</div>
+
+	
+	<div class="row">
+		<ul class="nav nav-tabs" id="tabs_movies">
+			<% @theaters.each_with_index do |row, i|  %>
+				<li role="presentation" <%='class=active' if row.id.to_s==params[:id].to_s %> >
+					<a href="<%= full_url('/movie/theater/'+row.id.to_s) %>">
+						<%= row.theater_name %>
+					</a>
+				</li>
+  			<% end %>
+		</ul>
+	</div>
+	<br>
+
+	
+	<div>
+		<% @result[:movies].each_with_index do |movie,i| %>
+
+			<% if i%6==5 %>
+			<div class="row">
+			<% end %>
+
+				<div class="col-md-2">
+					<div class="list-group">
+					  	
+				  		<a target="_blank" href="http://www.atmovies.com.tw/showtime/showtime.asp?film_id=<%= movie[:id] %>&area=a02">
+				  			<div class="list-group-item active">
+				  				<%= movie[:name] %>
+				  			</div>
+				  		</a>
+					  	
+					  
+				  		<div class="list-group-item">
+				  			<% movie[:times].each do |sub_row| %>
+				  				<% unless sub_row.include?(':') %>
+					  				<h4 class="list-group-item-heading"><%= sub_row %></h4>
+					  			<% else %>
+				    				<p class="list-group-item-text"><%= sub_row %></p>
+				    			<% end %>
+				    		<% end %>
+					    </div>
+					  
+					</div>
+				</div>
+			
+			<% if i%6==5 %>
+			</div>
+			<% end %>
+
+
+		<% end %>
+	</div>
+</div>
+
+
+<script language="javascript">
+
+$(document).ready(ready);
+function ready()
+{console.log(arguments.callee.name);
+
+	$(document).one( 'page:before-change', unload);
+
+}
+
+function unload()
+{
+	
+}
+
+</script>

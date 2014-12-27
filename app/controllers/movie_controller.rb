@@ -16,45 +16,27 @@ class MovieController < ApplicationController
 
 	def theater
 
-		theaters = []
-		MovieTheater.select('theater_name').where(enable: 1).each{|r| theaters << r.theater_name }
-
+		@theaters = MovieTheater.where(enable: 1)
 		
-		tmp =[]
-		move_schedules = MovieSchedules.all
-		theaters.each do | theater_name  |
+		params[:id] = @theaters.first.id if params[:id].nil?
 
-			tmp << {theater_name: theater_name, movies: [] }
+		theater = MovieTheater.find(params[:id])
 
-			move_schedules.each do |s|
+		movie_schedules = MovieSchedules.where("schedules like ?", "%#{ theater.theater_name }%" )
 
-				rc = extract_theater(theater_name, s.schedules)
-				next if rc.nil?
+		@result = {theater_name: theater.theater_name, movies: [] }
+		movie_schedules.each do |s|
 
-				tmp[-1][:movies] << {
-					id: s.movie_id,
-					name: s.name,
-					times: rc
-				}
+			rc = extract_theater(theater.theater_name, s.schedules)
+			next if rc.nil?
 
-			end
+			@result[:movies] << {
+				id: s.movie_id,
+				name: s.name,
+				times: rc
+			}
+
 		end
-		
-		
-		respond_to {|format| format.any { render json: tmp } }
-	end
-
-
-	def extract_theater(theater_name, schedule)
-		
-		return nil unless schedule.include?( theater_name )
-
-		sch_obj = JSON.parse(schedule)
-		sch_obj.each do |s|
-			return s['times'] if s['theater'] == theater_name
-		end
-
-		return nil
 	end
 
 
@@ -99,6 +81,19 @@ class MovieController < ApplicationController
 		end
 
 		respond_to {|format| format.json { render json: {msg: 'success', status: 0 } } }
+	end
+
+	private
+	def extract_theater(theater_name, schedule)
+		
+		return nil unless schedule.include?( theater_name )
+
+		sch_obj = JSON.parse(schedule)
+		sch_obj.each do |s|
+			return s['times'] if s['theater'] == theater_name
+		end
+
+		return nil
 	end
 
 end
