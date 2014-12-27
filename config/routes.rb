@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   post 'money_note/items'
 
   get 'movie/index'
+  get 'movie/theater'     => 'movie#theater'
+  get 'movie/theater/:id' => 'movie#theater'
   get 'movie/schedule/:id' => 'movie#schedule'
   post 'movie/update_schedules'
   post 'movie/create'

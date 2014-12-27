@@ -14,6 +14,32 @@ class MovieController < ApplicationController
 	end
 
 
+	def theater
+
+		@theaters = MovieTheater.where(enable: 1)
+		
+		params[:id] = @theaters.first.id if params[:id].nil?
+
+		theater = MovieTheater.find(params[:id])
+
+		movie_schedules = MovieSchedules.where("schedules like ?", "%#{ theater.theater_name }%" )
+
+		@result = {theater_name: theater.theater_name, movies: [] }
+		movie_schedules.each do |s|
+
+			rc = extract_theater(theater.theater_name, s.schedules)
+			next if rc.nil?
+
+			@result[:movies] << {
+				id: s.movie_id,
+				name: s.name,
+				times: rc
+			}
+
+		end
+	end
+
+
 	def create
 		@movie = MovieHistories.find_or_create_by(movie_id: params[:id])
 		@movie.movie_id = params[:id]
@@ -55,6 +81,19 @@ class MovieController < ApplicationController
 		end
 
 		respond_to {|format| format.json { render json: {msg: 'success', status: 0 } } }
+	end
+
+	private
+	def extract_theater(theater_name, schedule)
+		
+		return nil unless schedule.include?( theater_name )
+
+		sch_obj = JSON.parse(schedule)
+		sch_obj.each do |s|
+			return s['times'] if s['theater'] == theater_name
+		end
+
+		return nil
 	end
 
 end
