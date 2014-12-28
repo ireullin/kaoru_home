@@ -4,6 +4,7 @@
 		<div class="list-group-item active" >
 			<span class="list-name">請輸入要預約追蹤的電影關鍵字</span>
 		</div>
+		<div id="init_data"></div>
 		<div class="list-group-item-sm" style="display:none">
 			<input type="text" class="form-control sub-item" placeholder="add a new item" id="new_item">
 		</div>
@@ -29,12 +30,28 @@ function ready()
 	$(document).on( 'click', '.glyphicon.glyphicon-remove.item-remove', removeItemOnclick );
 
 	$(document).one( 'page:before-change', unload);
+
+	initData();
 }
 
 
 function unload()
 {
 
+}
+
+
+function initData()
+{
+	var data = JSON.parse("<%= @data.to_json %>".replace(/&quot;/g,'"'));
+
+	//console.log(data);
+	arr = [];
+	for(var i=0; i<data.length; i++)
+		arr[i] = generateItem( data[i].keyword, data[i].tag_id );
+
+
+	$('#init_data').replaceWith( arr.join('') );
 }
 
 
@@ -49,16 +66,30 @@ function newItemOnPress(e)
 	if(itemName.length<=0)
 		return;
 
+	var tagID = generateID();
+
 	$(this).val('');
-	$(this).parent().before( generateItem( itemName, generateID() ) );
-	g_isModified = true;
+	$(this).parent().before( generateItem( itemName, tagID) );
+
+	$.ajaxSetup({headers: { "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content') }  });
+	$.post( 
+		"<%= full_url '/movie/reserve_new.json' %>",
+		{
+			tag_id: tagID,
+			keyword: itemName
+		},
+		function(data){
+				console.log(data);
+		});
+
+
 }
 
 
 function generateItem(itemName, id)
 {
 	var data = [
-		'<div class="list-group-item" id="'+id+'">',
+		'<div class="list-group-item" id="'+id+'" >',
 			'<span class="item-name">',
 				itemName,
 			'</span>',
@@ -110,7 +141,20 @@ function itemOnLeave()
 function removeItemOnclick()
 {console.log(arguments.callee.name);
 
-	$(this).parent().parent().remove();
+	var obj = $(this).parent().parent();
+
+	$.ajaxSetup({headers: { "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content') }  });
+	$.post( 
+		"<%= full_url '/movie/reserve_delete.json' %>",
+		{
+			tag_id: obj.prop('id')
+		},
+		function(data){
+				console.log(data);
+		}
+	);
+
+	obj.remove();
 }
 
 

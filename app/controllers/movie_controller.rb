@@ -1,6 +1,6 @@
 class MovieController < ApplicationController
 	
-	skip_before_action :verify_authenticity_token, only: [:update_schedules]
+	skip_before_action :verify_authenticity_token, only: [:update_schedules, :reserve_new, :reserve_delete]
 
 	def index
 		@schedules = MovieSchedules.select(:movie_id, :name)
@@ -15,8 +15,24 @@ class MovieController < ApplicationController
 
 
 	def reserve
+		@data = MovieReserve.where(status: 1)
+	end
 
 
+	def reserve_new
+		rc = MovieReserve.new
+		rc.tag_id = params[:tag_id]
+		rc.keyword = params[:keyword]
+		rc.status = 1
+		rc.save
+
+		respond_to {|format| format.json { render json: {table_id: rc.id, tag_id: rc.tag_id, method:  'reserve_new'} } }
+	end
+
+
+	def reserve_delete
+		rc = MovieReserve.where(tag_id: params[:tag_id]).update_all(status: 0)
+		respond_to {|format| format.json { render json: {tag_id: params[:tag_id], method: 'reserve_delete'} } }
 	end
 
 

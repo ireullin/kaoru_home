@@ -8,6 +8,8 @@ Rails.application.routes.draw do
 
   get 'movie/index'
   get 'movie/reserve'
+  post 'movie/reserve_new'
+  post 'movie/reserve_delete'
   get 'movie/theater'     => 'movie#theater'
   get 'movie/theater/:id' => 'movie#theater'
   get 'movie/schedule/:id' => 'movie#schedule'
