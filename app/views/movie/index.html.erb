@@ -20,16 +20,12 @@
 						<button class="btn btn-primary" type="button" id="btn_pin" >
 							<span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span>
 						</button>
-						
-						<button class="btn btn-primary" type="button" id="btn_keyword" >
-							<a class="fancybox fancybox.ajax" id="new_movies_reminder" href="<%= full_url '/movie/reserve' %>" >
-								<span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
-							</a>
-						</button>
-						
 					</span>
 				</div>
 			<% end %>
+			<a class="fancybox fancybox.ajax" id="new_movies_reminder" href="<%= full_url '/movie/reserve' %>" >
+				預約未上檔電影
+			</a>
 		</div>
 		<div class="col-md-6">
 		</div>
@@ -68,12 +64,12 @@ function ready()
 
 	$("#new_movies_reminder").fancybox({
         parent      : 'body',
-        maxWidth    : 400,
+        //maxWidth    : 400,
         //maxHeight   : 300,
         fitToView   : false,
-        width       : '70%',
-        height      : 'auto',
-        autoSize    : false,
+        //width       : '70%',
+        //height      : 'auto',
+        autoSize    : true,
         closeClick  : false,
         openEffect  : 'none',
         closeEffect : 'none'
