@@ -14,6 +14,12 @@ class MovieController < ApplicationController
 	end
 
 
+	def reserve
+
+
+	end
+
+
 	def theater
 
 		@theaters = MovieTheater.where(enable: 1)
