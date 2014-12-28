@@ -16,6 +16,7 @@ class MovieController < ApplicationController
 
 	def reserve
 		@data = MovieReserve.where(status: 1)
+		respond_to {|format| format.html { render :reserve, layout: false } }
 	end
 
 
