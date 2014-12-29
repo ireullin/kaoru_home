@@ -27,9 +27,18 @@
 				預約未上檔電影
 			</a>
 		</div>
-		<div class="col-md-6">
-		</div>
 	</div>
+
+	<% unless @new_movies.size == 0%>
+		<br>
+		<div class="alert alert-warning alert-dismissible" role="alert">
+  		<button type="button" class="close" data-dismiss="alert">
+  			<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+  		</button>
+  		電影&nbsp<strong><%= @new_movies.join(',') %></strong>&nbsp已經上檔
+		</div>
+	<% end %>
+
 	<br>
 	<br>
 	<div class="row">

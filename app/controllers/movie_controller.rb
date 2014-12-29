@@ -4,15 +4,35 @@ class MovieController < ApplicationController
 
 	def index
 		
+		@new_movies = []
 		MovieReserve.where('status = 1').each do |mr|
-			ms = MovieSchedules.select(:movie_id, :name).where( "name like ?", "%#{mr.keyword}%").first
-			next if ms.nil?
+			#ms = MovieSchedules
+			#	.select(:movie_id, :name)
+			#	.join()
+			#	.where( "name like ?", "%#{mr.keyword}%")
+			#	.first
+			
+			ms = MovieSchedules.find_by_sql """
+				select movie_id, name
+				from movie_schedules
+				where movie_id not in
+				(
+	    			select movie_id from movie_histories
+	    			where enable = 1
+				)
+				and name like '%#{mr.keyword}%'
+				limit 1
+			"""
 
-			mh = MovieHistories.find_or_create_by(movie_id: ms.movie_id)
-			mh.name = ms.name
+			next if ms[0].nil?
+
+			mh = MovieHistories.find_or_create_by(movie_id: ms[0].movie_id)
+			mh.name = ms[0].name
 			mh.enable = 1
 			mh.save
 			
+			@new_movies << ms[0].name 
+
 			mr.status = 2
 			mr.save
 		end
