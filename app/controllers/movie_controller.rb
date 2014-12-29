@@ -3,6 +3,21 @@ class MovieController < ApplicationController
 	skip_before_action :verify_authenticity_token, only: [:update_schedules, :reserve_new, :reserve_delete]
 
 	def index
+		
+		MovieReserve.where('status = 1').each do |mr|
+			ms = MovieSchedules.select(:movie_id, :name).where( "name like ?", "%#{mr.keyword}%").first
+			next if ms.nil?
+
+			mh = MovieHistories.find_or_create_by(movie_id: ms.movie_id)
+			mh.name = ms.name
+			mh.enable = 1
+			mh.save
+			
+			mr.status = 2
+			mr.save
+		end
+		
+
 		@schedules = MovieSchedules.select(:movie_id, :name)
 		@movies = MovieHistories.where(enable: 1)
 	end
@@ -15,7 +30,7 @@ class MovieController < ApplicationController
 
 
 	def reserve
-		@data = MovieReserve.where(status: 1)
+		@data = MovieReserve.where('status <> 0')
 		respond_to {|format| format.html { render :reserve, layout: false } }
 	end
 

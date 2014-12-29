@@ -12,7 +12,7 @@
 						<select class="form-control" id="sel_movies" >
 							<option value="">請選擇你想追蹤的電影時刻</option>
 					  		<% @schedules.each do |row| %>
-					  		<option value="<%= row.movie_id %>"><%= row.name %></option>
+					  			<option value="<%= row.movie_id %>"><%= row.name %></option>
 					  		<% end %>
 						</select>
 					</span>
