@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141227030010) do
+ActiveRecord::Schema.define(version: 20141228112931) do
 
   create_table "food_menus", id: false, force: true do |t|
     t.string   "food_type"
@@ -84,6 +84,14 @@ ActiveRecord::Schema.define(version: 20141227030010) do
   end
 
   add_index "movie_histories", ["movie_id"], name: "index_movie_histories_on_movie_id", unique: true
+
+  create_table "movie_reserves", force: true do |t|
+    t.string   "tag_id"
+    t.string   "keyword"
+    t.integer  "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "movie_schedules", id: false, force: true do |t|
     t.string   "movie_id"

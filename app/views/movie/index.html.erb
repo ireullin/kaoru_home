@@ -12,7 +12,7 @@
 						<select class="form-control" id="sel_movies" >
 							<option value="">請選擇你想追蹤的電影時刻</option>
 					  		<% @schedules.each do |row| %>
-					  		<option value="<%= row.movie_id %>"><%= row.name %></option>
+					  			<option value="<%= row.movie_id %>"><%= row.name %></option>
 					  		<% end %>
 						</select>
 					</span>
@@ -23,8 +23,22 @@
 					</span>
 				</div>
 			<% end %>
+			<a class="fancybox fancybox.ajax" id="new_movies_reminder" href="<%= full_url '/movie/reserve' %>" >
+				預約未上檔電影
+			</a>
 		</div>
 	</div>
+
+	<% unless @new_movies.size == 0%>
+		<br>
+		<div class="alert alert-warning alert-dismissible" role="alert">
+  		<button type="button" class="close" data-dismiss="alert">
+  			<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+  		</button>
+  		電影&nbsp<strong><%= @new_movies.join(',') %></strong>&nbsp已經上檔
+		</div>
+	<% end %>
+
 	<br>
 	<br>
 	<div class="row">
@@ -55,6 +69,20 @@ function ready()
 	<% end %>
 
 	$('a.cls-tab').first().trigger('click');
+
+
+	$("#new_movies_reminder").fancybox({
+        parent      : 'body',
+        //maxWidth    : 400,
+        //maxHeight   : 300,
+        fitToView   : false,
+        //width       : '70%',
+        //height      : 'auto',
+        autoSize    : true,
+        closeClick  : false,
+        openEffect  : 'none',
+        closeEffect : 'none'
+    });
 }
 
 
@@ -99,7 +127,7 @@ function onClickTab()
 	  		{ 
 	  			$('#div_schedule').css('display','none');
 	  			$('#div_schedule').html(d);
-	  			$('#div_schedule').fadeIn( 2000 );
+	  			$('#div_schedule').fadeIn( 1000 );
 	  		}
 	  	);
   	}

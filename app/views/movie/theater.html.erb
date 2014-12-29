@@ -19,7 +19,7 @@
 	<br>
 
 	
-	<div>
+	<div id="show" style="display:none">
 		<% @result[:movies].each_with_index do |movie,i| %>
 
 			<% if i%6==5 %>
@@ -66,6 +66,7 @@ function ready()
 {console.log(arguments.callee.name);
 
 	$(document).one( 'page:before-change', unload);
+	$('#show').fadeIn( 1000 );
 
 }
 

@@ -1,8 +1,43 @@
 class MovieController < ApplicationController
 	
-	skip_before_action :verify_authenticity_token, only: [:update_schedules]
+	skip_before_action :verify_authenticity_token, only: [:update_schedules, :reserve_new, :reserve_delete]
 
 	def index
+		
+		@new_movies = []
+		MovieReserve.where('status = 1').each do |mr|
+			#ms = MovieSchedules
+			#	.select(:movie_id, :name)
+			#	.join()
+			#	.where( "name like ?", "%#{mr.keyword}%")
+			#	.first
+			
+			ms = MovieSchedules.find_by_sql """
+				select movie_id, name
+				from movie_schedules
+				where movie_id not in
+				(
+	    			select movie_id from movie_histories
+	    			where enable = 1
+				)
+				and name like '%#{mr.keyword}%'
+				limit 1
+			"""
+
+			next if ms[0].nil?
+
+			mh = MovieHistories.find_or_create_by(movie_id: ms[0].movie_id)
+			mh.name = ms[0].name
+			mh.enable = 1
+			mh.save
+			
+			@new_movies << ms[0].name 
+
+			mr.status = 2
+			mr.save
+		end
+		
+
 		@schedules = MovieSchedules.select(:movie_id, :name)
 		@movies = MovieHistories.where(enable: 1)
 	end
@@ -11,6 +46,29 @@ class MovieController < ApplicationController
 	def schedule
 		@schedule = MovieSchedules.where(movie_id: params[:id]).first
 		respond_to {|format| format.html { render :schedule, layout: false } }
+	end
+
+
+	def reserve
+		@data = MovieReserve.where('status <> 0')
+		respond_to {|format| format.html { render :reserve, layout: false } }
+	end
+
+
+	def reserve_new
+		rc = MovieReserve.new
+		rc.tag_id = params[:tag_id]
+		rc.keyword = params[:keyword]
+		rc.status = 1
+		rc.save
+
+		respond_to {|format| format.json { render json: {table_id: rc.id, tag_id: rc.tag_id, method:  'reserve_new'} } }
+	end
+
+
+	def reserve_delete
+		rc = MovieReserve.where(tag_id: params[:tag_id]).update_all(status: 0)
+		respond_to {|format| format.json { render json: {tag_id: params[:tag_id], method: 'reserve_delete'} } }
 	end
 
 
