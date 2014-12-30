@@ -2,6 +2,31 @@ class LotteryStatisticController < ApplicationController
 
 	before_action :filter_ip
 
+    def count2
+        if params[:type]=='superlottos'
+            data = Superlottos.all
+            max = 38
+        elsif params[:type]=='lottery649s'
+            data = Lottery649s.all
+            max = 49
+        else
+            respond_to {|format| format.any { render :json => {msg: "unknown type", status: 102 } } }
+            return
+        end
+
+        arr_computer = Array.new(max+1){|c| c=Array.new }
+        data.each do |row|
+            tmp = [ row['no1'],row['no2'],row['no3'],row['no4'],row['no5'],row['no6'] ]
+            1.upto(max) do |i|
+                next unless tmp.include?( i )
+                arr_computer[i]concat(tmp)
+            end
+        end
+
+
+
+    end
+
 	def count
 
         if params[:type]=='superlottos'
