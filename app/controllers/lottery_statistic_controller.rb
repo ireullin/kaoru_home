@@ -1,31 +1,52 @@
+
+# this controller is only for statistic calculate
 class LotteryStatisticController < ApplicationController
 
 	before_action :filter_ip
 
-    def count2
+
+
+    def rank
         if params[:type]=='superlottos'
             data = Superlottos.all
-            max = 38
+            @max = 38
+            #@max = 3
         elsif params[:type]=='lottery649s'
             data = Lottery649s.all
-            max = 49
+            @max = 49
         else
-            respond_to {|format| format.any { render :json => {msg: "unknown type", status: 102 } } }
+            respond_to do |format|
+                format.json { render :json => {msg: "unknown type", status: 102 } } 
+                format.html { redirect_to( full_url '/error.html' ) }
+            end
             return
         end
 
-        arr_computer = Array.new(max+1){|c| c=Array.new }
+        arr_bf_rank = Array.new(@max+1){|c| c=Array.new }
+
         data.each do |row|
             tmp = [ row['no1'],row['no2'],row['no3'],row['no4'],row['no5'],row['no6'] ]
-            1.upto(max) do |i|
+            1.upto(@max) do |i|
                 next unless tmp.include?( i )
-                arr_computer[i]concat(tmp)
+                arr_bf_rank[i].concat(tmp)
             end
+        end
+
+        @arr_af_rank = []
+        1.upto(@max) do |i|
+            @arr_af_rank[i] = Statistics.rank_count(arr_bf_rank[i])
+            #special_max_rc = Statistics.rank_count(special_max)
         end
 
 
 
+        respond_to do |format|
+            format.json { render json: @arr_af_rank  } 
+            format.html { render :rank, layout: 'blank' }
+        end
+
     end
+
 
 	def count
 
