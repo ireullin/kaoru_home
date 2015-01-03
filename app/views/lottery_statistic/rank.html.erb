@@ -19,6 +19,7 @@
     		<tr>
     			<% 0.upto(@max-1) do |j| %>
         			<td>
+                        <% next if @arr_af_rank[i].nil? %>
         				<b><%= @arr_af_rank[i][:numbers][j] %></b>
         				<br>
         				<%= @arr_af_rank[i][:count][j] %>
@@ -33,5 +34,6 @@
     </tbody>
 </table>
 
+<p>total time:<%= (Time.now - @start_time).to_i  %> seconds</p>
 
 </div>

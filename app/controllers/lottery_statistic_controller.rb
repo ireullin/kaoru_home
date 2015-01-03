@@ -2,15 +2,17 @@
 # this controller is only for statistic calculate
 class LotteryStatisticController < ApplicationController
 
-	before_action :filter_ip
+	#before_action :filter_ip
 
 
 
     def rank
+
+        @start_time = Time.now
+
         if params[:type]=='superlottos'
             data = Superlottos.all
             @max = 38
-            #@max = 3
         elsif params[:type]=='lottery649s'
             data = Lottery649s.all
             @max = 49
@@ -22,26 +24,31 @@ class LotteryStatisticController < ApplicationController
             return
         end
 
-        arr_bf_rank = Array.new(@max+1){|c| c=Array.new }
+        @arr_bf_rank = Array.new(@max+1){|c| c=Array.new }
+        @arr_bf_rank_sp = Array.new
 
         data.each do |row|
             tmp = [ row['no1'],row['no2'],row['no3'],row['no4'],row['no5'],row['no6'] ]
-            1.upto(@max) do |i|
+            tmp_sp =  row['special']
+            #1.upto(@max) do |i|
+            1.upto(1) do |i|
                 next unless tmp.include?( i )
-                arr_bf_rank[i].concat(tmp)
+                @arr_bf_rank[i].concat(tmp)
+                @arr_bf_rank_sp[i].concat( tmp_sp )
             end
         end
 
-        @arr_af_rank = []
-        1.upto(@max) do |i|
-            @arr_af_rank[i] = Statistics.rank_count(arr_bf_rank[i])
-            #special_max_rc = Statistics.rank_count(special_max)
+        @arr_af_rank = [nil]
+        #1.upto(@max) do |i|
+        1.upto(1) do |i|
+            @arr_af_rank[i] = Statistics.rank_count(@arr_bf_rank[i])
+            @arr_af_rank_sp[i] = Statistics.rank_count(@arr_bf_rank_sp[i])
         end
 
 
 
         respond_to do |format|
-            format.json { render json: @arr_af_rank  } 
+            format.json { render json: @arr_af_rank_sp  } 
             format.html { render :rank, layout: 'blank' }
         end
 
