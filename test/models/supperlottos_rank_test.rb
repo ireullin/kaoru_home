@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class LotteryStatisticControllerTest < ActionController::TestCase
+class SupperlottosRankTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
