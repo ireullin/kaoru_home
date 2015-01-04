@@ -74,10 +74,17 @@ class LotteryController < ApplicationController
     def statistic
         if params[:type]=='superlottos'
             @rank = SupperlottosRank.all
+            @prob_no = 18
+            @prob_sp = 18
+
         elsif params[:type]=='lottery649s'
             @rank = Lottery649sRank.all
+            @prob_no = 16
+            @prob_sp = 6
+
         else
             redirect_to( full_url '/error.html' )
+
         end
 
     end
@@ -87,8 +94,10 @@ class LotteryController < ApplicationController
 
         if params[:type]=='superlottos'
             @data = Superlottos.all
+           
         elsif params[:type]=='lottery649s'
             @data = Lottery649s.all
+            
         else
             redirect_to( full_url '/error.html' )
         end
