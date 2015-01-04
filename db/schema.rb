@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150104100952) do
+ActiveRecord::Schema.define(version: 20150104141528) do
 
   create_table "food_menus", id: false, force: true do |t|
     t.string   "food_type"
@@ -54,14 +54,6 @@ ActiveRecord::Schema.define(version: 20150104100952) do
 
   create_table "lottery649s_ranks", force: true do |t|
     t.text     "content"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "lottery_statistics", id: false, force: true do |t|
-    t.string   "statistic_type"
-    t.text     "context"
-    t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
