@@ -1,128 +1,37 @@
 
 <div class="container-fluid">
-  <div class="page-header">
-    <h1>
-      <%= params[:type]=='superlottos' ? '威力彩各期獎號' : '大樂透各期獎號' %>
-      <small><%= params[:type]=='superlottos' ? '(每周一四開獎)' : '(每周二五開獎)' %></small>
-    </h1>
-  </div>
+    <div class="page-header">
+        <h1>
+            <%= params[:type]=='superlottos' ? '威力彩各期獎號' : '大樂透各期獎號' %>
+            <small><%= params[:type]=='superlottos' ? '(每周一四開獎)' : '(每周二五開獎)' %></small>
+        </h1>
+    </div>
   
-  <h3>高關聯性數字</h3>
-  <table class="table table-hover table-striped">
-    <thead>
-      <tr>
-        <th></th>
-        <th colspan="6">一般號</th>
-        <th>特別號</th>
-        <th>更新日期</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>開獎號碼</td>
-          <td><%= @high_ral['context']['normal']['numbers'][0] %></td>
-          <td><%= @high_ral['context']['normal']['numbers'][1] %></td>
-          <td><%= @high_ral['context']['normal']['numbers'][2] %></td>
-          <td><%= @high_ral['context']['normal']['numbers'][3] %></td>
-          <td><%= @high_ral['context']['normal']['numbers'][4] %></td>
-          <td><%= @high_ral['context']['normal']['numbers'][5] %></td>
-       	  <td><%= @high_ral['context']['special']['numbers'][0] %></td>
-          <td><%= @high_ral['updated_at'].localtime.strftime("%Y-%m-%d %H:%M:%S") %></td>
-        </tr>
-        <tr>
-          <td>統計次數</td>
-          <td><%= @high_ral['context']['normal']['count'][0] %></td>
-          <td><%= @high_ral['context']['normal']['count'][1] %></td>
-          <td><%= @high_ral['context']['normal']['count'][2] %></td>
-          <td><%= @high_ral['context']['normal']['count'][3] %></td>
-          <td><%= @high_ral['context']['normal']['count'][4] %></td>
-          <td><%= @high_ral['context']['normal']['count'][5] %></td>
-          <td><%= @high_ral['context']['special']['count'][0] %></td>
-          <td></td>
-        </tr>
-    </tbody>
-  </table>
 
-  <br><br>
+    
+    <h3>數字關聯性</h3>
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th></th>
+                <th colspan="6">一般號</th>
+                <th>特別號</th>
+                <th>最後更新時間</th>
+            </tr>
+        </thead>
 
-  <h3>最常出現數字</h3>
-  <table class="table table-hover table-striped">
-    <thead>
-       <tr>
-        <th></th>
-        <th colspan="6">一般號</th>
-        <th>特別號</th>
-        <th>更新日期</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>開獎號碼</td>
-          <td><%= @normal['context']['normal']['numbers'][0] %></td>
-          <td><%= @normal['context']['normal']['numbers'][1] %></td>
-          <td><%= @normal['context']['normal']['numbers'][2] %></td>
-          <td><%= @normal['context']['normal']['numbers'][3] %></td>
-          <td><%= @normal['context']['normal']['numbers'][4] %></td>
-          <td><%= @normal['context']['normal']['numbers'][5] %></td>
-          <td><%= @normal['context']['special']['numbers'][0] %></td>
-          <td><%= @normal['updated_at'].localtime.strftime("%Y-%m-%d %H:%M:%S") %></td>
-        </tr>
-        <tr>
-          <td>統計次數</td>
-          <td><%= @normal['context']['normal']['count'][0] %></td>
-          <td><%= @normal['context']['normal']['count'][1] %></td>
-          <td><%= @normal['context']['normal']['count'][2] %></td>
-          <td><%= @normal['context']['normal']['count'][3] %></td>
-          <td><%= @normal['context']['normal']['count'][4] %></td>
-          <td><%= @normal['context']['normal']['count'][5] %></td>
-          <td><%= @normal['context']['special']['count'][0] %></td>
-          <td></td>
-        </tr>   
-    </tbody>
-  </table>
+        <tbody>
+            <% @rank.each do |row| %>
+                <%= render partial: "rank", locals: {row: row} %>
+            <% end %>
+        </tbody>
+    </table>
 
-  <br><br>
+    <br><br>
 
-  <h3>最少出現數字</h3>
-  <table class="table table-hover table-striped">
-    <thead>
-       <tr>
-        <th></th>
-        <th colspan="6">一般號</th>
-        <th>特別號</th>
-        <th>更新日期</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>開獎號碼</td>
-          <td><%= @normal['context']['normal']['numbers'][-6] %></td>
-          <td><%= @normal['context']['normal']['numbers'][-5] %></td>
-          <td><%= @normal['context']['normal']['numbers'][-4] %></td>
-          <td><%= @normal['context']['normal']['numbers'][-3] %></td>
-          <td><%= @normal['context']['normal']['numbers'][-2] %></td>
-          <td><%= @normal['context']['normal']['numbers'][-1] %></td>
-          <td><%= @normal['context']['special']['numbers'][-1] %></td>
-          <td><%= @normal['updated_at'].localtime.strftime("%Y-%m-%d %H:%M:%S") %></td>
-        </tr>
-        <tr>
-          <td>統計次數</td>
-          <td><%= @normal['context']['normal']['count'][-6] %></td>
-          <td><%= @normal['context']['normal']['count'][-5] %></td>
-          <td><%= @normal['context']['normal']['count'][-4] %></td>
-          <td><%= @normal['context']['normal']['count'][-3] %></td>
-          <td><%= @normal['context']['normal']['count'][-2] %></td>
-          <td><%= @normal['context']['normal']['count'][-1] %></td>
-          <td><%= @normal['context']['special']['count'][-1] %></td>
-          <td></td>
-        </tr>   
-    </tbody>
-  </table>
+    <h3>獎號根據月份分佈</h3>
+    <div id="chartdiv" style="width: 100%; height: 600px;"></div>
 
-  <br>
-  <br>
-  <h3>獎號根據月份分佈</h3>
-  <div id="chartdiv" style="width: 100%; height: 600px;"></div>
 
 </div>
 

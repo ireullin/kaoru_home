@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141230062156) do
+ActiveRecord::Schema.define(version: 20150104100952) do
 
   create_table "food_menus", id: false, force: true do |t|
     t.string   "food_type"
@@ -51,6 +51,12 @@ ActiveRecord::Schema.define(version: 20141230062156) do
   end
 
   add_index "lottery649s", ["term"], name: "sqlite_autoindex_lottery649s_1", unique: true
+
+  create_table "lottery649s_ranks", force: true do |t|
+    t.text     "content"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "lottery_statistics", id: false, force: true do |t|
     t.string   "statistic_type"
@@ -138,21 +144,8 @@ ActiveRecord::Schema.define(version: 20141230062156) do
 
   add_index "superlottos", ["term"], name: "sqlite_autoindex_superlottos_1", unique: true
 
-  create_table "supperlottos_counts", force: true do |t|
-    t.integer  "no1"
-    t.integer  "no1_cnt"
-    t.integer  "no2"
-    t.integer  "no2_cnt"
-    t.integer  "no3"
-    t.integer  "no3_cnt"
-    t.integer  "no4"
-    t.integer  "no4_cnt"
-    t.integer  "no5"
-    t.integer  "no5_cnt"
-    t.integer  "no6"
-    t.integer  "no6_cnt"
-    t.integer  "special"
-    t.integer  "special_cnt"
+  create_table "supperlottos_ranks", force: true do |t|
+    t.text     "content"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

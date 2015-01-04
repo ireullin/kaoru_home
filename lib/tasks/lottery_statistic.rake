@@ -1,17 +1,17 @@
 namespace :lottery_statistic do
-  	desc "count_superlottos"
-  	task count_superlottos: :environment do
-  		count 'superlottos'
+  	desc "superlottos_rank"
+  	task superlottos_rank: :environment do
+  		rank 'superlottos'
   	end
 
 
-	desc "count_lottery649s"
-  	task count_lottery649s: :environment do
-  		count 'lottery649s'
+	desc "lottery649s_rank"
+  	task lottery649s_rank: :environment do
+  		rank 'lottery649s'
   	end
 
 
-   	def count(type)
+   	def rank(type)
 
         start_time = Time.now
         
@@ -34,8 +34,8 @@ namespace :lottery_statistic do
             tmp = [ row['no1'],row['no2'],row['no3'],row['no4'],row['no5'],row['no6'] ]
             tmp_sp =  row['special']
             
-            #1.upto(max) do |i|
-            1.upto(1) do |i|
+            1.upto(max) do |i|
+            #1.upto(1) do |i|
                 next unless tmp.include?( i )
                 arr_bf_rank[i].concat(tmp)
                 arr_bf_rank_sp[i] << tmp_sp 
@@ -46,43 +46,33 @@ namespace :lottery_statistic do
         arr_af_rank = [nil]
         arr_af_rank_sp = [nil]
 
-        #1.upto(max) do |i|
-        1.upto(1) do |i|
+        1.upto(max) do |i|
+        #1.upto(1) do |i|
             arr_af_rank[i] = Statistics.rank_count(arr_bf_rank[i])
             arr_af_rank_sp[i] = Statistics.rank_count(arr_bf_rank_sp[i])
         end
 
-        p arr_af_rank
-        p arr_af_rank_sp
+        #p arr_af_rank
+        #p arr_af_rank_sp
         
 
         if type=='superlottos'
-            model_obj = SupperlottosCount
+            model_obj = SupperlottosRank
         elsif type=='lottery649s'
-            #model_obj = Lottery649s
+            model_obj = Lottery649sRank
         else
             puts "unknown type"
         end
 
 
-        #1.upto(max) do |i|
-        1.upto(1) do |i|
-        	model_obj.find_or_create_by(id: i) do |row|
-  				row.no1 = arr_af_rank[i][:numbers][0]
-  				row.no2 = arr_af_rank[i][:numbers][1]
-  				row.no3 = arr_af_rank[i][:numbers][2]
-  				row.no4 = arr_af_rank[i][:numbers][3]
-  				row.no5 = arr_af_rank[i][:numbers][4]
-  				row.no6 = arr_af_rank[i][:numbers][5]
-  				row.special = arr_af_rank_sp[i][:numbers][0]
+        1.upto(max) do |i|
+        #1.upto(1) do |i|
 
-  				row.no1_cnt = arr_af_rank[i][:count][0]
-  				row.no2_cnt = arr_af_rank[i][:count][1]
-  				row.no3_cnt = arr_af_rank[i][:count][2]
-  				row.no4_cnt = arr_af_rank[i][:count][3]
-  				row.no5_cnt = arr_af_rank[i][:count][4]
-  				row.no6_cnt = arr_af_rank[i][:count][5]
-  				row.special_cnt = arr_af_rank_sp[i][:count][0]
+        	content = { normal: arr_af_rank[i], special: arr_af_rank_sp[i]}
+        	p content.to_json
+
+        	model_obj.find_or_create_by(id: i) do |row|
+  				row.content = content.to_json
 			end
 
         end

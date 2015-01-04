@@ -1,0 +1,40 @@
+<% obj = JSON.parse(row.content) %>
+<% base = obj['normal']['count'][0].to_f %>
+<tr>
+	<td>
+		號碼
+		<br>
+		出現次數
+		<br>
+		機率
+	</td>
+
+	<td>
+		<b><%= obj['normal']['numbers'][0] %></b>
+		<br>
+		<%= base.to_i %>
+	</td>
+
+	<% 2.upto(6) do |i|  %>
+		<% probability = (obj['normal']['count'][i].to_f / base * 100).to_i %>
+		<td>
+			<b><%= obj['normal']['numbers'][i] %></b>
+			<br>
+			<%= obj['normal']['count'][i] %>
+			<br>
+			<font <%= 'color=red' if probability>=18 %> > <%= probability %>% </font>
+		</td>
+	<% end %>
+
+
+	<td>
+		<% probability = (obj['special']['count'][0].to_f / base * 100).to_i %>
+		<b><%= obj['special']['numbers'][0] %></b>
+		<br>
+		<%= obj['special']['count'][0] %>
+		<br>
+		<font <%= 'color=red' if probability>=18 %> > <%= probability %>% </font>
+	</td>
+
+	<td><%= row.updated_at.localtime.strftime("%Y-%m-%d %H:%M:%S") %></td>
+</tr>
