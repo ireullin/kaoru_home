@@ -10,22 +10,50 @@
 
     
     <h3>數字關聯性</h3>
-    <table class="table table-bordered table-hover">
-        <thead>
-            <tr>
-                <th></th>
-                <th colspan="10">一般號 (前10碼)</th>
-                <th colspan="3">特別號 (前3碼)</th>
-                <th>最後更新時間</th>
-            </tr>
-        </thead>
 
-        <tbody>
-            <% @rank.each do |row| %>
-                  <%= render partial: "rank", locals: {row: row} %>
-            <% end %>
-        </tbody>
-    </table>
+    <div id="rank_number">
+
+        <div class="row">
+            <div class="col-xs-4">
+
+                <div class="input-group">
+                    <input id="input_search" type="text" class="form-control" placeholder="Search for...">
+                    <span class="input-group-btn">
+                        <button id="btn_search" class="btn btn-primary" type="button">search</button>
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-xs-4">
+                
+                <div class="btn-group" role="group" aria-label="...">
+                    <button id="btn_sort_count" type="button" class="sort btn btn-default" data-sort="no_count0">sort by count</button>
+                    <button id="btn_sort_number" type="button" class="sort btn btn-default" data-sort="no_number0">sort by numbers</button>
+                </div>
+            </div>
+            
+        </div>
+
+        <br>
+
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>基礎碼</th>
+                    <th colspan="9">相關連號碼 一般號 (前9碼)</th>
+                    <th colspan="3">相關連號碼 特別號 (前3碼)</th>
+                    <th>最後更新時間</th>
+                </tr>
+            </thead>
+
+            <tbody class="list">
+                <% @rank.each do |row| %>
+                      <%= render partial: "rank", locals: {row: row} %>
+                <% end %>
+            </tbody>
+        </table>
+    </div>
 
     <br><br>
 
@@ -38,11 +66,76 @@
 
 <script language="javascript">
 
+var g_rankNumber = null;
+
 $(document).ready(ready);
 function ready()
 {
-  console.log('ready');
- 
+    initBubbleChart();
+
+    var options = {
+        valueNames: [
+            'no_prob1',
+            'no_prob2',
+            'no_prob3',
+            'no_prob4',
+            'no_prob5',
+            'no_prob6',
+            'no_prob7',
+            'no_prob8',
+            'no_prob9'
+        ]
+    };
+
+    g_rankNumber = new List('rank_number', options );
+
+    $(document).one( 'page:before-change', unload);
+    $(document).on( 'keypress', '#input_search', onPressSearch );
+    $(document).on( 'click', '#btn_search', onClickSearch );
+}
+
+
+function onPressSearch(e)
+{
+    code = (e.keyCode ? e.keyCode : e.which);
+    if (code != 13)
+        return;
+
+    onClickSearch();
+}
+
+
+function onClickSearch()
+{
+    var keyword = $("#input_search").val().trim();
+    if( keyword.length==0 )
+        g_rankNumber.filter();
+        //g_rankNumber.search();
+
+    console.log( keyword );
+    g_rankNumber.filter(function(item){
+
+        var obj = JSON.parse( keyword );
+        for(var i=0; i<obj.length; i++)
+        {
+            var val = item.values()['no_prob'+(i+1)].replace('%','');
+            if( val < obj[i] )
+                return false;
+        }
+
+        return true;
+    });
+}
+
+
+function unload()
+{
+
+}
+
+
+function initBubbleChart()
+{
   var url = "<%= full_url('/lottery/bubblechart/'+params[:type]+'.json') %>";
   console.log(url);
   $.get(url, function(data){

@@ -12,19 +12,16 @@
 	</td>
 
 	<td bgcolor="papayawhip">
-		<b><%= obj['normal']['numbers'][0] %></b>
-		<br>
-		<%= base.to_i %>
+		<div class="no_number0"><b><%= obj['normal']['numbers'][0] %></b></div>
+		<div class="no_count0"><%= base.to_i %></div>
 	</td>
 
 	<% 1.upto(5) do |i|  %>
 		<% probability = (obj['normal']['count'][i].to_f / base * 100).to_i %>
 		<td bgcolor="bisque">
-			<b><%= obj['normal']['numbers'][i] %></b>
-			<br>
-			<%= obj['normal']['count'][i] %>
-			<br>
-			<font <%= 'color=red' if(probability>=@prob_no) %> > <%= probability %>% </font>
+			<div class="no_number<%=i%>"><b><%= obj['normal']['numbers'][i] %></b></div>
+			<div class="no_count<%=i%>"><%= obj['normal']['count'][i] %></div>
+			<div class="no_prob<%=i%>"><%= probability %>%</div>
 		</td>
 	<% end %>
 
@@ -32,11 +29,9 @@
 	<% 6.upto(9) do |i|  %>
 		<% probability = (obj['normal']['count'][i].to_f / base * 100).to_i %>
 		<td bgcolor="wheat">
-			<b><%= obj['normal']['numbers'][i] %></b>
-			<br>
-			<%= obj['normal']['count'][i] %>
-			<br>
-			<font <%= 'color=red' if(probability>=@prob_no) %> > <%= probability %>% </font>
+			<div class="no_number<%=i%>"><b><%= obj['normal']['numbers'][i] %></b></div>
+			<div class="no_count<%=i%>"><%= obj['normal']['count'][i] %></div>
+			<div class="no_prob<%=i%>"><%= probability %>%</div>
 		</td>
 	<% end %>
 
@@ -44,11 +39,9 @@
 	<% 0.upto(2) do |i|  %>
 		<% probability = (obj['special']['count'][i].to_f / base * 100).to_i %>
 		<td bgcolor="tan">
-			<b><%= obj['special']['numbers'][i] %></b>
-			<br>
-			<%= obj['special']['count'][i] %>
-			<br>
-			<font <%= 'color=red' if(probability>=@prob_sp) %> > <%= probability %>% </font>
+			<div class="sp_number<%=i%>"><b><%= obj['special']['numbers'][i] %></b></div>
+			<div class="sp_count<%=i%>"><%= obj['special']['count'][i] %></div>
+			<div class="sp_prob<%=i%>"><%= probability %>%</div>
 		</td>
 	<% end %>
 
