@@ -36,11 +36,11 @@
 	<% end %>
 
 
-	<% 0.upto(2) do |i|  %>
-		<% probability = (obj['special']['count'][i].to_f / base * 100).to_i %>
+	<% 1.upto(3) do |i|  %>
+		<% probability = (obj['special']['count'][i-1].to_f / base * 100).to_i %>
 		<td bgcolor="tan">
-			<div class="sp_number<%=i%>"><b><%= obj['special']['numbers'][i] %></b></div>
-			<div class="sp_count<%=i%>"><%= obj['special']['count'][i] %></div>
+			<div class="sp_number<%=i%>"><b><%= obj['special']['numbers'][i-1] %></b></div>
+			<div class="sp_count<%=i%>"><%= obj['special']['count'][i-1] %></div>
 			<div class="sp_prob<%=i%>"><%= probability %>%</div>
 		</td>
 	<% end %>
