@@ -1,139 +1,174 @@
 
 <div class="container-fluid">
-  <div class="page-header">
-    <h1>
-      <%= params[:type]=='superlottos' ? '威力彩各期獎號' : '大樂透各期獎號' %>
-      <small><%= params[:type]=='superlottos' ? '(每周一四開獎)' : '(每周二五開獎)' %></small>
-    </h1>
-  </div>
+    <div class="page-header">
+        <h1>
+            <%= params[:type]=='superlottos' ? '威力彩各期獎號' : '大樂透各期獎號' %>
+            <small><%= params[:type]=='superlottos' ? '(每周一四開獎)' : '(每周二五開獎)' %></small>
+        </h1>
+    </div>
   
-  <h3>高關聯性數字</h3>
-  <table class="table table-hover table-striped">
-    <thead>
-      <tr>
-        <th></th>
-        <th colspan="6">一般號</th>
-        <th>特別號</th>
-        <th>更新日期</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>開獎號碼</td>
-          <td><%= @high_ral['context']['normal']['numbers'][0] %></td>
-          <td><%= @high_ral['context']['normal']['numbers'][1] %></td>
-          <td><%= @high_ral['context']['normal']['numbers'][2] %></td>
-          <td><%= @high_ral['context']['normal']['numbers'][3] %></td>
-          <td><%= @high_ral['context']['normal']['numbers'][4] %></td>
-          <td><%= @high_ral['context']['normal']['numbers'][5] %></td>
-       	  <td><%= @high_ral['context']['special']['numbers'][0] %></td>
-          <td><%= @high_ral['updated_at'].localtime.strftime("%Y-%m-%d %H:%M:%S") %></td>
-        </tr>
-        <tr>
-          <td>統計次數</td>
-          <td><%= @high_ral['context']['normal']['count'][0] %></td>
-          <td><%= @high_ral['context']['normal']['count'][1] %></td>
-          <td><%= @high_ral['context']['normal']['count'][2] %></td>
-          <td><%= @high_ral['context']['normal']['count'][3] %></td>
-          <td><%= @high_ral['context']['normal']['count'][4] %></td>
-          <td><%= @high_ral['context']['normal']['count'][5] %></td>
-          <td><%= @high_ral['context']['special']['count'][0] %></td>
-          <td></td>
-        </tr>
-    </tbody>
-  </table>
 
-  <br><br>
+    
+    <h3>數字關聯性</h3>
 
-  <h3>最常出現數字</h3>
-  <table class="table table-hover table-striped">
-    <thead>
-       <tr>
-        <th></th>
-        <th colspan="6">一般號</th>
-        <th>特別號</th>
-        <th>更新日期</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>開獎號碼</td>
-          <td><%= @normal['context']['normal']['numbers'][0] %></td>
-          <td><%= @normal['context']['normal']['numbers'][1] %></td>
-          <td><%= @normal['context']['normal']['numbers'][2] %></td>
-          <td><%= @normal['context']['normal']['numbers'][3] %></td>
-          <td><%= @normal['context']['normal']['numbers'][4] %></td>
-          <td><%= @normal['context']['normal']['numbers'][5] %></td>
-          <td><%= @normal['context']['special']['numbers'][0] %></td>
-          <td><%= @normal['updated_at'].localtime.strftime("%Y-%m-%d %H:%M:%S") %></td>
-        </tr>
-        <tr>
-          <td>統計次數</td>
-          <td><%= @normal['context']['normal']['count'][0] %></td>
-          <td><%= @normal['context']['normal']['count'][1] %></td>
-          <td><%= @normal['context']['normal']['count'][2] %></td>
-          <td><%= @normal['context']['normal']['count'][3] %></td>
-          <td><%= @normal['context']['normal']['count'][4] %></td>
-          <td><%= @normal['context']['normal']['count'][5] %></td>
-          <td><%= @normal['context']['special']['count'][0] %></td>
-          <td></td>
-        </tr>   
-    </tbody>
-  </table>
+    <div id="rank_number">
 
-  <br><br>
+        <div class="row">
+            <div class="col-xs-5">
 
-  <h3>最少出現數字</h3>
-  <table class="table table-hover table-striped">
-    <thead>
-       <tr>
-        <th></th>
-        <th colspan="6">一般號</th>
-        <th>特別號</th>
-        <th>更新日期</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>開獎號碼</td>
-          <td><%= @normal['context']['normal']['numbers'][-6] %></td>
-          <td><%= @normal['context']['normal']['numbers'][-5] %></td>
-          <td><%= @normal['context']['normal']['numbers'][-4] %></td>
-          <td><%= @normal['context']['normal']['numbers'][-3] %></td>
-          <td><%= @normal['context']['normal']['numbers'][-2] %></td>
-          <td><%= @normal['context']['normal']['numbers'][-1] %></td>
-          <td><%= @normal['context']['special']['numbers'][-1] %></td>
-          <td><%= @normal['updated_at'].localtime.strftime("%Y-%m-%d %H:%M:%S") %></td>
-        </tr>
-        <tr>
-          <td>統計次數</td>
-          <td><%= @normal['context']['normal']['count'][-6] %></td>
-          <td><%= @normal['context']['normal']['count'][-5] %></td>
-          <td><%= @normal['context']['normal']['count'][-4] %></td>
-          <td><%= @normal['context']['normal']['count'][-3] %></td>
-          <td><%= @normal['context']['normal']['count'][-2] %></td>
-          <td><%= @normal['context']['normal']['count'][-1] %></td>
-          <td><%= @normal['context']['special']['count'][-1] %></td>
-          <td></td>
-        </tr>   
-    </tbody>
-  </table>
+                <div class="input-group">
+                    <input id="input_search" type="text" class="form-control" placeholder="filter conditions">
+                    <span class="input-group-btn">
+                        <button id="btn_search" class="btn btn-primary" type="button">filter</button>
+                    </span>
+                </div>
+            </div>
 
-  <br>
-  <br>
-  <h3>獎號根據月份分佈</h3>
-  <div id="chartdiv" style="width: 100%; height: 600px;"></div>
+            <div class="col-xs-3">
+                <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                    <div class="btn-group" role="group">
+                        <button id="btn_sort_count" type="button" class="sort btn btn-primary" data-sort="no_count0">sort by count</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button id="btn_sort_number" type="button" class="sort btn btn-primary" data-sort="no_number0">sort by number</button>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+        <br>
+
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th colspan="10">相關連號碼 一般號 (前10碼)</th>
+                    <th colspan="3">相關連號碼 特別號 (前3碼)</th>
+                    <th>最後更新時間</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>no_count0</th>
+                    <th>no_prob1</th>
+                    <th>no_prob2</th>
+                    <th>no_prob3</th>
+                    <th>no_prob4</th>
+                    <th>no_prob5</th>
+                    <th>no_prob6</th>
+                    <th>no_prob7</th>
+                    <th>no_prob8</th>
+                    <th>no_prob9</th>
+                    <th>sp_prob1</th>
+                    <th>sp_prob2</th>
+                    <th>sp_prob3</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody class="list">
+                <% @rank.each do |row| %>
+                      <%= render partial: "rank", locals: {row: row} %>
+                <% end %>
+            </tbody>
+        </table>
+    </div>
+
+    <br><br>
+
+    <h3>獎號根據月份分佈</h3>
+    <div id="chartdiv" style="width: 100%; height: 600px;"></div>
+
 
 </div>
 
 
 <script language="javascript">
 
+var g_rankNumber = null;
+
 $(document).ready(ready);
 function ready()
 {
-  console.log('ready');
- 
+    initBubbleChart();
+
+    var options = {
+        valueNames: [
+            'sp_prob1',
+            'sp_prob2',
+            'sp_prob3',
+            'no_prob1',
+            'no_prob2',
+            'no_prob3',
+            'no_prob4',
+            'no_prob5',
+            'no_prob6',
+            'no_prob7',
+            'no_prob8',
+            'no_prob9',
+            'no_number0',
+            'no_count0'
+        ]
+    };
+
+    g_rankNumber = new List('rank_number', options );
+
+    $(document).one( 'page:before-change', unload);
+    $(document).on( 'keypress', '#input_search', onPressSearch );
+    $(document).on( 'click', '#btn_search', onClickSearch );
+}
+
+
+function onPressSearch(e)
+{
+    code = (e.keyCode ? e.keyCode : e.which);
+    if (code != 13)
+        return;
+
+    onClickSearch();
+}
+
+
+function onClickSearch()
+{
+    var keyword = $("#input_search").val().trim();
+    if( keyword.length==0 )
+    {
+        g_rankNumber.filter();
+        //g_rankNumber.search();
+        return;
+    }
+        
+
+    var arrKeywords = keyword.split(' ');
+
+    console.log( arrKeywords );
+    g_rankNumber.filter(function(item){
+
+        var values = item.values();
+
+        for(var i=0; i<arrKeywords.length; i++)
+        {
+            var con = arrKeywords[i].split(':');
+            var v = values[ con[0] ].replace('%','');
+            console.log(v, con[1]);
+            if( parseInt(v) < parseInt(con[1]) )
+                return false;
+        }
+
+        return true;
+    });
+}
+
+
+function unload()
+{
+
+}
+
+
+function initBubbleChart()
+{
   var url = "<%= full_url('/lottery/bubblechart/'+params[:type]+'.json') %>";
   console.log(url);
   $.get(url, function(data){

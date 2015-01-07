@@ -46,6 +46,7 @@ Rails.application.routes.draw do
   
 
   get   'lotterystatistic/count/:type' => 'lottery_statistic#count'
+  get   'lotterystatistic/rank/:type' => 'lottery_statistic#rank'
   
 
   post  'weather/update'        => 'weather#update'

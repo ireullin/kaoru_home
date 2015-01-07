@@ -73,21 +73,20 @@ class LotteryController < ApplicationController
 
     def statistic
         if params[:type]=='superlottos'
-            @high_ral = LotteryStatistic.where(statistic_type: 'superlottos_count_high_ral').first
-            @high_ral['context'] = JSON.parse(@high_ral['context'])
+            @rank = SupperlottosRank.all
+            @prob_no = 18
+            @prob_sp = 18
 
-            @normal = LotteryStatistic.where(statistic_type: 'superlottos_count').first 
-            @normal['context'] = JSON.parse(@normal['context'])
-        
         elsif params[:type]=='lottery649s'
-            @high_ral = LotteryStatistic.where(statistic_type: 'lottery649s_count_high_ral').first
-            @high_ral['context'] = JSON.parse(@high_ral['context'])
+            @rank = Lottery649sRank.all
+            @prob_no = 16
+            @prob_sp = 6
 
-            @normal = LotteryStatistic.where(statistic_type: 'lottery649s_count').first
-            @normal['context'] = JSON.parse(@normal['context'])
         else
             redirect_to( full_url '/error.html' )
+
         end
+
     end
     
 
@@ -95,8 +94,10 @@ class LotteryController < ApplicationController
 
         if params[:type]=='superlottos'
             @data = Superlottos.all
+           
         elsif params[:type]=='lottery649s'
             @data = Lottery649s.all
+            
         else
             redirect_to( full_url '/error.html' )
         end

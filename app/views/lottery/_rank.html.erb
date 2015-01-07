@@ -1,0 +1,55 @@
+<% obj = JSON.parse(row.content) %>
+<% base = obj['normal']['count'][0].to_f %>
+<tr>
+	<td>
+		<b>
+		號碼
+		<br>
+		出現次數
+		<br>
+		機率
+		</b>
+	</td>
+
+	<td bgcolor="papayawhip">
+		<div class="no_number0"><b><%= obj['normal']['numbers'][0] %></b></div>
+		<div class="no_count0"><%= base.to_i %></div>
+	</td>
+
+	<% 1.upto(5) do |i|  %>
+		<% probability = (obj['normal']['count'][i].to_f / base * 100).to_i %>
+		<td bgcolor="bisque">
+			<div class="no_number<%=i%>"><b><%= obj['normal']['numbers'][i] %></b></div>
+			<div class="no_count<%=i%>"><%= obj['normal']['count'][i] %></div>
+			<div class="no_prob<%=i%>"><%= probability %>%</div>
+		</td>
+	<% end %>
+
+
+	<% 6.upto(9) do |i|  %>
+		<% probability = (obj['normal']['count'][i].to_f / base * 100).to_i %>
+		<td bgcolor="wheat">
+			<div class="no_number<%=i%>"><b><%= obj['normal']['numbers'][i] %></b></div>
+			<div class="no_count<%=i%>"><%= obj['normal']['count'][i] %></div>
+			<div class="no_prob<%=i%>"><%= probability %>%</div>
+		</td>
+	<% end %>
+
+
+	<% 1.upto(3) do |i|  %>
+		<% probability = (obj['special']['count'][i-1].to_f / base * 100).to_i %>
+		<td bgcolor="tan">
+			<div class="sp_number<%=i%>"><b><%= obj['special']['numbers'][i-1] %></b></div>
+			<div class="sp_count<%=i%>"><%= obj['special']['count'][i-1] %></div>
+			<div class="sp_prob<%=i%>"><%= probability %>%</div>
+		</td>
+	<% end %>
+
+
+	<td>
+		<%= row.updated_at.localtime.strftime("%Y-%m-%d") %>
+		<br>
+		<%= row.updated_at.localtime.strftime("%H:%M:%S") %>
+	</td>
+
+</tr>
