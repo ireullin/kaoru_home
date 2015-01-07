@@ -2,6 +2,7 @@
 
 var g_webpage = {};
 var APIURL = 'http://127.0.0.1/kaoru';
+var APIURL_BAK = 'http://127.0.0.1/rails_training';
 
 function onConsoleMessage(message)
 {
@@ -26,14 +27,14 @@ function printLog()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-function insertToDB(data)
+function insertToDB(data, url)
 {
 	printLog( 'enter', arguments.callee.name );
 
 	g_webpage['insert'] = require('webpage').create();
 	g_webpage['insert'].onError = onError;
 	g_webpage['insert'].onConsoleMessage = onConsoleMessage;
-	g_webpage['insert'].open(APIURL+'/lottery/new.json', 'POST', 'data=' + data,  function(status){
+	g_webpage['insert'].open(url+'/lottery/new.json', 'POST', 'data=' + data,  function(status){
 
 		if(status!='success')
 		{
@@ -96,7 +97,8 @@ function onClickLotteryPage(status)
 	});
 
 	printLog( 'got lottry data:', rc );
-	insertToDB(rc);
+	insertToDB(rc, APIURL);
+	insertToDB(rc, APIURL_BAK);
 }
 
 
