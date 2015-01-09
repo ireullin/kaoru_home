@@ -65,15 +65,18 @@ namespace :lottery_statistic do
         end
 
 
+        model_obj.delete_all
+        
         1.upto(max) do |i|
         #1.upto(1) do |i|
 
         	content = { normal: arr_af_rank[i], special: arr_af_rank_sp[i]}
         	p content.to_json
 
-        	model_obj.find_or_create_by(id: i) do |row|
-  				row.content = content.to_json
-			end
+        	row = model_obj.new
+            row.id = i
+  			row.content = content.to_json
+			row.save
 
         end
 
