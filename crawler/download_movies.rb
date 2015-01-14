@@ -82,6 +82,10 @@ def main
 		res = Net::HTTP.post_form(uri, { data: $schedule.to_json})
 		puts res.body
 
+		uri2 = URI('http://127.0.0.1/rails_training/movie/update_schedules.json')
+		res2 = Net::HTTP.post_form(uri2, { data: $schedule.to_json})
+		puts res2.body
+
 	rescue Exception => msg  
 		p msg
 
