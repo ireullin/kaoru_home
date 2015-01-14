@@ -12,7 +12,6 @@ export PWD=/usr/local/rvm/gems/ruby-2.1.2/gems
 export rvm_version="1.25.33 (stable)"
 export GEM_PATH=/usr/local/rvm/gems/ruby-2.1.2:/usr/local/rvm/gems/ruby-2.1.2@global
 export RUBY_VERSION=ruby-2.1.2
-#/usr/local/rvm/rubies/ruby-2.1.2/bin/ruby /var/work/kaoru_home/crawler/download_weather.rb &> /var/work/kaoru_home/crawler/log/`date +weather_%Y%m%d_%H%M%S.log`
 
 cd /var/work/kaoru_home
-RAILS_ENV=production /usr/local/rvm/gems/ruby-2.1.2/bin/rake weather:week &> /var/work/kaoru_home/crawler/log/`date +weather_%Y%m%d_%H%M%S.log`
+RAILS_ENV=production /usr/local/rvm/gems/ruby-2.1.2/bin/rake lottery_statistic:superlottos_rank &> /var/work/kaoru_home/crawler/log/`date +superlottos_rank%Y%m%d_%H%M%S.log`
