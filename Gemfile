@@ -43,3 +43,5 @@ gem "kaminari"
 gem "rinruby"
 
 gem "flickraw"
+
+gem "nokogiri"
