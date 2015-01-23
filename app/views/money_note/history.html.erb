@@ -30,17 +30,17 @@
 <table class="table table-hover">
     <thead>
     	<tr class="info">
-        	<th>分類</th>
-			<th>品項</th>
-			<th>說明</th>
-			<th>價格</th>
+        	<th><a style="color:#555555" href="#" class="sort" data-sort="row-category">分類</a></th>
+			<th><a style="color:#555555" href="#" class="sort" data-sort="row-item">品項</a></th>
+			<th><a style="color:#555555" href="#" class="sort" data-sort="row-commen">說明</a></th>
+			<th><a style="color:#555555" href="#" class="sort" data-sort="row-price">價格</a></th>
             <th>當日總消費</th>
-			<th>消費日期</th>
-			<th>紀錄時間</th>
+			<th><a style="color:#555555" href="#" class="sort" data-sort="row-expended_at">消費日期</a></th>
+			<th><a style="color:#555555" href="#" class="sort" data-sort="row-updated_at">紀錄時間</a></th>
       	</tr>
     </thead>
 
-    <tbody>
+    <tbody class="list">
       	<% @data.each do |row| %>
             <%
                 if(last_expended_at != row.expended_at)
@@ -55,14 +55,14 @@
             <% else -%>
         	<tr class="<%= cls[i%2] -%>">
             <% end -%>
-          		<td><%= row.category %></td>
-				<td><%= row.item %></td>
-				<td><%= row.comment %></td>
-				<td><%= row.price %></td>
+          		<td class="row-category"><%= row.category %></td>
+				<td class="row-item"><%= row.item %></td>
+				<td class="row-commen"><%= row.comment %></td>
+				<td class="row-price"><%= row.price %></td>
                 <% day_sum += row.price  %>
-                <td><%= day_sum %></td>
-				<td><%= row.expended_at %></td>
-				<td><%= row.updated_at.localtime.strftime("%Y-%m-%d %H:%M:%S") %></td>
+                <td class="row-day_sum"><%= day_sum %></td>
+				<td class="row-expended_at"><%= row.expended_at %></td>
+				<td class="row-updated_at"><%= row.updated_at.localtime.strftime("%Y-%m-%d %H:%M:%S") %></td>
                 <% sum += row.price %>
         	</tr>
 
