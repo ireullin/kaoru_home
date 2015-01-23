@@ -1,5 +1,17 @@
-<% obj = JSON.parse(row.content) %>
-<% base = obj['normal']['count'][0].to_f %>
+<% 
+    obj = JSON.parse(row.content)
+
+    base = obj['normal']['count'][0].to_f 
+
+    probability_sp = []
+    0.upto(2) {|i| probability_sp << obj['special']['count'][i].to_f / base }
+
+    probability_no = [ 0 ]
+    1.upto(9) {|i| probability_no << obj['normal']['count'][i].to_f / base }
+    #1.upto(5) {|i| probability_no[0] = probability_no[0] * probability_no[i] }
+    #probability_no[0] = probability_no[1] * probability_no[2]*probability_no[3]*probability_no[4]*probability_no[5]*probability_sp[0]
+    
+%>
 <tr>
 	<td>
 		<b>
@@ -11,37 +23,38 @@
 		</b>
 	</td>
 
+    <%
+        
+    %>
+
 	<td bgcolor="papayawhip">
 		<div class="no_number0"><b><%= obj['normal']['numbers'][0] %></b></div>
 		<div class="no_count0"><%= base.to_i %></div>
 	</td>
 
 	<% 1.upto(5) do |i|  %>
-		<% probability = (obj['normal']['count'][i].to_f / base * 100).to_i %>
 		<td bgcolor="bisque">
 			<div class="no_number<%=i%>"><b><%= obj['normal']['numbers'][i] %></b></div>
 			<div class="no_count<%=i%>"><%= obj['normal']['count'][i] %></div>
-			<div class="no_prob<%=i%>"><%= probability %>%</div>
+            <div class="no_prob<%=i%>"><%= (probability_no[i]*100).to_i %>%</div>
 		</td>
 	<% end %>
 
 
 	<% 6.upto(9) do |i|  %>
-		<% probability = (obj['normal']['count'][i].to_f / base * 100).to_i %>
 		<td bgcolor="wheat">
 			<div class="no_number<%=i%>"><b><%= obj['normal']['numbers'][i] %></b></div>
 			<div class="no_count<%=i%>"><%= obj['normal']['count'][i] %></div>
-			<div class="no_prob<%=i%>"><%= probability %>%</div>
+            <div class="no_prob<%=i%>"><%= (probability_no[i]*100).to_i %>%</div>
 		</td>
 	<% end %>
 
 
 	<% 1.upto(3) do |i|  %>
-		<% probability = (obj['special']['count'][i-1].to_f / base * 100).to_i %>
 		<td bgcolor="tan">
 			<div class="sp_number<%=i%>"><b><%= obj['special']['numbers'][i-1] %></b></div>
 			<div class="sp_count<%=i%>"><%= obj['special']['count'][i-1] %></div>
-			<div class="sp_prob<%=i%>"><%= probability %>%</div>
+            <div class="sp_prob<%=i%>"><%= (probability_sp[i-1]*100).to_i %>%</div>
 		</td>
 	<% end %>
 
