@@ -86,7 +86,7 @@
 var g_items = JSON.parse("<%= @items[:items] %>".replace(/&quot;/g,'"'));
 var g_piechart = null;
 var g_colchart = null;
-
+var g_table = null;
 
 $(document).ready(ready);
 function ready()
@@ -119,7 +119,6 @@ function onChangeYearMonth()
 
 function refreshRate(data)
 {
-	console.log( 'refreshRate' );
 	g_piechart.dataProvider = data;
 	g_piechart.write("pie_chart");
 	g_piechart.validateData();
@@ -133,6 +132,7 @@ function refreshRate(data)
 function refreshTable(table)
 {
 	$('#history').html(table);
+    setList();
 }
 
 function generate_message(msg)
@@ -188,12 +188,32 @@ function onSubmitSuccess(e, data, status, xhr)
 	$('#comment').val('');
 	refreshTable(data);
 	onChangeYearMonth();
+  
 
 	$.post(
 		"<%= full_url '/money_note/items' %>",
 	 	{ data: JSON.stringify( g_items )} ,
 	 	function(msg){ console.log(msg); }  
 	);
+}
+
+
+function setList()
+{
+    var options = {
+        valueNames: [
+            "row-category",
+            "row-item",
+            "row-commen",
+            "row-price",
+            //"row-day_sum",
+            "row-expended_atxpended_at",
+            "row-updated_at"
+        ]
+    };
+
+    g_table = new List('history', options );
+
 }
 
 

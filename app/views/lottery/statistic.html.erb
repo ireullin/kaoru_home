@@ -142,7 +142,7 @@ function onClickSearch()
 
     var arrKeywords = keyword.split(' ');
 
-    console.log( arrKeywords );
+    //console.log( arrKeywords );
     g_rankNumber.filter(function(item){
 
         var values = item.values();
@@ -150,8 +150,16 @@ function onClickSearch()
         for(var i=0; i<arrKeywords.length; i++)
         {
             var con = arrKeywords[i].split(':');
+            if( con[0]=='numbers')
+            {
+                if(notInArray( values['no_number0']  ,con[1]) )
+                    return false;
+                else
+                    continue;
+            }
+
             var v = values[ con[0] ].replace('%','');
-            console.log(v, con[1]);
+            //console.log(v, con[1]);
             if( parseInt(v) < parseInt(con[1]) )
                 return false;
         }
@@ -161,9 +169,18 @@ function onClickSearch()
 }
 
 
+function notInArray(num, numArray)
+{
+    var n = num.replace('<b>','').replace('</b>','');
+    var a = numArray.split(',');
+    return a.indexOf(n)<0;
+}
+
+
 function unload()
 {
-
+    $(document).off('keypress', '#input_search');
+    $(document).off('click', '#btn_search');
 }
 
 
