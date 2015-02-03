@@ -28,7 +28,7 @@
 				</div>
 			</div>
 		</div>
-	
+
 		<div class="col-xs-3">
 			<div class="input-group">
 				<span class="input-group-addon"><strong>價格</strong></span>
@@ -50,7 +50,7 @@
 			</div>
 		</div>
 
-		
+
 
 		<div class="col-xs-3">
 			<div class="input-group">
@@ -58,11 +58,11 @@
 				<%= date_field_tag('expended_at', DateTime.now.strftime("%Y-%m-%d"), class: "form-control" )%>
 			</div>
 		</div>
-		
-		
+
+
 	</div>
 	<% end %>
-	
+
 	<br>
 	<br>
 
@@ -98,12 +98,30 @@ function ready()
 	$("#record_form").on("ajax:success", onSubmitSuccess);
 	$("#record_form").on("ajax:error", onSubmitError);
  	$("#record_form").on("ajax:before", onBeforeSubmit);
-	
+
 	refreshCategory();
 
 	var d = new Date();
 	$.get( "<%= full_url '/money_note/history/' %>" + d.getFullYear() + '/' + (d.getMonth()+1) , refreshTable );
 	$.get( "<%= full_url '/money_note/rate/' %>" + d.getFullYear() + '/' + (d.getMonth()+1)+'.json' , refreshRate );
+
+    initFancybox();
+}
+
+function initFancybox()
+{
+    $(".fancy_form").fancybox({
+        parent      : 'body',
+        maxWidth    : 800,
+        maxHeight   : 600,
+        fitToView   : false,
+        width       : '70%',
+        height      : '70%',
+        autoSize    : false,
+        closeClick  : false,
+        openEffect  : 'none',
+        closeEffect : 'none'
+    });
 }
 
 
@@ -155,7 +173,7 @@ function onBeforeSubmit()
 		$('#message').html( generate_message("分類不可為空白") );
 		return false;
 	}
-	
+
 	if( $('#item').val().trim()=="" )
 	{
 		$('#message').html( generate_message("品項不可為空白") );
@@ -168,13 +186,19 @@ function onBeforeSubmit()
 		return false;
 	}
 
+    if( $('#price').val()==0 )
+    {
+        $('#message').html( generate_message("價格不可為0") );
+        return false;
+    }
+
 	return true;
 }
 
 
 function onSubmitSuccess(e, data, status, xhr)
 {
-	var category = $('#category').val(); 
+	var category = $('#category').val();
 	var item = $('#item').val();
 
 	if(!( category in g_items ) )
@@ -188,12 +212,12 @@ function onSubmitSuccess(e, data, status, xhr)
 	$('#comment').val('');
 	refreshTable(data);
 	onChangeYearMonth();
-  
+
 
 	$.post(
 		"<%= full_url '/money_note/items' %>",
 	 	{ data: JSON.stringify( g_items )} ,
-	 	function(msg){ console.log(msg); }  
+	 	function(msg){ console.log(msg); }
 	);
 }
 
@@ -326,7 +350,7 @@ AmCharts.ready(function () {
     graph.fillAlphas = 1;
     graph.fillColors = ['#B4CFEC','#C2DFFF'];
 
-    
+
     g_colchart.addGraph(graph);
 
     // CURSOR

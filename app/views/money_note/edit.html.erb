@@ -1,0 +1,42 @@
+
+<div class="container-fluid">
+
+    <%= form_tag(full_url('/money_note/update/')) do %>
+        <div class="form-group" style="display: none">
+            <%= text_field_tag 'id', @row.id, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+            <%= label_tag 'category', '分類' %>
+            <%= text_field_tag 'category', @row.category, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+            <%= label_tag 'item', '品項' %>
+            <%= text_field_tag 'item', @row.item, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+            <%= label_tag 'price', '價格' %>
+            <%= number_field_tag 'price', @row.price, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+            <%= label_tag 'comment', '說明' %>
+            <%= text_field_tag 'comment', @row.comment, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+            <%= label_tag 'expended_at', '消費日期' %>
+            <%= date_field_tag('expended_at', @row.expended_at.strftime("%Y-%m-%d"), class: "form-control" )%>
+        </div>
+
+        <%= submit_tag "修改", class: "btn btn-default" %>
+    <% end %>
+</div>
+
+<script language="javascript">
+
+
+
+</script>

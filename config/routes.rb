@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   get 'money_note' => 'money_note#index'
   get 'money_note/history/:year/:month' => 'money_note#history'
   get 'money_note/rate/:year/:month' => 'money_note#rate'
+  get 'money_note/edit/:id' => 'money_note#edit'
+  post 'money_note/update'
   post 'money_note/create'
   post 'money_note/items'
 
@@ -21,7 +23,7 @@ Rails.application.routes.draw do
   get  'logger/index'
   get  'logger/history/:page' => 'logger#history'
   get  'logger/varify/:page' => 'logger#varify_password_history'
-  
+
   get 'photo_album/photoset/:path' => 'photo_album#index'
   get 'photo_album/manage'
   get 'photo_album/new'
@@ -43,11 +45,11 @@ Rails.application.routes.draw do
   get   'lottery/bubblechart/:type'     => 'lottery#bubble_chart'
   get   'lottery/newest/:type'          => 'lottery#newest'
   post  'lottery/new'                   => 'lottery#new'
-  
+
 
   get   'lotterystatistic/count/:type' => 'lottery_statistic#count'
   get   'lotterystatistic/rank/:type' => 'lottery_statistic#rank'
-  
+
 
   post  'weather/update'        => 'weather#update'
 
@@ -58,7 +60,7 @@ Rails.application.routes.draw do
 
   get   'foodmenu/index/:type'  => 'food_menu#index'
   post  'foodmenu/update/:type' => 'food_menu#update'
-  
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
@@ -117,3 +119,4 @@ Rails.application.routes.draw do
   #     resources :products
   #   end
 end
+

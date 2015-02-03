@@ -19,8 +19,8 @@
 
 <br>
 
-<% 
-    sum = 0.0 
+<%
+    sum = 0.0
     day_sum = 0.0
     cls=['warning','']
     i = 0
@@ -30,6 +30,7 @@
 <table class="table table-hover">
     <thead>
     	<tr class="info">
+            <th></th>
         	<th><a style="color:#555555" href="#" class="sort" data-sort="row-category">分類</a></th>
 			<th><a style="color:#555555" href="#" class="sort" data-sort="row-item">品項</a></th>
 			<th><a style="color:#555555" href="#" class="sort" data-sort="row-commen">說明</a></th>
@@ -55,6 +56,11 @@
             <% else -%>
         	<tr class="<%= cls[i%2] -%>">
             <% end -%>
+                <td >
+                    <a class="fancy_form fancybox fancybox.ajax" href="<%= full_url '/money_note/edit/'+row.id.to_s %>">
+                        <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+                    </a>
+                </td>
           		<td class="row-category"><%= row.category %></td>
 				<td class="row-item"><%= row.item %></td>
 				<td class="row-commen"><%= row.comment %></td>
