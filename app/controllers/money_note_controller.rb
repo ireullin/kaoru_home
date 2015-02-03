@@ -36,6 +36,7 @@ class MoneyNoteController < ApplicationController
       	end
  	end
 
+
  	def history
  		render_table
  	end
@@ -49,6 +50,26 @@ class MoneyNoteController < ApplicationController
  		rc.save
  		respond_to {|format| format.any { render json: params[:data].to_json } }
  	end
+
+
+    def edit
+        @row = MoneyNoteHistory.find(params[:id])
+    end
+
+
+    def update
+        @row = MoneyNoteHistory.find(params[:id])
+        @row.category = params[:category]
+        @row.item = params[:item]
+        @row.price = params[:price]
+        @row.comment = params[:comment]
+        @row.expended_at = params[:expended_at]
+        @row.save
+
+        respond_to do |format|
+            format.html { redirect_to(full_url('money_note')) }
+        end
+    end
 
 
  	private
