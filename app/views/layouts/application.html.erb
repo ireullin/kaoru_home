@@ -13,7 +13,7 @@
 
 <%= image_tag("header_800x100.jpg", width: '100%') %>
 
-<div style="position: absolute; top: 5px; right: 30px;">
+<div style="position: absolute; top: 5px; right: 30px; z-index: 2;">
     <% if session[:account].blank? %>
     <a id="id_login" href="<%= full_url '/top/login' %>" style="color: white;" class="fancybox fancybox.ajax">登入</a>
     <% else %>
@@ -43,13 +43,13 @@
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">相本<span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
-            <% albums = PhotoAlbum.all %>
+            <% albums = PhotoAlbum.where(enable: 1) %>
             <% albums.each do |album| %>
               <li><a href="<%= full_url('/photo_album/photoset/' + album.path) %>" ><%= album.name %></a></li>
             <% end %>
             </ul>
         </li>
-        
+
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">電影<span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
@@ -60,7 +60,7 @@
 
         <li><a href="<%= full_url '/foodmenu/index/drink' %>">酒單</a></li>
         <!--<li><a href="/foodmenu/index/food">菜單</a></li>-->
-        
+
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">樂透<span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
@@ -146,7 +146,7 @@ function initFancyBox()
         keys: {
             close: [null]
         },
-        helpers   : { 
+        helpers   : {
             overlay : {closeClick: false}
         }
     });

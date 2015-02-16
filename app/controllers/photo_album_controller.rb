@@ -30,9 +30,10 @@ class PhotoAlbumController < ApplicationController
 		@photo_albums.shared_secret = params[:shared_secret]
 		@photo_albums.photoset_id = params[:photoset_id]
 		@photo_albums.user_id = params[:user_id]
+		@photo_albums.enable = params[:enable]
 		@photo_albums.updated_at = Time.now.localtime.strftime("%Y-%m-%d %H:%M:%S")
 		@photo_albums.created_at = Time.now.localtime.strftime("%Y-%m-%d %H:%M:%S")
-		
+
 
 	    respond_to do |format|
 	    	if @photo_albums.save
@@ -63,6 +64,7 @@ class PhotoAlbumController < ApplicationController
 			shared_secret: params[:shared_secret],
 			photoset_id: params[:photoset_id],
 			user_id: params[:user_id],
+			enable: params[:enable],
 			updated_at: Time.now.localtime.strftime("%Y-%m-%d %H:%M:%S")
 		)
 

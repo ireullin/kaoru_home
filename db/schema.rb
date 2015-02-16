@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150104141528) do
+ActiveRecord::Schema.define(version: 20150216091717) do
 
   create_table "food_menus", id: false, force: true do |t|
     t.string   "food_type"
@@ -117,6 +117,7 @@ ActiveRecord::Schema.define(version: 20150104141528) do
     t.string   "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "enable"
   end
 
   add_index "photo_albums", ["path"], name: "index_photo_albums_on_path", unique: true
