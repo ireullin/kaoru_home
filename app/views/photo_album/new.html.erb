@@ -3,8 +3,8 @@
 <body>
 
 <!-- I dont know why can't use form_tag -->
-<% 
-if @data.blank? 
+<%
+if @data.blank?
 	action = 'photo_album/create'
 else
 	action = 'photo_album/update'
@@ -12,11 +12,19 @@ end
 %>
 
 <%= form_tag(full_url(action)) do %>
-  	<div class="form-group" <%= 'style=display:none' unless @data.blank? %> >
+  	<div class="form-group">
+        <%= label_tag 'enable' %>
+        <select name="enable" id="enable" class="form-control">
+            <option value="1" <%= @data.try(:enable)!=0 ? 'selected' : '' %> >yes</option>
+            <option value="0" <%= @data.try(:enable)==0 ? 'selected' : '' %> >no</option>
+        </select>
+    </div>
+
+    <div class="form-group" <%= 'style=display:none' unless @data.blank? %> >
   		<%= label_tag('path')%>
   		<%= text_field_tag('path', @data.try(:path) , class: "form-control" ) %>
   	</div>
-  	
+
   	<div class="form-group">
 		<%= label_tag 'name' %>
 		<%= text_field_tag('name', @data.try(:name), class: "form-control" ) %>

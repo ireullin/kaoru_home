@@ -24,6 +24,7 @@
 							<span class="glyphicon glyphicon-plus"></span>
 						</a>
 		    		</th>
+		    		<th>enable</th>
 		        	<th>path</th>
 					<th>name</th>
 					<th>yahoo account</th>
@@ -47,6 +48,7 @@
 		        				<span class="glyphicon glyphicon-remove"></span>
 		        			</a>
 		        		</td>
+		          		<td><%= row.enable==1 ? 'yes' : 'no' %></td>
 		          		<td><%= row.path %></td>
 						<td><%= row.name %></td>
 						<td><%= row.yahoo_account %></td>
@@ -61,8 +63,8 @@
 		    </tbody>
 		</table>
 	</div>
-	
-	
+
+
 </div>
 
 <script language="javascript">
@@ -85,9 +87,9 @@ function ready()
 		closeEffect	: 'none'
 	});
 
-	/*$('a[data-confirm], input[data-confirm]').on('click', function() 
+	/*$('a[data-confirm], input[data-confirm]').on('click', function()
 	{
-    	if (!confirm($(this).attr('data-confirm'))) 
+    	if (!confirm($(this).attr('data-confirm')))
       		return false;
 	});*/
 }
