@@ -1,5 +1,5 @@
 #! /bin/sh
-FILE_SQL=/tmp/kaoru_home_sqldump_`date +%Y%m%d`.sql
+FILE_SQL=/tmp/kaoru_home_sqldump_`date +%Y%m%d_%H%M`.sql
 FILE_7Z=$FILE_SQL.7z
 mysqldump -h192.168.1.203 -uremote -pletmedie kaoru_home > $FILE_SQL
 7z a $FILE_7Z $FILE_SQL

@@ -1,5 +1,6 @@
 #! /bin/bash
 
+./crawler/mysqldump.sh
 bundle install
 RAILS_ENV=production rake assets:clean
 RAILS_ENV=production rake assets:precompile
