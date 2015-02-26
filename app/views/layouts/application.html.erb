@@ -75,8 +75,10 @@
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">常用連結<span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
-                <li><a target="_blank" href="https://docs.google.com/folderview?id=0B-WuIQDr0_3EQU9FWEdLcHdZSzA&usp=drive_web">軟體</a></li>
-                <li><a target="_blank" href="https://onedrive.live.com/redir?resid=BF1B4DABFF5FA18F!106&authkey=!AAO-BUgJ5k8WLFs&ithint=folder%2c">音樂</a></li>
+                <% bookmarks = Bookmarks.where(enable: 1) %>
+                <% bookmarks.each do |bookmark| %>
+                    <li><a target="_blank" href="<%= bookmark.bookmark_url %>" ><%= bookmark.bookmark_name %></a></li>
+                <% end %>
             </ul>
         </li>
 
@@ -85,6 +87,7 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">管理工具<span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
                 <li><a href="<%= full_url '/photo_album/manage' %>">相簿管理</a></li>
+                <li><a href="<%= full_url '/bookmark/manage' %>">書籤管理</a></li>
                 <li><a href="<%= full_url '/logger/index' %>">使用統計</a></li>
                 <li><a href="<%= full_url '/logger/history/1' %>">瀏覽紀錄</a></li>
                 <li><a href="<%= full_url '/logger/varify/1' %>">登入紀錄</a></li>

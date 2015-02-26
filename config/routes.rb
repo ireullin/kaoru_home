@@ -32,6 +32,15 @@ Rails.application.routes.draw do
   post 'photo_album/delete/:path' => 'photo_album#delete'
   get 'photo_album/edit/:path' => 'photo_album#edit'
 
+
+  get 'bookmark/manage'
+  get 'bookmark/new'
+  post 'bookmark/create'
+  post 'bookmark/update'
+  post 'bookmark/delete/:id' => 'bookmark#delete'
+  get 'bookmark/edit/:id' => 'bookmark#edit'
+
+
   get   'top/index'
   get   'top/login'
   post  'top/varify'

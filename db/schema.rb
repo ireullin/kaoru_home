@@ -11,7 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150216091717) do
+ActiveRecord::Schema.define(version: 20150226100626) do
+
+  create_table "bookmarks", force: true do |t|
+    t.string   "bookmark_name"
+    t.text     "bookmark_url"
+    t.integer  "enable"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "food_menus", id: false, force: true do |t|
     t.string   "food_type"
