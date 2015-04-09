@@ -45,3 +45,9 @@ gem "rinruby"
 gem "flickraw"
 
 gem "nokogiri"
+
+gem "ruby-mp3info"
+
+#gem "taglib-ruby"
+#gem "iconv"
+#gem "rchardet"
