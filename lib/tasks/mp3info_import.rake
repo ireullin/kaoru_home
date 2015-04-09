@@ -16,8 +16,12 @@ namespace :mp3info_import do
             full_data << get_mp3info(f)
         end
 
+
+        Mp3info.delete_all
+
         full_data.each do |row|
-            Mp3info.new(row).save
+            Mp3info.new(row).save!
+            puts row[:file_name] + " inserted"
         end
     end
 
@@ -40,6 +44,7 @@ namespace :mp3info_import do
             title:        info.tag.title,
         }
 
+        puts row[:file_name] + " parsed"
         return row
     end
 
