@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150226100626) do
+ActiveRecord::Schema.define(version: 20150409091525) do
 
   create_table "bookmarks", force: true do |t|
     t.string   "bookmark_name"
@@ -114,6 +114,29 @@ ActiveRecord::Schema.define(version: 20150226100626) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "mp3info", force: true do |t|
+    t.string   "path",         null: false
+    t.string   "file_name",    null: false
+    t.string   "file_type",    null: false
+    t.string   "md5",          null: false
+    t.string   "genre"
+    t.string   "album_artist"
+    t.string   "album"
+    t.string   "artist"
+    t.string   "track"
+    t.string   "title"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "mp3info", ["album"], name: "index_mp3info_on_album"
+  add_index "mp3info", ["album_artist"], name: "index_mp3info_on_album_artist"
+  add_index "mp3info", ["artist"], name: "index_mp3info_on_artist"
+  add_index "mp3info", ["file_name"], name: "index_mp3info_on_file_name"
+  add_index "mp3info", ["genre"], name: "index_mp3info_on_genre"
+  add_index "mp3info", ["md5"], name: "index_mp3info_on_md5"
+  add_index "mp3info", ["title"], name: "index_mp3info_on_title"
 
   create_table "photo_albums", id: false, force: true do |t|
     t.string   "path"
