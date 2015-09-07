@@ -4,7 +4,7 @@
 		<h1><small>Favorite </small> Theaters</h1>
 	</div>
 
-	
+
 	<div class="row">
 		<ul class="nav nav-tabs" id="tabs_movies">
 			<% @theaters.each_with_index do |row, i|  %>
@@ -18,7 +18,7 @@
 	</div>
 	<br>
 
-	
+
 	<div id="show" style="display:none">
 		<% @result[:movies].each_with_index do |movie,i| %>
 
@@ -28,14 +28,14 @@
 
 				<div class="col-md-2">
 					<div class="list-group">
-					  	
-				  		<a target="_blank" href="http://www.atmovies.com.tw/showtime/showtime.asp?film_id=<%= movie[:id] %>&area=a02">
+
+				  		<a target="_blank" href="http://www.atmovies.com.tw/showtime/<%= movie[:id] %>/a02/">
 				  			<div class="list-group-item active">
 				  				<%= movie[:name] %>
 				  			</div>
 				  		</a>
-					  	
-					  
+
+
 				  		<div class="list-group-item">
 				  			<% movie[:times].each do |sub_row| %>
 				  				<% unless sub_row.include?(':') %>
@@ -45,10 +45,10 @@
 				    			<% end %>
 				    		<% end %>
 					    </div>
-					  
+
 					</div>
 				</div>
-			
+
 			<% if i%6==5 %>
 			</div>
 			<% end %>
@@ -72,7 +72,7 @@ function ready()
 
 function unload()
 {
-	
+
 }
 
 </script>

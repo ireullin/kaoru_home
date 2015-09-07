@@ -5,7 +5,7 @@
 
 	<% else %>
 		<h3>
-			<a target="_blank" href="http://www.atmovies.com.tw/showtime/showtime.asp?film_id=<%= @schedule.movie_id %>&area=a02">
+			<a target="_blank" href="http://www.atmovies.com.tw/showtime/<%= @schedule.movie_id %>/a02/">
 				<%= @schedule.name %> 放映時間
 			</a>
 			<br>
@@ -14,7 +14,7 @@
 		<br>
 		<% theaters = JSON.parse(@schedule.schedules) %>
 		<% theaters.each_with_index do |row,i| %>
-			
+
 			<% if i%6==5 %>
 			<div class="row">
 			<% end %>
@@ -22,7 +22,7 @@
 				<div class="col-md-2">
 					<div class="list-group">
 					  	<div class="list-group-item active"><%= row['theater'] %></div>
-					  
+
 				  		<div class="list-group-item">
 				  			<% row['times'].each do |sub_row| %>
 				  				<% unless sub_row.include?(':') %>
@@ -32,10 +32,10 @@
 				    			<% end %>
 				    		<% end %>
 					    </div>
-					  
+
 					</div>
 				</div>
-			
+
 			<% if i%6==5 %>
 			</div>
 			<% end %>
