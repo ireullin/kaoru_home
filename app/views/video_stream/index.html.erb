@@ -1,0 +1,14 @@
+<div class="container-fluid">
+
+    <div class="page-header">
+        <h1><small>The videos of </small>Kaoru</h1>
+    </div>
+
+    <% @video_files.each do |f| %>
+        <video width="320" height="240" preload="metadata" controls>
+            <source src="<%=full_url(f)%>" type="video/mp4">
+        </video>
+    <% end %>
+
+
+</div>
