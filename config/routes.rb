@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'video_stream/index'
+
   get 'money_note' => 'money_note#index'
   get 'money_note/history/:year/:month' => 'money_note#history'
   get 'money_note/rate/:year/:month' => 'money_note#rate'
@@ -32,6 +34,7 @@ Rails.application.routes.draw do
   post 'photo_album/delete/:path' => 'photo_album#delete'
   get 'photo_album/edit/:path' => 'photo_album#edit'
 
+  get 'video_stream' => 'video_stream#index'
 
   get 'bookmark/manage'
   get 'bookmark/new'
