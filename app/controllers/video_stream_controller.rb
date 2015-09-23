@@ -1,13 +1,12 @@
 class VideoStreamController < ApplicationController
     def index
 
-        vedio_path = 'kaoru_videos'
-        movie_path = Rails.public_path.to_s + '/'+vedio_path+'/*'
-        #respond_to {|format| format.any { render json: {path: movie_path } } }
+        movie_path = '/kaoru_videos/videos'
 
         @video_files = []
-        Dir.glob(movie_path) do |file|
-            @video_files.push(vedio_path + '/' +File.basename(file))
+        Dir.foreach(Rails.public_path.to_s+movie_path) do |f|
+            next if f[0]=='.'
+            @video_files.push(movie_path + '/' + f)
         end
     end
 end
