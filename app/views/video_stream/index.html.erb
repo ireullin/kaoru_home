@@ -7,7 +7,13 @@
     <div class="row" id="photowall" style="text-align:left" >
         <% @video_files.each_with_index do |f,i| %>
             <% img = '/kaoru_videos/images/' + File.basename(f,".*") + '.jpg' %>
-            <video id="video_<%=i%>"  controls width="200" height="150" preload="none" src="<%=f%>" poster="<%=img%>" class="cls_video">
+            <video id="video_<%=i%>"
+                controls width="200"
+                height="150"
+                preload="none"
+                src="<%= full_url(f) %>"
+                poster="<%= full_url(img)%>"
+                class="cls_video">
             </video>
         <% end %>
     </div>
