@@ -4,18 +4,30 @@
         <h1><small>The videos of </small>Kaoru</h1>
     </div>
 
-    <div class="row" id="photowall" style="text-align:left" >
-        <% @video_files.each_with_index do |f,i| %>
-            <% img = '/kaoru_videos/images/' + File.basename(f,".*") + '.jpg' %>
-            <video id="video_<%=i%>"
-                controls width="200"
-                height="150"
-                preload="none"
-                src="<%= full_url(f) %>"
-                poster="<%= full_url(img)%>"
+    <div class="row">
+        <div class="col-md-10">
+            <video
+                controls
+                autoplay
+                width="800"
+                height="600"
+                preload="auto"
+                src="<%= full_url(@movie_url) %>"
                 class="cls_video">
             </video>
-        <% end %>
+        </div>
+
+        <div class="col-md-2">
+            <% @files.each do |f| %>
+                <% mov_src = video_stream_path+"/#{f}" %>
+                <% mov_src = URI.escape(mov_src) %>
+                <a href="<%= full_url(mov_src) %>">
+                    <% img_src = "/kaoru_videos/images/#{f}.jpg" %>
+                    <%= image_tag(full_url(img_src)) %>
+                </a>
+            <% end %>
+        </div>
+
     </div>
 </div>
 
