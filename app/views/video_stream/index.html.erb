@@ -8,12 +8,13 @@
         <div class="col-md-10">
             <video
                 id="id_video"
-                align="left"
                 controls
                 autoplay
+                width="100%"
+                height="600"
                 preload="auto"
                 src="<%= full_url(@movie_url) %>"
-                style="padding: 3px; border: 1px solid #D8D8D8; margin: 3px;"
+                style="padding: 3px; border: 1px solid #D8D8D8; margin: 3px; background-color: black;"
                 class="cls_video">
             </video>
         </div>
@@ -38,21 +39,8 @@ $(document).ready(ready);
 function ready()
 {console.log(arguments.callee.name);
 
-    /*var w = screen.availWidth * 8/12;
-    var h = screen.availHeight;
-
-    if(w>h)
-        w = h * 16/9;
-    else
-        h = w * 9/16;
-
-    console.log(w);
-    console.log(h);
-    */
-
-    $("#id_video").width(800);
-    $("#id_video").height(600);
     $('.cls_video').bind('ended', onEnded);
+    $(document).on( 'mouseover', '.cls_other_videos', onPhotoOver);
 }
 
 
@@ -63,16 +51,39 @@ function onEnded()
     var arr = src.split('/');
     var id = arr[arr.length-1].replace('.mp4','');
 
-    console.log(id);
-    console.log($("#"+id).next());
-    var href = $("#"+id).next().prop("href");
-    window.location = href;
+    //console.log(id);
+    //console.log($("#"+id).next());
+
+    if( $("#"+id).next().length==0 )
+    {
+        window.location = $(".cls_other_videos").first().prop("href");
+    }
+    else
+    {
+        window.location = $("#"+id).next().prop("href");
+    }
+}
+
+function onPhotoOver()
+{
+    $(this).transition({
+        scale: [1.2, 1.2],
+        complete: onPhotoLeave
+    });
+}
+
+function onPhotoLeave()
+{
+    $(this).transition({
+        scale: [1, 1],
+    });
 }
 
 
 function unload()
 {
     $(document).off('ended', '.cls-video');
+    $(document).off( 'mouseover', '.cls_other_videos');
 
 }
 
