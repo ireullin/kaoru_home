@@ -34,7 +34,9 @@ Rails.application.routes.draw do
   post 'photo_album/delete/:path' => 'photo_album#delete'
   get 'photo_album/edit/:path' => 'photo_album#edit'
 
+  get 'video_stream/:id' => 'video_stream#index'
   get 'video_stream' => 'video_stream#index'
+
 
   get 'bookmark/manage'
   get 'bookmark/new'
