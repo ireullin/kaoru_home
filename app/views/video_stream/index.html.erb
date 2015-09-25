@@ -7,12 +7,13 @@
     <div class="row">
         <div class="col-md-10">
             <video
+                id="id_video"
+                align="left"
                 controls
                 autoplay
-                width="800"
-                height="600"
                 preload="auto"
                 src="<%= full_url(@movie_url) %>"
+                style="padding: 3px; border: 1px solid #D8D8D8; margin: 3px;"
                 class="cls_video">
             </video>
         </div>
@@ -21,9 +22,9 @@
             <% @files.each do |f| %>
                 <% mov_src = video_stream_path+"/#{f}" %>
                 <% mov_src = URI.escape(mov_src) %>
-                <a href="<%= full_url(mov_src) %>">
+                <a id="<%=f%>" href="<%= full_url(mov_src) %>" class="cls_other_videos">
                     <% img_src = "/kaoru_videos/images/#{f}.jpg" %>
-                    <%= image_tag(full_url(img_src)) %>
+                    <img src="<%= full_url(img_src) %>" style="padding: 3px; border: 1px solid #D8D8D8; margin: 3px;" >
                 </a>
             <% end %>
         </div>
@@ -38,26 +39,41 @@ $(document).ready(ready);
 function ready()
 {console.log(arguments.callee.name);
 
+    /*var w = screen.availWidth * 8/12;
+    var h = screen.availHeight;
+
+    if(w>h)
+        w = h * 16/9;
+    else
+        h = w * 9/16;
+
+    console.log(w);
+    console.log(h);
+    */
+
+    $("#id_video").width(800);
+    $("#id_video").height(600);
     $('.cls_video').bind('ended', onEnded);
-}
-
-
-function onPlayed()
-{console.log(arguments.callee.name);
 }
 
 
 function onEnded()
 {console.log(arguments.callee.name);
 
-    console.log($(this).next().prop('id'));
-    $(this).next().get(0).play();
+    var src = $(this).prop('src');
+    var arr = src.split('/');
+    var id = arr[arr.length-1].replace('.mp4','');
+
+    console.log(id);
+    console.log($("#"+id).next());
+    var href = $("#"+id).next().prop("href");
+    window.location = href;
 }
 
 
 function unload()
 {
-    $(document).off( 'ended', '.cls-video');
+    $(document).off('ended', '.cls-video');
 
 }
 
