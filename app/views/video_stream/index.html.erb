@@ -21,8 +21,7 @@
         <div class="col-md-2">
             <% @files.each do |f| %>
                 <% mov_src = video_stream_path+"/#{f}" %>
-                <% mov_src = URI.escape(mov_src) %>
-                <a id="<%=f%>" href="<%= full_url(mov_src) %>" class="cls_other_videos">
+                <a id="<%=f%>" href="<%= mov_src %>" class="cls_other_videos">
                     <% img_src = "/kaoru_videos/images/#{f}.jpg" %>
                     <img src="<%= full_url(img_src) %>" style="padding: 3px; border: 1px solid #D8D8D8; margin: 3px;" >
                 </a>
