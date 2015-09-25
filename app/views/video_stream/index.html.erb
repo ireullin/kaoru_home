@@ -5,7 +5,7 @@
     </div>
 
     <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-10">
             <video
                 id="id_video"
                 controls
@@ -19,10 +19,10 @@
             </video>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-2">
             <% @files.each do |f| %>
                 <% mov_src = video_stream_path+"/#{f}" %>
-                <a id="<%=f%>" href="<%= mov_src %>" class="cls_other_videos">
+                <a id="<%=f%>" href="<%= mov_src %>" class="cls_other_videos" >
                     <% img_src = "/kaoru_videos/images/#{f}.jpg" %>
                     <img src="<%= full_url(img_src) %>" style="padding: 3px; border: 1px solid #D8D8D8; margin: 3px;" >
                 </a>
@@ -70,12 +70,6 @@ function onPhotoOver()
         scale: [1.2, 1.2],
         complete: onPhotoLeave
     });
-
-    /*$(this).transition({
-        perspective: '250px',
-        rotateY: '180deg',
-        complete: onPhotoLeave
-    });*/
 }
 
 function onPhotoLeave()
@@ -83,11 +77,6 @@ function onPhotoLeave()
     $(this).transition({
         scale: [1, 1],
     });
-
-    /*$(this).transition({
-        perspective: '250px',
-        rotateY: '0deg'
-    });*/
 }
 
 
