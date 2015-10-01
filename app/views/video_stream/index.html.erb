@@ -5,13 +5,13 @@
     </div>
 
     <div class="row">
-        <div class="col-md-10">
+        <div class="col-md-9">
             <video
                 id="id_video"
                 controls
                 autoplay
                 width="100%"
-                height="600"
+                height="600px"
                 preload="auto"
                 src="<%= full_url(@movie_url) %>"
                 style="padding: 3px; border: 1px solid #D8D8D8; margin: 3px; background-color: black;"
@@ -19,7 +19,7 @@
             </video>
         </div>
 
-        <div class="col-md-2">
+        <div class="col-md-3" style="height: 600px;  overflow: scroll;">
             <% @files.each do |f| %>
                 <% mov_src = video_stream_path+"/#{f}" %>
                 <a id="<%=f%>" href="<%= mov_src %>" class="cls_other_videos">
@@ -41,6 +41,7 @@ function ready()
 
     $('.cls_video').bind('ended', onEnded);
     $(document).on( 'mouseover', '.cls_other_videos', onPhotoOver);
+    window.location = "#id_video";
 }
 
 
