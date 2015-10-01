@@ -1,34 +1,63 @@
 namespace :video do
-	desc "TODO"
-  	task generate_images: :environment do
+    desc "TODO"
+    task convert_videos: :environment do
 
-  		image_path = Dir.pwd+'/public/kaoru_videos/images'
-  		video_path = Dir.pwd+'/public/kaoru_videos/videos'
-  		tmp_path = Dir.pwd+'/public/kaoru_videos/tmp'
+        src_path = Dir.pwd+'/public/kaoru_videos/src'
+        Dir.foreach(src_path) do |f|
 
-  		Dir.foreach(video_path) do |f|
-  			next if f[0]=='.'
+            next if f[0]=='.'
+            convert_mp4(src_path+'/'+f)
+        end
 
-        basename = File.basename(f,'.*')
+        #3gp
+        #puts `avconv -i "#{src}" -acodec copy "#{dst}"`
+        #mov
+        #puts `avconv -i "#{src}" -acodec libmp3lame "#{dst}"`
+    end
 
-  			#ori_video_file = video_path + '/' + basename + '.mp4'
-        #basename.gsub!('.','_')
-        #basename.gsub!("\s",'_')
-        #basename.gsub!(';','_')
-        #basename.gsub!(':','_')
-        #basename.gsub!('~','_')
 
-        video_file = video_path + '/' + basename + '.mp4'
-  			image_file = image_path + '/' + basename + '.jpg'
+    def convert_mp4(src_file)
 
-        next if File.exist?(image_file)
+        file_name = replace_name(File.basename(src_file, ".*"))
+        ext_name = File.extname(src_file)
+        dst_file = Dir.pwd+'/public/kaoru_videos/videos/'+file_name+'.mp4'
+        img_file = Dir.pwd+'/public/kaoru_videos/images/'+file_name+'.jpg'
 
-        #`mv "#{ori_video_file}" "#{video_file}"`
-  			`rm #{tmp_path}/* `
-  			puts `avconv -i "#{video_file}" -vsync 1 -r 0.1 -an -y -qscale 1 -s 192x108 "#{tmp_path}/out_%04d.jpg"`
-  			`mv "#{tmp_path}/out_0001.jpg" "#{image_file}" `
-  			`rm #{tmp_path}/* `
-  		end
+        return if File.exist?(dst_file)
+        #puts src_file
+        #puts dst_file
+        #return
+        puts "generating #{file_name}.mp4"
+        if ext_name == '.mov'
+            `avconv -i "#{src_file}" -s 1024x768 -acodec libmp3lame -vf transpose "#{dst_file}"`
+        else
+            `avconv -i "#{src_file}" -s 1024x768 -acodec copy -vf transpose "#{dst_file}"`
+        end
 
-  	end
+        puts "generating #{file_name}.jpg"
+        generate_image(dst_file, img_file)
+    end
+
+
+    def generate_image(src, dst)
+
+        tmp_path = Dir.pwd+'/public/kaoru_videos/tmp'
+
+        `rm #{tmp_path}/* `
+        `avconv -i "#{src}" -vsync 1 -r 0.1 -an -y -qscale 1 -s 152x208 "#{tmp_path}/out_%04d.jpg"`
+        `mv "#{tmp_path}/out_0001.jpg" "#{dst}" `
+        `rm #{tmp_path}/* `
+    end
+
+
+    def replace_name(name)
+        tmp = name
+        tmp.gsub!('.','_')
+        tmp.gsub!("\s",'_')
+        tmp.gsub!(';','_')
+        tmp.gsub!(':','_')
+        tmp.gsub!('~','_')
+        return tmp
+    end
+
 end
