@@ -9,10 +9,6 @@ namespace :video do
             convert_mp4(src_path+'/'+f)
         end
 
-        #3gp
-        #puts `avconv -i "#{src}" -acodec copy "#{dst}"`
-        #mov
-        #puts `avconv -i "#{src}" -acodec libmp3lame "#{dst}"`
     end
 
 
@@ -24,29 +20,58 @@ namespace :video do
         img_file = Dir.pwd+'/public/kaoru_videos/images/'+file_name+'.jpg'
 
         return if File.exist?(dst_file)
-        #puts src_file
-        #puts dst_file
-        #return
+
+        w,h = get_size(src_file)
+        if w.nil? or h.nil?
+            puts "#{src_file} couldn't get video's information"
+            return
+        end
+
+        w,h = scale_size(w,h)
+
         puts "generating #{file_name}.mp4"
         if ext_name == '.mov'
-            `avconv -i "#{src_file}" -s 1024x768 -acodec libmp3lame -vf transpose "#{dst_file}"`
+            `avconv -i "#{src_file}" -s #{w}x#{h} -acodec libmp3lame "#{dst_file}" 2>/dev/null`
         else
-            `avconv -i "#{src_file}" -s 1024x768 -acodec copy -vf transpose "#{dst_file}"`
+            `avconv -i "#{src_file}" -s #{w}x#{h} -acodec copy "#{dst_file}" 2>/dev/null`
         end
 
         puts "generating #{file_name}.jpg"
-        generate_image(dst_file, img_file)
+        generate_image(dst_file, img_file, w, h)
     end
 
 
-    def generate_image(src, dst)
+    def scale_size(w,h)
+        rate1 = w/1024.0
+        rate2 = h/768.0
+        rate = [rate1,rate2].max
+        return (w/rate).to_i ,(h/rate).to_i
+    end
+
+
+    def get_size(src)
+
+        json_str = `avprobe -of json -show_streams #{src} 2>/dev/null`
+        json_obj = JSON.parse(json_str)
+
+        json_obj['streams'].each do |n|
+            next if n['width'].nil?
+            next if n['height'].nil?
+            return n['width'],n['height']
+        end
+
+        return nil
+    end
+
+
+    def generate_image(src, dst, w, h)
 
         tmp_path = Dir.pwd+'/public/kaoru_videos/tmp'
 
-        `rm #{tmp_path}/* `
-        `avconv -i "#{src}" -vsync 1 -r 0.1 -an -y -qscale 1 -s 152x208 "#{tmp_path}/out_%04d.jpg"`
-        `mv "#{tmp_path}/out_0001.jpg" "#{dst}" `
-        `rm #{tmp_path}/* `
+        `rm #{tmp_path}/* 2>/dev/null`
+        `avconv -i "#{src}" -vsync 1 -r 0.1 -an -y -qscale 1 -s #{w/3}x#{h/3} "#{tmp_path}/out_%04d.jpg" 2>/dev/null`
+        `mv "#{tmp_path}/out_0001.jpg" "#{dst}" 2>/dev/null`
+        `rm #{tmp_path}/* 2>/dev/null`
     end
 
 
