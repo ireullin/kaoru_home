@@ -51,16 +51,21 @@ namespace :video do
 
     def get_size(src)
 
-        json_str = `avprobe -of json -show_streams #{src} 2>/dev/null`
-        json_obj = JSON.parse(json_str)
+        begin
+            json_str = `avprobe -of json -show_streams #{src} 2>/dev/null`
+            json_obj = JSON.parse(json_str)
 
-        json_obj['streams'].each do |n|
-            next if n['width'].nil?
-            next if n['height'].nil?
-            return n['width'],n['height']
+            json_obj['streams'].each do |n|
+                next if n['width'].nil?
+                next if n['height'].nil?
+                return n['width'],n['height']
+            end
+
+            return nil
+
+        rescue
+            return nil
         end
-
-        return nil
     end
 
 
