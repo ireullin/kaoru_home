@@ -52,7 +52,7 @@ namespace :video do
     def get_size(src)
 
         begin
-            json_str = `avprobe -of json -show_streams #{src} 2>/dev/null`
+            json_str = `avprobe -of json -show_streams "#{src}" 2>/dev/null`
             json_obj = JSON.parse(json_str)
 
             json_obj['streams'].each do |n|
