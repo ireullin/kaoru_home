@@ -1,3 +1,85 @@
+<style>
+.img_cut
+{
+    width: 100%;
+    //height: 20px;
+    overflow: hidden;
+}
+
+#rightside_bar
+{
+    height: 600px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+#id_video
+{
+    z-index: 1;
+    width: 100%;
+    background-color: black;
+}
+
+#main_panel
+{
+    z-index: -1;
+    height: 600px;
+    width: 100%;
+    background-color: gray;
+    //position: relative;
+    //pointer-events:none;
+}
+
+/*#prev_panel
+{
+    z-index: 10;
+    height: 100%;
+    width: 80px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    //opacity:0.4;
+    //background-color: white;
+    pointer-events:none;
+}
+
+#prev_btn
+{
+    left: 10px;
+    top: 270px;
+    z-index: 11;
+    background-color: white;
+    opacity: 0.6;
+    position: absolute;
+    //display: none;
+}
+
+#next_panel
+{
+    z-index: 10;
+    height: 100%;
+    width: 80px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    //opacity:0.4;
+    //background-color: white;
+    pointer-events:none;
+}
+
+#next_btn
+{
+    right: 10px;
+    top: 270px;
+    z-index: 11;
+    background-color: white;
+    opacity: 0.6;
+    position: absolute;
+    //display: none;
+}*/
+
+</style>
+
 <div class="container-fluid">
 
     <div class="page-header">
@@ -5,27 +87,34 @@
     </div>
 
     <div class="row">
-        <div class="col-md-9">
-            <video
-                id="id_video"
-                controls
-                autoplay
-                width="100%"
-                height="600px"
-                preload="auto"
-                src="<%= full_url(@movie_url) %>"
-                style="padding: 3px; border: 1px solid #D8D8D8; margin: 3px; background-color: black;"
-                class="cls_video">
-            </video>
+
+        <div class="col-md-10" >
+            <div id="main_panel">
+                <!--<div id="prev_panel" class="btn_panel">
+                    <button class="btn btn-default" type="button" id="prev_btn" onclick="prevPage();">
+                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                    </button>
+                </div>-->
+
+                <video id="id_video" controls autoplay preload="auto" src="<%= full_url(@movie_url) %>"></video>
+
+                <!--<div id="next_panel" class="btn_panel">
+                    <button class="btn btn-default" type="button" id ="next_btn" onclick="prevPage();">
+                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                    </button>
+                </div>-->
+            </div>
         </div>
 
-        <div class="col-md-3" style="height: 600px;  overflow: scroll;">
+        <div id="rightside_bar" class="col-md-2">
             <% @files.each do |f| %>
                 <% mov_src = video_stream_path+"/#{f}" %>
-                <a id="<%=f%>" href="<%= mov_src %>" class="cls_other_videos">
-                    <% img_src = "/kaoru_videos/images/#{f}.jpg" %>
-                    <img src="<%= full_url(img_src) %>" style="padding: 3px; border: 1px solid #D8D8D8; margin: 3px;" >
-                </a>
+                <div class="img_cut img-thumbnail">
+                    <a id="<%=f%>" href="<%= mov_src %>" class="cls_other_videos" >
+                        <% img_src = "/kaoru_videos/images/#{f}.jpg" %>
+                        <img src="<%= full_url(img_src) %>" >
+                    </a>
+                </div>
             <% end %>
         </div>
 
@@ -39,9 +128,27 @@ $(document).ready(ready);
 function ready()
 {console.log(arguments.callee.name);
 
-    $('.cls_video').bind('ended', onEnded);
-    $(document).on( 'mouseover', '.cls_other_videos', onPhotoOver);
+    var w = $('.img_cut').css('width');
+    var h = parseFloat(w) / 8 * 6;
+    console.log(w,h);
+    $('.img_cut').css('height', h);
+
+    $('#id_video').bind('ended', onEnded);
+    //$(document).on( 'click', '#prev_btn', prevPage);
+    //$(document).on( 'click', '#next_btn', nextPage);
+    $(document).on( 'mouseover', '.img_cut', onPhotoOver);
     window.location = "#id_video";
+}
+
+
+function prevPage()
+{console.log(arguments.callee.name);
+    //$('#prev_btn').fadeIn();
+}
+
+function nextPage()
+{console.log(arguments.callee.name);
+    //$('#prev_btn').fadeOut();
 }
 
 
@@ -57,7 +164,7 @@ function onEnded()
 
     if( $("#"+id).next().length==0 )
     {
-        window.location = $(".cls_other_videos").first().prop("href");
+        window.location = $(".img_cut").first().prop("href");
     }
     else
     {
@@ -84,7 +191,7 @@ function onPhotoLeave()
 function unload()
 {
     $(document).off('ended', '.cls-video');
-    $(document).off( 'mouseover', '.cls_other_videos');
+    $(document).off( 'mouseover', '.img_cut');
 
 }
 
