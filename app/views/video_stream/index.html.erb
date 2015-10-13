@@ -1,22 +1,39 @@
 <style>
-.img_cut
+.img_wrap
 {
-    width: 100%;
-    //height: 20px;
-    overflow: hidden;
+    padding: 3px;
+    border: 1px solid #D8D8D8;
+    margin: 3px;
+    width: 200px;
+    height: 112px;
+    text-align: center;
+    vertical-align:middle;
 }
+
+.img_link
+{
+}
+
+.img_src
+{
+    max-width: 100%;
+    max-height: 100%;
+}
+
 
 #rightside_bar
 {
-    height: 600px;
-    overflow-x: hidden;
+    height: 700px;
+    overflow-x: auto;
     overflow-y: auto;
 }
 
 #id_video
 {
     z-index: 1;
-    width: 100%;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
     background-color: black;
 }
 
@@ -25,58 +42,9 @@
     z-index: -1;
     height: 600px;
     width: 100%;
-    background-color: gray;
-    //position: relative;
-    //pointer-events:none;
+    background-color: black;
+    text-align:center;
 }
-
-/*#prev_panel
-{
-    z-index: 10;
-    height: 100%;
-    width: 80px;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    //opacity:0.4;
-    //background-color: white;
-    pointer-events:none;
-}
-
-#prev_btn
-{
-    left: 10px;
-    top: 270px;
-    z-index: 11;
-    background-color: white;
-    opacity: 0.6;
-    position: absolute;
-    //display: none;
-}
-
-#next_panel
-{
-    z-index: 10;
-    height: 100%;
-    width: 80px;
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    //opacity:0.4;
-    //background-color: white;
-    pointer-events:none;
-}
-
-#next_btn
-{
-    right: 10px;
-    top: 270px;
-    z-index: 11;
-    background-color: white;
-    opacity: 0.6;
-    position: absolute;
-    //display: none;
-}*/
 
 </style>
 
@@ -89,30 +57,27 @@
     <div class="row">
 
         <div class="col-md-10" >
+            <div class="btn-group" role="group">
+                <button id="btn_prev" type="button" class="btn btn-default"><span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span></button>
+                <button id="btn_repeat" type="button" class="btn btn-default"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></button>
+                <button id="btn_next" type="button" class="btn btn-default"><span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span></button>
+            </div>
+
+            <br>
+            <br>
+
             <div id="main_panel">
-                <!--<div id="prev_panel" class="btn_panel">
-                    <button class="btn btn-default" type="button" id="prev_btn" onclick="prevPage();">
-                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                    </button>
-                </div>-->
-
                 <video id="id_video" controls autoplay preload="auto" src="<%= full_url(@movie_url) %>"></video>
-
-                <!--<div id="next_panel" class="btn_panel">
-                    <button class="btn btn-default" type="button" id ="next_btn" onclick="prevPage();">
-                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                    </button>
-                </div>-->
             </div>
         </div>
 
         <div id="rightside_bar" class="col-md-2">
             <% @files.each do |f| %>
                 <% mov_src = video_stream_path+"/#{f}" %>
-                <div class="img_cut img-thumbnail">
-                    <a id="<%=f%>" href="<%= mov_src %>" class="cls_other_videos" >
+                <div class="img_wrap">
+                    <a id="<%=f%>" href="<%= mov_src %>" class="img_link" >
                         <% img_src = "/kaoru_videos/images/#{f}.jpg" %>
-                        <img src="<%= full_url(img_src) %>" >
+                        <img src="<%= full_url(img_src) %>" class="img_src">
                     </a>
                 </div>
             <% end %>
@@ -128,48 +93,43 @@ $(document).ready(ready);
 function ready()
 {console.log(arguments.callee.name);
 
-    var w = $('.img_cut').css('width');
-    var h = parseFloat(w) / 8 * 6;
-    console.log(w,h);
-    $('.img_cut').css('height', h);
-
     $('#id_video').bind('ended', onEnded);
-    //$(document).on( 'click', '#prev_btn', prevPage);
-    //$(document).on( 'click', '#next_btn', nextPage);
-    $(document).on( 'mouseover', '.img_cut', onPhotoOver);
+
+    $(document).on('mouseover', '.img_wrap', onPhotoOver);
+
+    $(document).on('click', '#btn_prev', onPrev);
+    $(document).on('click', '#btn_repeat', onRepeat);
+    $(document).on('click', '#btn_next', onNext);
+
     window.location = "#id_video";
 }
 
-
-function prevPage()
+function onRepeat()
 {console.log(arguments.callee.name);
-    //$('#prev_btn').fadeIn();
+    var ref = $(".img_link").last().prop("href");
+    //console.log(ref);
+    window.location = ref;
 }
 
-function nextPage()
+function onNext()
 {console.log(arguments.callee.name);
-    //$('#prev_btn').fadeOut();
+    var ref = $(".img_link").first().prop("href");
+    //console.log(ref);
+    window.location = ref;
+}
+
+function onPrev()
+{console.log(arguments.callee.name);
+    var cnt = $(".img_link").length;
+    var ref = $(".img_link").eq(cnt-2).prop("href");
+    //console.log(ref);
+    window.location = ref;
 }
 
 
 function onEnded()
 {console.log(arguments.callee.name);
-
-    var src = $(this).prop('src');
-    var arr = src.split('/');
-    var id = arr[arr.length-1].replace('.mp4','');
-
-    //console.log(id);
-    //console.log($("#"+id).next());
-
-    if( $("#"+id).next().length==0 )
-    {
-        window.location = $(".img_cut").first().prop("href");
-    }
-    else
-    {
-        window.location = $("#"+id).next().prop("href");
-    }
+    onNext();
 }
 
 function onPhotoOver()
@@ -190,8 +150,6 @@ function onPhotoLeave()
 
 function unload()
 {
-    $(document).off('ended', '.cls-video');
-    $(document).off( 'mouseover', '.img_cut');
 
 }
 

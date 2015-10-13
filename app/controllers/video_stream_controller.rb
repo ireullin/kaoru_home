@@ -26,7 +26,7 @@ class VideoStreamController < ApplicationController
         @files << first
 
         if params[:id].nil?
-            @movie_url = "#{movie_path}/#{@files[0]}.mp4"
+            @movie_url = "#{movie_path}/#{@files[-1]}.mp4"
         else
             @movie_url = "#{movie_path}/#{params[:id]}.mp4"
         end
