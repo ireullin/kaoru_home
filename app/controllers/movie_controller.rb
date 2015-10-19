@@ -1,9 +1,9 @@
 class MovieController < ApplicationController
-	
+
 	skip_before_action :verify_authenticity_token, only: [:update_schedules, :reserve_new, :reserve_delete]
 
 	def index
-		
+
 		@new_movies = []
 		MovieReserve.where('status = 1').each do |mr|
 			#ms = MovieSchedules
@@ -11,7 +11,7 @@ class MovieController < ApplicationController
 			#	.join()
 			#	.where( "name like ?", "%#{mr.keyword}%")
 			#	.first
-			
+
 			ms = MovieSchedules.find_by_sql """
 				select movie_id, name
 				from movie_schedules
@@ -30,13 +30,13 @@ class MovieController < ApplicationController
 			mh.name = ms[0].name
 			mh.enable = 1
 			mh.save
-			
-			@new_movies << ms[0].name 
+
+			@new_movies << ms[0].name
 
 			mr.status = 2
 			mr.save
 		end
-		
+
 
 		@schedules = MovieSchedules.select(:movie_id, :name)
 		@movies = MovieHistories.where(enable: 1)
@@ -75,7 +75,7 @@ class MovieController < ApplicationController
 	def theater
 
 		@theaters = MovieTheater.where(enable: 1)
-		
+
 		params[:id] = @theaters.first.id if params[:id].nil?
 
 		theater = MovieTheater.find(params[:id])
@@ -120,30 +120,30 @@ class MovieController < ApplicationController
 	end
 
 
-	def update_schedules
-		
-		unless request.remote_ip == '127.0.0.1'
-            respond_to {|format| format.json { render json: {msg: 'illegal ip', status: 1 } } }
-            return false
-        end
-
-		obj = JSON.parse(params[:data])
-		MovieSchedules.delete_all
-		obj.each do | movie |
-			row = MovieSchedules.new
-			row.movie_id = movie['movie_id']
-			row.name = movie['name']
-			row.schedules = movie['theaters'].to_json
-			row.created_at = Time.now.strftime("%Y-%m-%d %H:%M:%S")
-			row.save
-		end
-
-		respond_to {|format| format.json { render json: {msg: 'success', status: 0 } } }
-	end
+	#def update_schedules
+	#
+	#	unless request.remote_ip == '127.0.0.1'
+    #        respond_to {|format| format.json { render json: {msg: 'illegal ip', status: 1 } } }
+    #        return false
+    #    end
+    #
+	#	obj = JSON.parse(params[:data])
+	#	MovieSchedules.delete_all
+	#	obj.each do | movie |
+	#		row = MovieSchedules.new
+	#		row.movie_id = movie['movie_id']
+	#		row.name = movie['name']
+	#		row.schedules = movie['theaters'].to_json
+	#		row.created_at = Time.now.strftime("%Y-%m-%d %H:%M:%S")
+	#		row.save
+	#	end
+    #
+	#	respond_to {|format| format.json { render json: {msg: 'success', status: 0 } } }
+	#end
 
 	private
 	def extract_theater(theater_name, schedule)
-		
+
 		return nil unless schedule.include?( theater_name )
 
 		sch_obj = JSON.parse(schedule)
