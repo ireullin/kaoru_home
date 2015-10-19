@@ -1,6 +1,54 @@
 namespace :movie do
 
     URL = 'www.atmovies.com.tw'
+    SOLR = 'http://192.168.1.222:8983/solr/movie_schedules'
+
+    desc "import data to solr form db"
+    task solr_import: :environment do
+        MovieSchedules.all.each do |r|
+            #p r['movie_id']
+            body = {
+                'add' => {
+                    'doc' =>{
+                        'MOVIE_ID' => r['movie_id'],
+                        'NAME' => r['name'],
+                        'SUMMARY' => r['summary'],
+                        'RUNTIME' => r['runtime'],
+                        'SCHEDULES' => r['schedules'],
+                        'CREATED_AT' => r['created_at']
+                    }
+                }
+            }
+
+            rsp = http_post(SOLR+"/update", body)
+            puts r['name'] + " respond " + rsp.to_json
+        end
+    end
+
+    def http_post(url, body)
+        json_headers = {"Content-Type" => "application/json; charset=utf-8", "Accept" => "application/json" }
+
+        uri = URI.parse(url)
+        http = Net::HTTP.new(uri.host, uri.port)
+        http.continue_timeout = 3600
+        http.read_timeout = 3600
+
+        rsp = http.post(uri.path, body.to_json, json_headers)
+        rsp_obj = JSON.parse(rsp.body)
+
+        return rsp_obj
+    end
+
+
+    def clear_solr
+        [
+            SOLR+"/update?stream.body=%3Cdelete%3E%3Cquery%3E*:*%3C/query%3E%3C/delete%3E",
+            SOLR+"/update?stream.body=%3Ccommit/%3E"
+        ].each{|url|
+            Net::HTTP.get(URI(url))
+        }
+    end
+
 
     desc "download movies from atmovies"
     task download: :environment do
