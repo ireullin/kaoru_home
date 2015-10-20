@@ -1,46 +1,44 @@
 
+<% if @schedule.nil? %>
+	<h3>此電影已下檔</h3>
 
-	<% if @schedule.nil? %>
-		<h3>此電影已下檔</h3>
-
-	<% else %>
-		<h3>
-			<a target="_blank" href="http://www.atmovies.com.tw/showtime/<%= @schedule.movie_id %>/a02/">
-				<%= @schedule.name %> 放映時間
-			</a>
-			<br>
-			<small>最後更新在<%= @schedule.created_at.localtime.strftime("%Y-%m-%d %H:%M:%S") %></small>
-		</h3>
+<% else %>
+	<h3>
+		<a target="_blank" href="http://www.atmovies.com.tw/showtime/<%= @schedule['MOVIE_ID'] %>/a02/">
+			<%= @schedule['NAME'] %> 放映時間
+		</a>
 		<br>
-		<% theaters = JSON.parse(@schedule.schedules) %>
-		<% theaters.each_with_index do |row,i| %>
+		<small>最後更新在<%= @schedule['CREATED_AT'].gsub(/[TZ]/,' ') %></small>
+	</h3>
+	<br>
+	<% theaters = JSON.parse(@schedule['SCHEDULES']) %>
+	<% theaters.each_with_index do |row,i| %>
 
-			<% if i%6==5 %>
-			<div class="row">
-			<% end %>
-
-				<div class="col-md-2">
-					<div class="list-group">
-					  	<div class="list-group-item active"><%= row['theater'] %></div>
-
-				  		<div class="list-group-item">
-				  			<% row['times'].each do |sub_row| %>
-				  				<% unless sub_row.include?(':') %>
-					  				<h4 class="list-group-item-heading"><%= sub_row %></h4>
-					  			<% else %>
-				    				<p class="list-group-item-text"><%= sub_row %></p>
-				    			<% end %>
-				    		<% end %>
-					    </div>
-
-					</div>
-				</div>
-
-			<% if i%6==5 %>
-			</div>
-			<% end %>
-
+		<% if i%6==5 %>
+		<div class="row">
 		<% end %>
-	<% end %>
 
+			<div class="col-md-2">
+				<div class="list-group">
+				  	<div class="list-group-item active"><%= row['theater'] %></div>
+
+			  		<div class="list-group-item">
+			  			<% row['times'].each do |sub_row| %>
+			  				<% unless sub_row.include?(':') %>
+				  				<h4 class="list-group-item-heading"><%= sub_row %></h4>
+				  			<% else %>
+			    				<p class="list-group-item-text"><%= sub_row %></p>
+			    			<% end %>
+			    		<% end %>
+				    </div>
+
+				</div>
+			</div>
+
+		<% if i%6==5 %>
+		</div>
+		<% end %>
+
+	<% end %>
+<% end %>
 

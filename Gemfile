@@ -46,7 +46,9 @@ gem "flickraw"
 
 gem "nokogiri"
 
-gem "ruby-mp3info"
+gem "rsolr"
+
+#gem "ruby-mp3info"
 
 #gem "taglib-ruby"
 #gem "iconv"
