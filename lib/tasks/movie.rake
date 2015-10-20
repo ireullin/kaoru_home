@@ -49,6 +49,7 @@ namespace :movie do
         }
     end
 
+##########################################################################################
 
     desc "download movies from atmovies"
     task download: :environment do
@@ -56,17 +57,18 @@ namespace :movie do
         schedules = get_schedules(movies)
         #p schedules
 
-        MovieSchedules.delete_all
-        schedules.each do | movie |
-            row = MovieSchedules.new
-            row.movie_id = movie[:movie_id]
-            row.name = movie[:name]
-            row.summary = movie[:summary]
-            row.runtime = movie[:runtime]
-            row.schedules = movie[:theaters].to_json
-            row.created_at = Time.now.strftime("%Y-%m-%d %H:%M:%S")
-            row.save
-        end
+
+        #MovieSchedules.delete_all
+        #schedules.each do | movie |
+        #    row = MovieSchedules.new
+        #    row.movie_id = movie[:movie_id]
+        #    row.name = movie[:name]
+        #    row.summary = movie[:summary]
+        #    row.runtime = movie[:runtime]
+        #    row.schedules = movie[:theaters].to_json
+        #    row.created_at = Time.now.strftime("%Y-%m-%d %H:%M:%S")
+        #    row.save
+        #end
     end
 
 
@@ -74,13 +76,18 @@ namespace :movie do
         schedules = Array.new
         movies.each do |id, name|
             begin
-                theaters = get_theaters(id, name)
-                fullname,runtime,summary = get_summary(id)
-                schedules << { movie_id: id, name: fullname, summary:summary, runtime:runtime, theaters: theaters }
-                puts "#{fullname} downloaded"
-                #break
+                details = get_details(id)
+                details[:movie_id] = id
+                details[:theaters] = get_theaters(id, name)
+                details.merge!(get_casts(id))
+
+                schedules << details
+
+                puts "#{details[:fullname]} downloaded"
+                break
             rescue Exception => msg
                 puts "#{name} download failed"
+                p msg
             end
             sleep(2)
         end
@@ -101,6 +108,7 @@ namespace :movie do
         end
         return movies
     end
+
 
     def remove_noises(str)
         return str.gsub(/[\r\n\t\s]/,'')
@@ -150,7 +158,8 @@ namespace :movie do
     end
 
 
-    def get_summary(id)
+    def get_details(id)
+        details = {}
         Net::HTTP.start(URL,80) do |http|
 
             rsp = http.get("/movie/#{id}/")
@@ -158,12 +167,34 @@ namespace :movie do
 
             html_doc = Nokogiri::HTML(rsp.body)
 
-            summary = html_doc.css('.sub_content')[0].content
-            runtime = html_doc.css('.runtime')[0].content
-            fullname = html_doc.css('.filmTitle')[0].content.strip
+            details[:summary] = html_doc.css('.sub_content')[0].content
+            details[:runtime] = html_doc.css('.runtime')[0].content
+            details[:fullname] = html_doc.css('.filmTitle')[0].content.strip
 
-            #p schedule
-            return fullname,remove_noises(runtime),remove_noises(summary)
+            return details
+        end
+    end
+
+
+    def get_casts(id)
+        casts = { director:[], dramatist:[], actor:[] }
+
+        newurl = URL.gsub('www','app')
+        Net::HTTP.start(newurl,80) do |http|
+
+            rsp = http.get("/movie/movie.cfm?action=cast&film_id=#{id}")
+            #p rsp.body.to_s
+
+            html_doc = Nokogiri::HTML(rsp.body)
+
+            html_doc.css('tbody').each do |tbody|
+                next unless tbody.include?('導演：')
+
+                p tbody.content
+                break
+            end
+
+            return details
         end
     end
 end
