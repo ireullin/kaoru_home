@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151019085852) do
+ActiveRecord::Schema.define(version: 20151020032400) do
 
   create_table "bookmarks", force: true do |t|
     t.string   "bookmark_name"
@@ -106,6 +106,9 @@ ActiveRecord::Schema.define(version: 20151019085852) do
     t.datetime "created_at"
     t.string   "summary"
     t.string   "runtime"
+    t.text     "directors"
+    t.text     "dramatists"
+    t.text     "actors"
   end
 
   add_index "movie_schedules", ["movie_id"], name: "index_movie_schedules_on_movie_id", unique: true

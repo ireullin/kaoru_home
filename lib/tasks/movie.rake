@@ -57,18 +57,20 @@ namespace :movie do
         schedules = get_schedules(movies)
         #p schedules
 
-
-        #MovieSchedules.delete_all
-        #schedules.each do | movie |
-        #    row = MovieSchedules.new
-        #    row.movie_id = movie[:movie_id]
-        #    row.name = movie[:name]
-        #    row.summary = movie[:summary]
-        #    row.runtime = movie[:runtime]
-        #    row.schedules = movie[:theaters].to_json
-        #    row.created_at = Time.now.strftime("%Y-%m-%d %H:%M:%S")
-        #    row.save
-        #end
+        MovieSchedules.delete_all
+        schedules.each do | movie |
+            row = MovieSchedules.new
+            row.movie_id = movie[:movie_id]
+            row.name = movie[:fullname]
+            row.summary = movie[:summary]
+            row.runtime = movie[:runtime]
+            row.schedules = movie[:theaters].to_json
+            row.directors = movie[:directors].to_json
+            row.dramatists = movie[:dramatists].to_json
+            row.actors = movie[:actors].to_json
+            row.created_at = Time.now.strftime("%Y-%m-%d %H:%M:%S")
+            row.save
+        end
     end
 
 
@@ -78,16 +80,14 @@ namespace :movie do
             begin
                 details = get_details(id)
                 details[:movie_id] = id
-                details[:theaters] = get_theaters(id, name)
-                details.merge!(get_casts(id))
-
+                details[:theaters] = get_theaters(id)
+                #p details
                 schedules << details
 
                 puts "#{details[:fullname]} downloaded"
-                break
+                #break
             rescue Exception => msg
-                puts "#{name} download failed"
-                p msg
+                puts "#{name} download failed (#{msg})"
             end
             sleep(2)
         end
@@ -110,27 +110,24 @@ namespace :movie do
     end
 
 
-    def remove_noises(str)
-        return str.gsub(/[\r\n\t\s]/,'')
-    end
+
 
 
     def parse_theater(c)
 
-        #p div.css("a")[0].content.gsub(/[\r\n\t ]/,'')
         data = { theater: '', times: [] }
 
         c.css('li').each do |row|
 
             case row['class']
             when 'theaterTitle'
-                data[:theater] += remove_noises(row.content)
+                data[:theater] += row.content.remove_noises
             when 'filmVersion'
-                data[:theater] += remove_noises(row.content)
+                data[:theater] += row.content.remove_noises
             when nil
-                data[:times] << remove_noises(row.content)
+                data[:times] << row.content.remove_noises
             when ''
-                data[:times] << remove_noises(row.content)
+                data[:times] << row.content.remove_noises
             end
 
         end
@@ -139,7 +136,7 @@ namespace :movie do
     end
 
 
-    def get_theaters(id, name)
+    def get_theaters(id)
         theaters = []
         Net::HTTP.start(URL,80) do |http|
 
@@ -159,7 +156,7 @@ namespace :movie do
 
 
     def get_details(id)
-        details = {}
+        details = { directors:[], dramatists:[], actors:[] }
         Net::HTTP.start(URL,80) do |http|
 
             rsp = http.get("/movie/#{id}/")
@@ -167,34 +164,44 @@ namespace :movie do
 
             html_doc = Nokogiri::HTML(rsp.body)
 
-            details[:summary] = html_doc.css('.sub_content')[0].content
-            details[:runtime] = html_doc.css('.runtime')[0].content
+            details[:summary] = html_doc.css('.sub_content')[0].content.remove_noises
+            details[:runtime] = html_doc.css('.runtime')[0].content.remove_noises
             details[:fullname] = html_doc.css('.filmTitle')[0].content.strip
+
+            html_doc.css('ul').each do |ul|
+                next unless ul.content.include?('導演：')
+
+                flag = nil
+                ul.css('li').each do |li|
+                    line = li.content.remove_noises.gsub(/more$/,'')
+
+                    case line
+                    when /^導演：/
+                        flag = :directors
+                        line.gsub!(/^導演：/,'')
+                    when /^編劇：/
+                        flag = :dramatists
+                        line.gsub!(/^編劇：/,'')
+                    when /^演員：/
+                        flag = :actors
+                        line.gsub!(/^演員：/,'')
+                    end
+
+                    #puts flag,line
+                    details[flag].push(line) unless flag==nil
+
+                end
+                break
+            end
 
             return details
         end
     end
 
 
-    def get_casts(id)
-        casts = { director:[], dramatist:[], actor:[] }
-
-        newurl = URL.gsub('www','app')
-        Net::HTTP.start(newurl,80) do |http|
-
-            rsp = http.get("/movie/movie.cfm?action=cast&film_id=#{id}")
-            #p rsp.body.to_s
-
-            html_doc = Nokogiri::HTML(rsp.body)
-
-            html_doc.css('tbody').each do |tbody|
-                next unless tbody.include?('導演：')
-
-                p tbody.content
-                break
-            end
-
-            return details
+    class String
+        def remove_noises
+            gsub(/[\r\n\t\s]/,'')
         end
     end
 end
