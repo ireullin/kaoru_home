@@ -1,16 +1,12 @@
 class MovieController < ApplicationController
 
-	skip_before_action :verify_authenticity_token, only: [:update_schedules, :reserve_new, :reserve_delete]
+	skip_before_action :verify_authenticity_token, only: [ :reserve_new, :reserve_delete]
+	before_action :connect_solr, only: [:index, :schedule, :theater]
 
 	def index
 
 		@new_movies = []
 		MovieReserve.where('status = 1').each do |mr|
-			#ms = MovieSchedules
-			#	.select(:movie_id, :name)
-			#	.join()
-			#	.where( "name like ?", "%#{mr.keyword}%")
-			#	.first
 
 			ms = MovieSchedules.find_by_sql """
 				select movie_id, name
@@ -38,13 +34,33 @@ class MovieController < ApplicationController
 		end
 
 
-		@schedules = MovieSchedules.select(:movie_id, :name)
+		#@schedules = MovieSchedules.select(:movie_id, :name)
+		@schedules = @solr.get(
+			'select',
+			params:{
+				q:'*:*',
+				fl:'NAME,MOVIE_ID',
+				start:0,
+				rows:1000
+			}
+		)["response"]["docs"]
+
+
 		@movies = MovieHistories.where(enable: 1)
 	end
 
 
 	def schedule
-		@schedule = MovieSchedules.where(movie_id: params[:id]).first
+		#@schedule = MovieSchedules.where(movie_id: params[:id]).first
+		@schedule = @solr.get(
+			'select',
+			params:{
+				q:"MOVIE_ID:#{params[:id]}",
+				start:0,
+				rows:1000
+			}
+		)["response"]["docs"][0]
+
 		respond_to {|format| format.html { render :schedule, layout: false } }
 	end
 
@@ -80,17 +96,27 @@ class MovieController < ApplicationController
 
 		theater = MovieTheater.find(params[:id])
 
-		movie_schedules = MovieSchedules.where("schedules like ?", "%#{ theater.theater_name }%" )
+		#movie_schedules = MovieSchedules.where("schedules like ?", "%#{ theater.theater_name }%" )
+		movie_schedules = @solr.get(
+			'select',
+			params:{
+				q:"SCHEDULES:#{theater.theater_name}",
+				start:0,
+				rows:1000
+			}
+		)["response"]["docs"]
+
+		#Rails.logger.debug(movie_schedules.to_s)
 
 		@result = {theater_name: theater.theater_name, movies: [] }
 		movie_schedules.each do |s|
 
-			rc = extract_theater(theater.theater_name, s.schedules)
+			rc = extract_theater(theater.theater_name, s['SCHEDULES'])
 			next if rc.nil?
 
 			@result[:movies] << {
-				id: s.movie_id,
-				name: s.name,
+				id: s['MOVIE_ID'],
+				name: s['NAME'],
 				times: rc
 			}
 
@@ -120,27 +146,6 @@ class MovieController < ApplicationController
 	end
 
 
-	#def update_schedules
-	#
-	#	unless request.remote_ip == '127.0.0.1'
-    #        respond_to {|format| format.json { render json: {msg: 'illegal ip', status: 1 } } }
-    #        return false
-    #    end
-    #
-	#	obj = JSON.parse(params[:data])
-	#	MovieSchedules.delete_all
-	#	obj.each do | movie |
-	#		row = MovieSchedules.new
-	#		row.movie_id = movie['movie_id']
-	#		row.name = movie['name']
-	#		row.schedules = movie['theaters'].to_json
-	#		row.created_at = Time.now.strftime("%Y-%m-%d %H:%M:%S")
-	#		row.save
-	#	end
-    #
-	#	respond_to {|format| format.json { render json: {msg: 'success', status: 0 } } }
-	#end
-
 	private
 	def extract_theater(theater_name, schedule)
 
@@ -152,6 +157,11 @@ class MovieController < ApplicationController
 		end
 
 		return nil
+	end
+
+
+	def connect_solr
+		@solr = RSolr.connect(url: 'http://192.168.1.222:8983/solr/movie_schedules')
 	end
 
 end

@@ -12,7 +12,7 @@
 						<select class="form-control" id="sel_movies" >
 							<option value="">請選擇你想追蹤的電影時刻</option>
 					  		<% @schedules.each do |row| %>
-					  			<option value="<%= row.movie_id %>"><%= row.name %></option>
+					  			<option value="<%= row['MOVIE_ID'] %>"><%= row['NAME'] %></option>
 					  		<% end %>
 						</select>
 					</span>
@@ -46,7 +46,7 @@
 		</ul>
 	</div>
 	<br>
-	
+
 	<div id="div_schedule">
 	</div>
 </div>
@@ -59,7 +59,7 @@ function ready()
 {console.log(arguments.callee.name);
 
 	$(document).one( 'page:before-change', unload);
-	
+
 	$(document).on( 'click', 'a.cls-tab',  onClickTab );
 	$(document).on( 'click', 'span.glyphicon-remove',  onClickRemove );
 	$(document).on( 'click', '#btn_pin',  onClickPin );
@@ -122,9 +122,9 @@ function onClickTab()
 		$('.cls-tab').each(function(index){ $(this).parent().removeClass('active') });
 	  	$(this).parent().addClass( "active" );
 	  	$.get(
-	  		'<%= full_url "/movie/schedule/" %>'+id, 
+	  		'<%= full_url "/movie/schedule/" %>'+id,
 	  		function(d)
-	  		{ 
+	  		{
 	  			$('#div_schedule').css('display','none');
 	  			$('#div_schedule').html(d);
 	  			$('#div_schedule').fadeIn( 1000 );
@@ -140,7 +140,7 @@ function onClickPin()
 	var name = $( "#sel_movies option:selected" ).text();
 	if(id=="")
 		return;
-	
+
 	if( $('#'+id).length==0 )
 	{
 		$('#tabs_movies').append( generate_tab(id,name) );
@@ -148,8 +148,8 @@ function onClickPin()
 		$.ajaxSetup({headers: { "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content') }  });
 		$.post( '<%= full_url "/movie/create" %>', { id: id, name: name },  function( d ) {console.log( d );});
 	}
-	
-	$('#'+id).trigger('click');	
+
+	$('#'+id).trigger('click');
 }
 
 
