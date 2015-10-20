@@ -15,7 +15,10 @@ namespace :movie do
                         'SUMMARY' => r['summary'],
                         'RUNTIME' => r['runtime'],
                         'SCHEDULES' => r['schedules'],
-                        'CREATED_AT' => r['created_at']
+                        'CREATED_AT' => r['created_at'],
+                        'DIRECTORS' => JSON.parse(r['directors']),
+                        'DRAMATISTS' => JSON.parse(r['dramatists']),
+                        'ACTORS' => JSON.parse(r['actors'])
                     }
                 }
             }
@@ -39,13 +42,13 @@ namespace :movie do
         return rsp_obj
     end
 
-
-    def clear_solr
+    desc "clear solr"
+    task solr_clear: :environment do
         [
             SOLR+"/update?stream.body=%3Cdelete%3E%3Cquery%3E*:*%3C/query%3E%3C/delete%3E",
             SOLR+"/update?stream.body=%3Ccommit/%3E"
         ].each{|url|
-            Net::HTTP.get(URI(url))
+            puts Net::HTTP.get(URI(url))
         }
     end
 
