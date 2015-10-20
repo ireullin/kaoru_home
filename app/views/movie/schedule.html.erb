@@ -5,12 +5,19 @@
 <% else %>
 	<h3>
 		<a target="_blank" href="http://www.atmovies.com.tw/showtime/<%= @schedule['MOVIE_ID'] %>/a02/">
-			<%= @schedule['NAME'] %> 放映時間
+			<%= @schedule['NAME'] %>
 		</a>
 		<br>
 		<small>最後更新在<%= @schedule['CREATED_AT'].gsub(/[TZ]/,' ') %></small>
 	</h3>
 	<br>
+
+	<div class="jumbotron">
+  		<h3>劇情簡介</h3>
+  		<small><%= @schedule['RUNTIME'] %></small>
+  		<p><%= @schedule['SUMMARY'] %></p>
+	</div>
+
 	<% theaters = JSON.parse(@schedule['SCHEDULES']) %>
 	<% theaters.each_with_index do |row,i| %>
 

@@ -1,6 +1,6 @@
 class MovieController < ApplicationController
 
-	skip_before_action :verify_authenticity_token, only: [:update_schedules, :reserve_new, :reserve_delete]
+	skip_before_action :verify_authenticity_token, only: [ :reserve_new, :reserve_delete]
 	before_action :connect_solr, only: [:index, :schedule, :theater]
 
 	def index
