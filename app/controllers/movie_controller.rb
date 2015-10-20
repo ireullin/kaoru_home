@@ -6,32 +6,45 @@ class MovieController < ApplicationController
 	def index
 
 		@new_movies = []
-		MovieReserve.where('status = 1').each do |mr|
 
-			ms = MovieSchedules.find_by_sql """
-				select movie_id, name
-				from movie_schedules
-				where movie_id not in
-				(
-	    			select movie_id from movie_histories
-	    			where enable = 1
-				)
-				and name like '%#{mr.keyword}%'
-				limit 1
-			"""
+		# get keywords from MovieReserve
+		keywords = MovieReserve.select('keyword').where('status <> 0').pluck(:keyword).join(' OR ')
+		#Rails.logger.debug(keywords)
 
-			next if ms[0].nil?
 
-			mh = MovieHistories.find_or_create_by(movie_id: ms[0].movie_id)
-			mh.name = ms[0].name
+		# search from solr by keywords
+		rows = @solr.get(
+			'select',
+			params:{
+				q: """
+					SUMMARY:(#{keywords})
+					OR NAME:(#{keywords})
+					OR DIRECTORS:(#{keywords})
+					OR DRAMATISTS:(#{keywords})
+					OR ACTORS:(#{keywords})
+					""",
+				fl:'MOVIE_ID,NAME',
+				start:0,
+				rows:1000
+			}
+		)["response"]["docs"]#.map{|r|r['MOVIE_ID']}
+		Rails.logger.debug(rows.inspect)
+
+
+		# insert into MovieHistories
+		rows.each do |r|
+			# status may be 0 or 1
+			next if MovieHistories.select(:movie_id).where(movie_id: r['MOVIE_ID']).size > 0
+
+			mh = MovieHistories.new
+			mh.movie_id = r['MOVIE_ID']
+			mh.name = r['NAME']
 			mh.enable = 1
 			mh.save
 
-			@new_movies << ms[0].name
-
-			mr.status = 2
-			mr.save
+			@new_movies << r['NAME']
 		end
+
 
 
 		#@schedules = MovieSchedules.select(:movie_id, :name)

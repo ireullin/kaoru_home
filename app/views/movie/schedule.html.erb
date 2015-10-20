@@ -14,11 +14,24 @@
 
 	<div class="jumbotron">
   		<h3>劇情簡介</h3>
-  		<small><%= @schedule['RUNTIME'] %></small>
+  		<% unless @schedule['DIRECTORS'].nil? %>
+  			<small>導演：<%= @schedule['DIRECTORS'].join(',') %></small><br>
+  		<% end %>
+  		<% unless @schedule['DRAMATISTS'].nil? %>
+  			<small>編劇：<%= @schedule['DRAMATISTS'].join(',') %></small><br>
+  		<% end %>
+  		<% unless @schedule['ACTORS'].nil? %>
+  			<small>主演：<%= @schedule['ACTORS'].join(',') %></small><br>
+  		<% end %>
+  		<% unless @schedule['RUNTIME'].nil? %>
+  			<small><%= @schedule['RUNTIME'] %></small><br>
+		<% end %>
+  		<br>
   		<p><%= @schedule['SUMMARY'] %></p>
 	</div>
 
 	<% theaters = JSON.parse(@schedule['SCHEDULES']) %>
+	<% theaters.sort_by! {|r| r['times'].size*-1} %>
 	<% theaters.each_with_index do |row,i| %>
 
 		<% if i%6==5 %>
