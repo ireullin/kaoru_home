@@ -24,7 +24,7 @@
 				</div>
 			<% end %>
 			<a class="fancybox fancybox.ajax" id="new_movies_reminder" href="<%= full_url '/movie/reserve' %>" >
-				預約未上檔電影
+				關鍵字追蹤
 			</a>
 		</div>
 	</div>
@@ -83,7 +83,7 @@ function ready()
         openEffect  : 'none',
         closeEffect : 'none',
         afterClose  : function() {
-       		location.href = "/movie/index";
+       		location.href = '<%= full_url "/movie/index" %>';
     	}
     });
 }
