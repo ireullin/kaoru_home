@@ -3,13 +3,12 @@ class MovieController < ApplicationController
 	skip_before_action :verify_authenticity_token, only: [ :reserve_new, :reserve_delete]
 	before_action :connect_solr, only: [:index, :schedule, :theater]
 
-	def index
-
-		@new_movies = []
-
+	private
+	def search_keywords
 		# get keywords from MovieReserve
 		keywords = MovieReserve.select('keyword').where('status <> 0').pluck(:keyword).join(' OR ')
-		#Rails.logger.debug(keywords)
+		#Rails.logger.debug('keywords="'+keywords+'"')
+		return if keywords==''
 
 
 		# search from solr by keywords
@@ -22,7 +21,7 @@ class MovieController < ApplicationController
 					OR DIRECTORS:(#{keywords})
 					OR DRAMATISTS:(#{keywords})
 					OR ACTORS:(#{keywords})
-					""",
+					""".gsub(/[\r\n\t]/,'') ,
 				fl:'MOVIE_ID,NAME',
 				start:0,
 				rows:1000
@@ -45,7 +44,14 @@ class MovieController < ApplicationController
 			@new_movies << r['NAME']
 		end
 
+	end
 
+	public
+	def index
+
+		@new_movies = []
+
+		search_keywords
 
 		#@schedules = MovieSchedules.select(:movie_id, :name)
 		@schedules = @solr.get(
