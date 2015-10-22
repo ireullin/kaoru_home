@@ -17,5 +17,8 @@ export RUBY_VERSION=ruby-2.1.2
 logfile=`date +movie_download_%Y%m%d_%H%M%S.log`
 cd /var/work/kaoru_home
 RAILS_ENV=production /usr/local/rvm/gems/ruby-2.1.2/bin/rake movie:download &>> /var/work/kaoru_home/crawler/log/$logfile
+echo "\n\n" &>> /var/work/kaoru_home/crawler/log/$logfile
+RAILS_ENV=production /usr/local/rvm/gems/ruby-2.1.2/bin/rake movie:solr_clear &>> /var/work/kaoru_home/crawler/log/$logfile
+echo "\n\n" &>> /var/work/kaoru_home/crawler/log/$logfile
 RAILS_ENV=production /usr/local/rvm/gems/ruby-2.1.2/bin/rake movie:solr_import &>> /var/work/kaoru_home/crawler/log/$logfile
 
