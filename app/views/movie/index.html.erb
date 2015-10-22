@@ -81,7 +81,10 @@ function ready()
         autoSize    : true,
         closeClick  : false,
         openEffect  : 'none',
-        closeEffect : 'none'
+        closeEffect : 'none',
+        afterClose  : function() {
+       		location.href = "/movie/index";
+    	}
     });
 }
 
