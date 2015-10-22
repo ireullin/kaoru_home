@@ -1,11 +1,11 @@
 
 
 	<div class="page-header">
-		<h3>預約未上檔電影</h3>
+		<h3>關鍵字追蹤</h3>
 	</div>
 
 	<div class="list-group" id="keywords_list">
-		
+
 		<div class="list-group-item-sm">
 			<input type="text" class="form-control sub-item" placeholder="請輸入關鍵字" id="new_item">
 		</div>
@@ -76,7 +76,7 @@ function newItemOnPress(e)
 	$(this).parent().after( generateItem( itemName, tagID) );
 
 	$.ajaxSetup({headers: { "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content') }  });
-	$.post( 
+	$.post(
 		"<%= full_url '/movie/reserve_new.json' %>",
 		{
 			tag_id: tagID,
@@ -153,7 +153,7 @@ function removeItemOnclick()
 	var obj = $(this).parent().parent();
 
 	$.ajaxSetup({headers: { "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content') }  });
-	$.post( 
+	$.post(
 		"<%= full_url '/movie/reserve_delete.json' %>",
 		{
 			tag_id: obj.prop('id')
