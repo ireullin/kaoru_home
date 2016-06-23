@@ -54,15 +54,17 @@ Rails.application.routes.draw do
   post  'top/record_name'
 
 
-  get   'lottery/history/:type/:page'   => 'lottery#index'
-  get   'lottery/statistic/:type'       => 'lottery#statistic'
-  get   'lottery/bubblechart/:type'     => 'lottery#bubble_chart'
-  get   'lottery/newest/:type'          => 'lottery#newest'
-  post  'lottery/new'                   => 'lottery#new'
+  get   'lottery/history/:type/:page'    => 'lottery#index'
+  get   'lottery/statistic/:type'        => 'lottery#statistic'
+  get   'lottery/bubblechart/:type'      => 'lottery#bubble_chart'
+  get   'lottery/association_rule/:type' => 'lottery#association_rule'
+  get   'lottery/suggestion/:type'       => 'lottery#suggestion'
+  get   'lottery/newest/:type'           => 'lottery#newest'
+  post  'lottery/new'                    => 'lottery#new'
 
 
-  get   'lotterystatistic/count/:type' => 'lottery_statistic#count'
-  get   'lotterystatistic/rank/:type' => 'lottery_statistic#rank'
+  # get   'lotterystatistic/count/:type' => 'lottery_statistic#count'
+  # get   'lotterystatistic/rank/:type' => 'lottery_statistic#rank'
 
 
   post  'weather/update'        => 'weather#update'

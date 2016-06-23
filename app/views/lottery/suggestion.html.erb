@@ -1,0 +1,82 @@
+
+<div class="container-fluid">
+    <div class="page-header">
+        <h1>
+            <%= params[:type]=='superlottos' ? '威力彩建議獎號' : '大樂透建議獎號' %>
+            <small><%= params[:type]=='superlottos' ? '(每周一四開獎)' : '(每周二五開獎)' %></small>
+        </h1>
+    </div>
+
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th>前4碼<br>開過次數</th>
+                <th>說明</th>
+                <th colspan="4">前4碼(依第4碼機率排序)</th>
+                <th colspan="2">後2碼</th>
+            </tr>
+        </thead>
+
+        <tbody id='suggestion'>
+        </tbody>
+    </table>
+
+</div>
+
+<script language="javascript">
+$(document).ready(ready);
+function ready()
+{//console.log(arguments.callee.name);
+  //$(document).one( 'page:before-change', unload);
+
+    var url = "<%= full_url('/lottery/association_rule/'+params[:type]+'.json') %>";
+    $.get(url, onReceived);
+}
+
+
+function onReceived(data)
+{
+    console.log(data);
+    for(var i=0; i<data.length; i++)
+    {
+        row = [
+            '<tr>',generateRow1(data[i]),'</tr>',
+            '<tr>',generateRow2(data[i]),'</tr>',
+        ];
+        $('#suggestion').append( row.join('') );
+    }
+}
+
+
+function generateRow1(d)
+{
+    row1 = [
+        '<td rowspan=2>',d['opened'],'</td>',
+        '<td>','號碼','</td>',
+        '<td>',d['no1'],'</td>',
+        '<td>',d['no2'],'</td>',
+        '<td>',d['no3'],'</td>',
+        '<td>',d['no4'],'</td>',
+        '<td>',d['no5'],'</td>',
+        '<td>',d['no6'],'</td>'
+    ];
+    return row1.join('');
+}
+
+
+function generateRow2(d)
+{
+    row1 = [
+
+        '<td>','機率','</td>',
+        '<td>',d['no1_supp']*100,'%</td>',
+        '<td>',d['no2_supp']*100,'%</td>',
+        '<td>',d['no3_supp']*100,'%</td>',
+        '<td>',d['no4_supp']*100,'%</td>',
+        '<td>',d['no5_supp']*100,'%</td>',
+        '<td>',d['no6_supp']*100,'%</td>'
+    ];
+    return row1.join('');
+}
+
+</script>
