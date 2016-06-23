@@ -58,7 +58,7 @@ Rails.application.routes.draw do
   get   'lottery/statistic/:type'        => 'lottery#statistic'
   get   'lottery/bubblechart/:type'      => 'lottery#bubble_chart'
   get   'lottery/association_rule/:type' => 'lottery#association_rule'
-  get   'lottery/suggestion/:type'       => 'lottery#suggestion'
+  get   'lottery/suggestion'             => 'lottery#suggestion'
   get   'lottery/newest/:type'           => 'lottery#newest'
   post  'lottery/new'                    => 'lottery#new'
 

@@ -1,12 +1,16 @@
 
 <div class="container-fluid">
     <div class="page-header">
-        <h1>
-            <%= params[:type]=='superlottos' ? '威力彩建議獎號' : '大樂透建議獎號' %>
-            <small><%= params[:type]=='superlottos' ? '(每周一四開獎)' : '(每周二五開獎)' %></small>
+        <h1>建議獎號
+            <small>association_rule</small>
         </h1>
     </div>
 
+
+    <h2>
+        威力彩建議獎號
+        <small>(每周一四開獎)</small>
+    </h2>
     <table class="table table-hover table-striped">
         <thead>
             <tr>
@@ -17,7 +21,25 @@
             </tr>
         </thead>
 
-        <tbody id='suggestion'>
+        <tbody id='superlottos-suggestion'>
+        </tbody>
+    </table>
+    <br>
+    <h2>
+        大樂透建議獎號
+        <small>(每周二五開獎)</small>
+    </h2>
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th>前4碼<br>開過次數</th>
+                <th>說明</th>
+                <th colspan="4">前4碼(依第4碼機率排序)</th>
+                <th colspan="2">後2碼</th>
+            </tr>
+        </thead>
+
+        <tbody id='lottery649s-suggestion'>
         </tbody>
     </table>
 
@@ -29,12 +51,15 @@ function ready()
 {//console.log(arguments.callee.name);
   //$(document).one( 'page:before-change', unload);
 
-    var url = "<%= full_url('/lottery/association_rule/'+params[:type]+'.json') %>";
-    $.get(url, onReceived);
+    var url1 = "<%= full_url('/lottery/association_rule/superlottos') %>";
+    $.get(url1, onReceivedSuperlottos);
+
+    var url2 = "<%= full_url('/lottery/association_rule/lottery649s') %>";
+    $.get(url2, onReceivedLottery649s);
 }
 
 
-function onReceived(data)
+function onReceivedSuperlottos(data)
 {
     console.log(data);
     for(var i=0; i<data.length; i++)
@@ -43,7 +68,27 @@ function onReceived(data)
             '<tr>',generateRow1(data[i]),'</tr>',
             '<tr>',generateRow2(data[i]),'</tr>',
         ];
-        $('#suggestion').append( row.join('') );
+        $('#superlottos-suggestion').append( row.join('') );
+
+        if(data[i]['opened']==0)
+            break;
+    }
+}
+
+
+function onReceivedLottery649s(data)
+{
+    console.log(data);
+    for(var i=0; i<data.length; i++)
+    {
+        row = [
+            '<tr>',generateRow1(data[i]),'</tr>',
+            '<tr>',generateRow2(data[i]),'</tr>',
+        ];
+        $('#lottery649s-suggestion').append( row.join('') );
+
+        if(data[i]['opened']==0)
+            break;
     }
 }
 
