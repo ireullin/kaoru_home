@@ -9,6 +9,7 @@
         <table class="table table-hover table-striped">
             <thead>
                 <tr>
+                    <th></th>
                     <th>id</th>
                     <th>group id</th>
                     <th>seq</th>
@@ -24,6 +25,12 @@
             <tbody>
                 <% @rows.each do |row| %>
                     <tr>
+                        <td>
+                            <% pic_name = "#{row.group_id}_#{row.seq}.jpg" %>
+                            <a class="fancybox fancypic" href="<%= full_url('/robotic_farm/'+pic_name) %>" >
+                            pic
+                            </a>
+                        </td>
                         <td><%= row.id %></td>
                         <td><%= row.group_id %></td>
                         <td><%= row.seq %></td>
@@ -49,7 +56,7 @@ $(document).ready(ready);
 function ready()
 {
     // commit this if wanna debug
-    $(".fancy_bookmark_form").fancybox({
+    $(".fancypic").fancybox({
         parent      : 'body',
         maxWidth    : 800,
         maxHeight   : 600,
