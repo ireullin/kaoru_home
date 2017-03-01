@@ -1,0 +1,66 @@
+
+<div class="container-fluid">
+
+    <div class="page-header">
+        <h1>機器人農場</h1>
+    </div>
+
+    <div>
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>group id</th>
+                    <th>seq</th>
+                    <th>濕度</th>
+                    <th>溫度</th>
+                    <th>照度</th>
+                    <th>土壤缺水度</th>
+                    <th>created date</th>
+                    <th>updated date</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <% @rows.each do |row| %>
+                    <tr>
+                        <td><%= row.id %></td>
+                        <td><%= row.group_id %></td>
+                        <td><%= row.seq %></td>
+                        <td><%= row.air_hum %></td>
+                        <td><%= row.air_tmp %></td>
+                        <td><%= row.soil_hum %></td>
+                        <td><%= row.lux %></td>
+                        <td><%= row.created_at.localtime.strftime("%Y-%m-%d %H:%M:%S") %></td>
+                        <td><%= row.updated_at.localtime.strftime("%Y-%m-%d %H:%M:%S") %></td>
+                    </tr>
+                <% end %>
+            </tbody>
+        </table>
+    </div>
+
+
+</div>
+
+<script language="javascript">
+
+
+$(document).ready(ready);
+function ready()
+{
+    // commit this if wanna debug
+    $(".fancy_bookmark_form").fancybox({
+        parent      : 'body',
+        maxWidth    : 800,
+        maxHeight   : 600,
+        fitToView   : false,
+        width       : '70%',
+        height      : '70%',
+        autoSize    : false,
+        closeClick  : false,
+        openEffect  : 'none',
+        closeEffect : 'none'
+    });
+}
+
+</script>

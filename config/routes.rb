@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
 
+  get  'robotic_farm' => 'robotic_farm#index'
+  post 'robotic_farm/import' => 'robotic_farm#import'
+
   get 'video_stream/index'
 
   get 'money_note' => 'money_note#index'
