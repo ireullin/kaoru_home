@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151020032400) do
+ActiveRecord::Schema.define(version: 20170301040536) do
 
   create_table "bookmarks", force: true do |t|
     t.string   "bookmark_name"
@@ -134,6 +134,17 @@ ActiveRecord::Schema.define(version: 20151020032400) do
   end
 
   add_index "photo_albums", ["path"], name: "index_photo_albums_on_path", unique: true
+
+  create_table "robotic_farm_monitors", force: true do |t|
+    t.string   "group_id"
+    t.string   "seq"
+    t.float    "air_hum"
+    t.float    "air_tmp"
+    t.float    "soil_hum"
+    t.float    "lux"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "superlottos", primary_key: "term", force: true do |t|
     t.integer  "no1",          null: false
