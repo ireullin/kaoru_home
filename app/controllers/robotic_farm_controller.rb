@@ -2,7 +2,7 @@ class RoboticFarmController < ApplicationController
     skip_before_action :verify_authenticity_token
 
     def index
-        @rows = RoboticFarmMonitor.all
+        @rows = RoboticFarmMonitor.order('created_at DESC')
     end
 
     def import
