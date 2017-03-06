@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
 
-  get  'robotic_farm' => 'robotic_farm#index'
-  post 'robotic_farm/import' => 'robotic_farm#import'
+  post 'robotic_farm/import'    => 'robotic_farm#import'
+  get  'robotic_farm(/:group_id)' => 'robotic_farm#index'
+  
 
   get 'video_stream/index'
 
