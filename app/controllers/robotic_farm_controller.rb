@@ -2,6 +2,12 @@ class RoboticFarmController < ApplicationController
     skip_before_action :verify_authenticity_token
 
     def index
+        @group_ids = RoboticFarmMonitor.select(:group_id).distinct
+        @group_id = if params[:group_id].nil? 
+            @group_ids[0].group_id 
+        else
+            params[:group_id]
+        end
         @rows = RoboticFarmMonitor.order('created_at DESC')
     end
 
