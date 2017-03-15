@@ -2,14 +2,76 @@
 <html lang="en">
   <head>
     <title>about me</title>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <style type="text/css">
+    .bs-callout {
+        padding: 20px;
+        margin: 20px 0;
+        border: 1px solid #eee;
+        border-left-width: 5px;
+        border-radius: 3px;
+    }
+    .bs-callout h4 {
+        margin-top: 0;
+        margin-bottom: 5px;
+    }
+    .bs-callout p:last-child {
+        margin-bottom: 0;
+    }
+    .bs-callout code {
+        border-radius: 3px;
+    }
+    .bs-callout+.bs-callout {
+        margin-top: -5px;
+    }
+    .bs-callout-default {
+        border-left-color: #777;
+    }
+    .bs-callout-default h4 {
+        color: #777;
+    }
+    .bs-callout-primary {
+        border-left-color: #428bca;
+    }
+    .bs-callout-primary h4 {
+        color: #428bca;
+    }
+    .bs-callout-success {
+        border-left-color: #5cb85c;
+    }
+    .bs-callout-success h4 {
+        color: #5cb85c;
+    }
+    .bs-callout-danger {
+        border-left-color: #d9534f;
+    }
+    .bs-callout-danger h4 {
+        color: #d9534f;
+    }
+    .bs-callout-warning {
+        border-left-color: #f0ad4e;
+    }
+    .bs-callout-warning h4 {
+        color: #f0ad4e;
+    }
+    .bs-callout-info {
+        border-left-color: #5bc0de;
+    }
+    .bs-callout-info h4 {
+        color: #5bc0de;
+    }
+    </style>
+
   </head>
 
   <body>
+
   <div class="container-fluid">
     <br>
     <div class="jumbotron">
@@ -19,12 +81,65 @@
       <% end %>
     </div>
 
+    <br>
+    <h1>profile</h1>
+    <hr>
     <ul>
       <li><%= @resume['mail'] %></li>
       <li><%= raw @resume['phones'].join('<br>') %></li>
       <li><%= @resume['github'] %></li>
     </ul>
 
+    <br>
+    <hr>
+
+
+    <h1>attainments</h1>
+    <% col_num = 3 %>
+    <% class_name = "col-md-#{12/col_num}" %>
+    <% row_num = (@resume['attainments']['items'].size / col_num.to_f ).ceil  %>
+    <% row_num.times do |i| %>
+      <div class="row">
+        <% col_num.times do |j| %>
+          <% k = i*col_num+j %>
+          <% next if k >= @resume['attainments']['items'].size %>
+          <% item = @resume['attainments']['items'][k] %>
+          <div class="<%= class_name %>">
+            <div class="panel panel-default">
+              <div class="panel-heading" style="max-height: 50;min-height: 50;">
+                <h4><%= item['summary'][@lang] %><br><small><%= item['company'][@lang] %></small></h4>
+              </div>
+              <div class="panel-body">
+                <p><%= item['description'][@lang] %></p>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+    <% end %>
+
+
+    <br>
+    <hr>
+    <h1>licenses</h1>
+    <% @resume['licenses'].each do |license| %>
+      <div class="bs-callout bs-callout-default">
+        <h4><%= license['name'] %></h4>
+        <a><%= license['url'] %></a>
+      </div>
+    <% end %>
+
+
+    <br>
+    <hr>
+    <h1>educations</h1>
+    <% @resume['educations'].each do |education| %>
+      <div class="bs-callout bs-callout-default">
+        <h4><%= education['school'][@lang] %> <small><%= education['duration'] %></small></h4>
+        <p><%= education['department'][@lang] %></p>
+      </div>
+    <% end %>
 
 
   </div>
