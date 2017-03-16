@@ -66,6 +66,11 @@
     .bs-callout-info h4 {
         color: #5bc0de;
     }
+
+    .im-centered {
+      margin: auto;
+      max-width: 300px;
+    }
     </style>
 
   </head>
@@ -82,19 +87,72 @@
     </div>
 
     <br>
-    <h1>profile</h1>
-    <hr>
-    <ul>
-      <li><%= @resume['mail'] %></li>
-      <li><%= raw @resume['phones'].join('<br>') %></li>
-      <li><%= @resume['github'] %></li>
-    </ul>
+    <br>
+
+
+    <div class="container-fluid text-center">
+      <h1>profile</h1>
+    </div>
+
+    <div class="im-centered">
+      <div class="row">
+        <dl class="dl-horizontal">
+          <dt>mail:</dt>
+          <dd><%= @resume['mail'] %></dd>
+          <dt>phone:</dt>
+          <dd><%= raw @resume['phones'].join('<br>') %></dd>
+          <dt>github:</dt>
+          <dd><a href="<%= @resume['github'] %>"><%= @resume['github'] %></a></dd>
+          <dt>blog(unmaintained):</dt>
+          <dd><a href="<%= @resume['blog'] %>"><%= @resume['blog'] %></a></dd>
+        </dl>
+      </div>
+    </div>
 
     <br>
-    <hr>
+    <br>
+
+    <!-- companies -->
+    <div class="container-fluid text-center">
+      <h1>companies</h1>
+    </div>
+    <!--
+    <% @resume['companies'].each do |company| %>
+      <div class="bs-callout bs-callout-default">
+        <h4><%= company['name'][@lang] %></h4>
+        <p><%= company['duration'] %></p>
+        <p><%= company['position'][@lang] %></p>
+      </div>
+    <% end %>
+    -->
+    <% col_num = 4 %>
+    <% class_name = "col-md-#{12/col_num}" %>
+    <% row_num = (@resume['companies'].size / col_num.to_f ).ceil  %>
+    <% row_num.times do |i| %>
+      <div class="row">
+        <% col_num.times do |j| %>
+          <% k = i*col_num+j %>
+          <% next if k >= @resume['companies'].size %>
+          <% company = @resume['companies'][k] %>
+          <div class="<%= class_name %>">
+            <div class="panel panel-default text-center">
+                <h3><%= company['name'][@lang] %></h3>
+                <p><%= company['duration'] %></p>
+                <p><%= company['position'][@lang] %></p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
 
 
-    <h1>attainments</h1>
+    <br>
+    <br>
+
+    <!-- attainments -->
+    <div class="container-fluid text-center">
+      <h1>attainments</h1>
+    </div>
     <% col_num = 3 %>
     <% class_name = "col-md-#{12/col_num}" %>
     <% row_num = (@resume['attainments']['items'].size / col_num.to_f ).ceil  %>
@@ -106,34 +164,126 @@
           <% item = @resume['attainments']['items'][k] %>
           <div class="<%= class_name %>">
             <div class="panel panel-default">
-              <div class="panel-heading" style="max-height: 50;min-height: 50;">
-                <h4><%= item['summary'][@lang] %><br><small><%= item['company'][@lang] %></small></h4>
+              <div class="panel-heading  text-center" style="min-height: 1000; max-height: 1000;">
+                <h4><%= item['summary'][@lang] %><br><small>in <%= item['company'][@lang] %></small></h4>
               </div>
-              <div class="panel-body">
+              <div class="panel-body" style="min-height: 1000; max-height: 1000;">
                 <p><%= item['description'][@lang] %></p>
               </div>
             </div>
           </div>
         <% end %>
       </div>
-
     <% end %>
 
-
     <br>
-    <hr>
-    <h1>licenses</h1>
+    <br>
+
+    <!-- skills -->
+    <div class="container-fluid text-center">
+      <h1>skills</h1>
+    </div>
+    <!--
+    <div class="im-centered">
+      <div class="row">
+      <div class="col-md-12">
+        <dl class="dl-horizontal">
+          <dt>libraries:</dt>
+          <dd><%= raw @resume['libraries'].join('<br>') %></dd>
+          <dt>databases:</dt>
+          <dd><%= raw @resume['databases'].join('<br>') %></dd>
+          <dt>vsersion controlls:</dt>
+          <dd><%= raw @resume['vsersion_controlls'].join('<br>') %></dd>
+          <dt>os:</dt>
+          <dd><%= raw @resume['os'].join(', ') %></dd>
+          <dt>special experiences <br>& knowledge:</dt>
+          <dd><%= raw @resume['special_experiences_and_knowledge'].join('<br>') %></dd>
+        </dl>
+      </div>
+      </div>
+    </div>
+    -->
+    <div class="row">
+      <div class="col-md-4">
+        <div class="panel panel-default">
+          <div class="panel-heading  text-center" style="min-height: 1000; max-height: 1000;">
+            <h4>libraries & freamworks</h4>
+          </div>
+          <div class="panel-body" style="min-height: 1000; max-height: 1000;">
+            <ul><%= raw @resume['libraries'].map{|x| "<li>#{x}</li>" }.join %></ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="panel panel-default">
+          <div class="panel-heading  text-center" style="min-height: 1000; max-height: 1000;">
+            <h4>databases</h4>
+          </div>
+          <div class="panel-body" style="min-height: 1000; max-height: 1000;">
+            <ul><%= raw @resume['databases'].map{|x| "<li>#{x}</li>" }.join %></ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="panel panel-default">
+          <div class="panel-heading  text-center" style="min-height: 1000; max-height: 1000;">
+            <h4>special experiences & knowledge</h4>
+          </div>
+          <div class="panel-body" style="min-height: 1000; max-height: 1000;">
+            <ul><%= raw @resume['databases'].map{|x| "<li>#{x}</li>" }.join %></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <div class="row">
+      <div class="col-md-4">
+        <div class="panel panel-default">
+          <div class="panel-heading  text-center" style="min-height: 1000; max-height: 1000;">
+            <h4>os</h4>
+          </div>
+          <div class="panel-body" style="min-height: 1000; max-height: 1000;">
+            <ul><%= raw @resume['os'].map{|x| "<li>#{x}</li>" }.join %></ul>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-md-4">
+        <div class="panel panel-default">
+          <div class="panel-heading  text-center" style="min-height: 1000; max-height: 1000;">
+            <h4>vsersion controlls</h4>
+          </div>
+          <div class="panel-body" style="min-height: 1000; max-height: 1000;">
+            <ul><%= raw @resume['vsersion_controlls'].map{|x| "<li>#{x}</li>" }.join %></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <br>
+
+    <div class="container-fluid text-center">
+      <h1>licenses</h1>
+    </div>
     <% @resume['licenses'].each do |license| %>
       <div class="bs-callout bs-callout-default">
         <h4><%= license['name'] %></h4>
-        <a><%= license['url'] %></a>
+        <a href="<%= license['url'] %>" ><%= license['url'] %></a>
       </div>
     <% end %>
 
 
     <br>
-    <hr>
-    <h1>educations</h1>
+    <br>
+    <div class="container-fluid text-center">
+      <h1>educations</h1>
+    </div>
     <% @resume['educations'].each do |education| %>
       <div class="bs-callout bs-callout-default">
         <h4><%= education['school'][@lang] %> <small><%= education['duration'] %></small></h4>
