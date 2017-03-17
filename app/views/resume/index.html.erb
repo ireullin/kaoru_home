@@ -179,6 +179,38 @@
     <br>
     <br>
 
+
+    <!-- programming languages -->
+    <div class="container-fluid text-center">
+      <h1>programming languages</h1>
+    </div>
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>excellent</th>
+          <th>good</th>
+          <th>general</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @resume['programs']['excellent'].each do |x| %>
+          <%= raw %Q(<tr><td>#{x}</td><td><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></td><td></td><td></td></tr>) %>
+        <% end %>
+        <% @resume['programs']['good'].each do |x| %>
+          <%= raw %Q(<tr><td>#{x}</td><td></td><td><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></td><td></td></tr>) %>
+        <% end %>
+        <% @resume['programs']['general'].each do |x| %>
+          <%= raw %Q(<tr><td>#{x}</td><td></td><td></td><td><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></td></tr>) %>
+        <% end %>
+      </tbody>
+    </table>
+
+
+
+    <br>
+    <br>
+
     <!-- skills -->
     <div class="container-fluid text-center">
       <h1>skills</h1>
@@ -237,9 +269,6 @@
         </div>
       </div>
     </div>
-
-
-
 
     <div class="row">
       <div class="col-md-4">
