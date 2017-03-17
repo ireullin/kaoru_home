@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>about me</title>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <style type="text/css">
+    .bs-callout {
+        padding: 20px;
+        margin: 20px 0;
+        border: 1px solid #eee;
+        border-left-width: 5px;
+        border-radius: 3px;
+    }
+    .bs-callout h4 {
+        margin-top: 0;
+        margin-bottom: 5px;
+    }
+    .bs-callout p:last-child {
+        margin-bottom: 0;
+    }
+    .bs-callout code {
+        border-radius: 3px;
+    }
+    .bs-callout+.bs-callout {
+        margin-top: -5px;
+    }
+    .bs-callout-default {
+        border-left-color: #777;
+    }
+    .bs-callout-default h4 {
+        color: #777;
+    }
+    .bs-callout-primary {
+        border-left-color: #428bca;
+    }
+    .bs-callout-primary h4 {
+        color: #428bca;
+    }
+    .bs-callout-success {
+        border-left-color: #5cb85c;
+    }
+    .bs-callout-success h4 {
+        color: #5cb85c;
+    }
+    .bs-callout-danger {
+        border-left-color: #d9534f;
+    }
+    .bs-callout-danger h4 {
+        color: #d9534f;
+    }
+    .bs-callout-warning {
+        border-left-color: #f0ad4e;
+    }
+    .bs-callout-warning h4 {
+        color: #f0ad4e;
+    }
+    .bs-callout-info {
+        border-left-color: #5bc0de;
+    }
+    .bs-callout-info h4 {
+        color: #5bc0de;
+    }
+
+    .im-centered {
+      margin: auto;
+      max-width: 300px;
+    }
+    </style>
+
+  </head>
+
+  <body>
+
+  <div class="container-fluid">
+    <br>
+    <div class="jumbotron">
+      <h1>Hi, I'm <%= @resume['name'][@lang] %></h1>
+      <% @resume['profile'][@lang].each do |p| %>
+        <p><%= p %></p>
+      <% end %>
+    </div>
+
+    <br>
+    <br>
+
+
+    <div class="container-fluid text-center">
+      <h1>profile</h1>
+    </div>
+
+    <div class="im-centered">
+      <div class="row">
+        <dl class="dl-horizontal">
+          <dt>mail:</dt>
+          <dd><%= @resume['mail'] %></dd>
+          <dt>phone:</dt>
+          <dd><%= raw @resume['phones'].join('<br>') %></dd>
+          <dt>github:</dt>
+          <dd><a href="<%= @resume['github'] %>"><%= @resume['github'] %></a></dd>
+          <dt>blog(unmaintained):</dt>
+          <dd><a href="<%= @resume['blog'] %>"><%= @resume['blog'] %></a></dd>
+        </dl>
+      </div>
+    </div>
+
+    <br>
+    <br>
+
+    <!-- companies -->
+    <div class="container-fluid text-center">
+      <h1>companies</h1>
+    </div>
+    <!--
+    <% @resume['companies'].each do |company| %>
+      <div class="bs-callout bs-callout-default">
+        <h4><%= company['name'][@lang] %></h4>
+        <p><%= company['duration'] %></p>
+        <p><%= company['position'][@lang] %></p>
+      </div>
+    <% end %>
+    -->
+    <% col_num = 4 %>
+    <% class_name = "col-md-#{12/col_num}" %>
+    <% row_num = (@resume['companies'].size / col_num.to_f ).ceil  %>
+    <% row_num.times do |i| %>
+      <div class="row">
+        <% col_num.times do |j| %>
+          <% k = i*col_num+j %>
+          <% next if k >= @resume['companies'].size %>
+          <% company = @resume['companies'][k] %>
+          <div class="<%= class_name %>">
+            <div class="panel panel-default text-center">
+                <h3><%= company['name'][@lang] %></h3>
+                <p><%= company['duration'] %></p>
+                <p><%= company['position'][@lang] %></p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
+
+    <br>
+    <br>
+
+    <!-- attainments -->
+    <div class="container-fluid text-center">
+      <h1>attainments</h1>
+    </div>
+    <% col_num = 3 %>
+    <% class_name = "col-md-#{12/col_num}" %>
+    <% row_num = (@resume['attainments']['items'].size / col_num.to_f ).ceil  %>
+    <% row_num.times do |i| %>
+      <div class="row">
+        <% col_num.times do |j| %>
+          <% k = i*col_num+j %>
+          <% next if k >= @resume['attainments']['items'].size %>
+          <% item = @resume['attainments']['items'][k] %>
+          <div class="<%= class_name %>">
+            <div class="panel panel-default">
+              <div class="panel-heading  text-center" style="min-height: 1000; max-height: 1000;">
+                <h4><%= item['summary'][@lang] %><br><small>in <%= item['company'][@lang] %></small></h4>
+              </div>
+              <div class="panel-body" style="min-height: 1000; max-height: 1000;">
+                <p><%= item['description'][@lang] %></p>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <br>
+    <br>
+
+
+    <!-- programming languages -->
+    <div class="container-fluid text-center">
+      <h1>programming languages</h1>
+    </div>
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>excellent</th>
+          <th>good</th>
+          <th>general</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @resume['programs']['excellent'].each do |x| %>
+          <%= raw %Q(<tr><td>#{x}</td><td><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></td><td></td><td></td></tr>) %>
+        <% end %>
+        <% @resume['programs']['good'].each do |x| %>
+          <%= raw %Q(<tr><td>#{x}</td><td></td><td><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></td><td></td></tr>) %>
+        <% end %>
+        <% @resume['programs']['general'].each do |x| %>
+          <%= raw %Q(<tr><td>#{x}</td><td></td><td></td><td><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></td></tr>) %>
+        <% end %>
+      </tbody>
+    </table>
+
+
+
+    <br>
+    <br>
+
+    <!-- skills -->
+    <div class="container-fluid text-center">
+      <h1>skills</h1>
+    </div>
+    <!--
+    <div class="im-centered">
+      <div class="row">
+      <div class="col-md-12">
+        <dl class="dl-horizontal">
+          <dt>libraries:</dt>
+          <dd><%= raw @resume['libraries'].join('<br>') %></dd>
+          <dt>databases:</dt>
+          <dd><%= raw @resume['databases'].join('<br>') %></dd>
+          <dt>vsersion controlls:</dt>
+          <dd><%= raw @resume['vsersion_controlls'].join('<br>') %></dd>
+          <dt>os:</dt>
+          <dd><%= raw @resume['os'].join(', ') %></dd>
+          <dt>special experiences <br>& knowledge:</dt>
+          <dd><%= raw @resume['special_experiences_and_knowledge'].join('<br>') %></dd>
+        </dl>
+      </div>
+      </div>
+    </div>
+    -->
+    <div class="row">
+      <div class="col-md-4">
+        <div class="panel panel-default">
+          <div class="panel-heading  text-center" style="min-height: 1000; max-height: 1000;">
+            <h4>libraries & freamworks</h4>
+          </div>
+          <div class="panel-body" style="min-height: 1000; max-height: 1000;">
+            <ul><%= raw @resume['libraries'].map{|x| "<li>#{x}</li>" }.join %></ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="panel panel-default">
+          <div class="panel-heading  text-center" style="min-height: 1000; max-height: 1000;">
+            <h4>databases</h4>
+          </div>
+          <div class="panel-body" style="min-height: 1000; max-height: 1000;">
+            <ul><%= raw @resume['databases'].map{|x| "<li>#{x}</li>" }.join %></ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="panel panel-default">
+          <div class="panel-heading  text-center" style="min-height: 1000; max-height: 1000;">
+            <h4>special experiences & knowledge</h4>
+          </div>
+          <div class="panel-body" style="min-height: 1000; max-height: 1000;">
+            <ul><%= raw @resume['databases'].map{|x| "<li>#{x}</li>" }.join %></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4">
+        <div class="panel panel-default">
+          <div class="panel-heading  text-center" style="min-height: 1000; max-height: 1000;">
+            <h4>os</h4>
+          </div>
+          <div class="panel-body" style="min-height: 1000; max-height: 1000;">
+            <ul><%= raw @resume['os'].map{|x| "<li>#{x}</li>" }.join %></ul>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-md-4">
+        <div class="panel panel-default">
+          <div class="panel-heading  text-center" style="min-height: 1000; max-height: 1000;">
+            <h4>vsersion controlls</h4>
+          </div>
+          <div class="panel-body" style="min-height: 1000; max-height: 1000;">
+            <ul><%= raw @resume['vsersion_controlls'].map{|x| "<li>#{x}</li>" }.join %></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <br>
+
+    <div class="container-fluid text-center">
+      <h1>licenses</h1>
+    </div>
+    <% @resume['licenses'].each do |license| %>
+      <div class="bs-callout bs-callout-default">
+        <h4><%= license['name'] %></h4>
+        <a href="<%= license['url'] %>" ><%= license['url'] %></a>
+      </div>
+    <% end %>
+
+
+    <br>
+    <br>
+    <div class="container-fluid text-center">
+      <h1>educations</h1>
+    </div>
+    <% @resume['educations'].each do |education| %>
+      <div class="bs-callout bs-callout-default">
+        <h4><%= education['school'][@lang] %> <small><%= education['duration'] %></small></h4>
+        <p><%= education['department'][@lang] %></p>
+      </div>
+    <% end %>
+
+
+  </div>
+  </body>
+</html>

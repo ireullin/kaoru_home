@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
 
+  get 'about_me/:lang' => 'resume#index'
+
   post 'robotic_farm/import'    => 'robotic_farm#import'
   get  'robotic_farm(/:group_id)' => 'robotic_farm#index'
-  
+
 
   get 'video_stream/index'
 
