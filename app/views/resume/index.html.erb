@@ -76,11 +76,32 @@
   </head>
 
   <body>
+  <br>
 
   <div class="container-fluid">
-    <br>
-    <div class="jumbotron">
-      <h1>Hi, I'm <%= @resume['name'][@lang] %></h1>
+    <div class="row">
+      <div class="col-xs-6">
+        <h1><%= @resume['name'][@lang] %>'s profile</h1>
+      </div>
+      <div class="col-xs-6">
+        <br>
+        <dl>
+          <dt>mail:</dt>
+          <dd><%= @resume['mail'] %></dd>
+          <dt>phone:</dt>
+          <dd><%= raw @resume['phones'].join('<br>') %></dd>
+          <dt>github:</dt>
+          <dd><a><%= @resume['github'] %></a></dd>
+          <dt>blog(unmaintained):</dt>
+          <dd><a><%= @resume['blog'] %></a></dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+  <br>
+
+  <div class="container-fluid">
+    <div class="bs-callout bs-callout-default">
       <% @resume['profile'][@lang].each do |p| %>
         <p><%= p %></p>
       <% end %>
@@ -89,7 +110,7 @@
     <br>
     <br>
 
-
+    <!--
     <div class="container-fluid text-center">
       <h1>profile</h1>
     </div>
@@ -103,7 +124,7 @@
           <dd><%= raw @resume['phones'].join('<br>') %></dd>
           <dt>github:</dt>
           <dd><a><%= @resume['github'] %></a></dd>
-          <dt>blog(unmaintained):</dt>
+          <dt>blog<br>(unmaintained):</dt>
           <dd><a><%= @resume['blog'] %></a></dd>
         </dl>
       </div>
@@ -111,6 +132,7 @@
 
     <br>
     <br>
+    -->
 
     <!-- companies -->
     <div class="container-fluid text-center">
@@ -136,9 +158,9 @@
           <% company = @resume['companies'][k] %>
           <div class="<%= class_name %>">
             <div class="panel panel-default text-center">
-                <h4><%= company['name'][@lang] %></h4>
-                <p><%= company['duration'] %></p>
-                <p><%= company['position'][@lang] %></p>
+              <h4><%= company['name'][@lang] %></h4>
+              <p><%= company['duration'] %></p>
+              <p><%= company['position'][@lang] %></p>
             </div>
           </div>
         <% end %>
@@ -264,7 +286,7 @@
             <h4>special experiences & knowledge</h4>
           </div>
           <div class="panel-body" style="min-height: 1000; max-height: 1000;">
-            <ul><%= raw @resume['databases'].map{|x| "<li>#{x}</li>" }.join %></ul>
+            <ul><%= raw @resume['special_experiences_and_knowledge'].map{|x| "<li>#{x}</li>" }.join %></ul>
           </div>
         </div>
       </div>
