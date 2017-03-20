@@ -192,7 +192,7 @@
                 <h4><%= item['summary'][@lang] %><br><small>in <%= item['company'][@lang] %></small></h4>
               </div>
               <div class="panel-body">
-                <p><%= item['description'][@lang] %></p>
+                <%= raw item['description'][@lang].map{|x| "<p>#{x}</p>" }.join %>
               </div>
             </div>
           </div>
