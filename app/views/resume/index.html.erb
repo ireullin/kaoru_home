@@ -71,6 +71,8 @@
       margin: auto;
       max-width: 300px;
     }
+
+    .pagebreak { page-break-before: always; }
     </style>
 
   </head>
@@ -168,8 +170,7 @@
     <% end %>
 
 
-    <br>
-    <br>
+    <div class="pagebreak"></div>
 
     <!-- attainments -->
     <div class="container-fluid text-center">
@@ -179,6 +180,7 @@
     <% class_name = "col-xs-#{12/col_num}" %>
     <% row_num = (@resume['attainments']['items'].size / col_num.to_f ).ceil  %>
     <% row_num.times do |i| %>
+
       <div class="row">
         <% col_num.times do |j| %>
           <% k = i*col_num+j %>
@@ -186,30 +188,32 @@
           <% item = @resume['attainments']['items'][k] %>
           <div class="<%= class_name %>">
             <div class="panel panel-default">
-              <div class="panel-heading  text-center" style="min-height: 1000; max-height: 1000;">
+              <div class="panel-heading  text-center">
                 <h4><%= item['summary'][@lang] %><br><small>in <%= item['company'][@lang] %></small></h4>
               </div>
-              <div class="panel-body" style="min-height: 1000; max-height: 1000;">
+              <div class="panel-body">
                 <p><%= item['description'][@lang] %></p>
               </div>
             </div>
           </div>
         <% end %>
       </div>
+
+      <% if i%2==1 %>
+        <div class="pagebreak"></div>
+      <% end %>
     <% end %>
 
-    <br>
-    <br>
 
 
     <!-- programming languages -->
     <div class="container-fluid text-center">
-      <h1>programming languages</h1>
+      <h1>languages & skills</h1>
     </div>
     <table class="table table-condensed">
       <thead>
         <tr>
-          <th>#</th>
+          <th>language</th>
           <th>excellent</th>
           <th>good</th>
           <th>general</th>
@@ -228,35 +232,6 @@
       </tbody>
     </table>
 
-
-
-    <br>
-    <br>
-
-    <!-- skills -->
-    <div class="container-fluid text-center">
-      <h1>skills</h1>
-    </div>
-    <!--
-    <div class="im-centered">
-      <div class="row">
-      <div class="col-md-12">
-        <dl class="dl-horizontal">
-          <dt>libraries:</dt>
-          <dd><%= raw @resume['libraries'].join('<br>') %></dd>
-          <dt>databases:</dt>
-          <dd><%= raw @resume['databases'].join('<br>') %></dd>
-          <dt>vsersion controlls:</dt>
-          <dd><%= raw @resume['vsersion_controlls'].join('<br>') %></dd>
-          <dt>os:</dt>
-          <dd><%= raw @resume['os'].join(', ') %></dd>
-          <dt>special experiences <br>& knowledge:</dt>
-          <dd><%= raw @resume['special_experiences_and_knowledge'].join('<br>') %></dd>
-        </dl>
-      </div>
-      </div>
-    </div>
-    -->
     <div class="row">
       <div class="col-xs-4">
         <div class="panel panel-default">
@@ -316,8 +291,8 @@
         </div>
       </div>
     </div>
-    <br>
-    <br>
+
+    <div class="pagebreak"></div>
 
     <div class="container-fluid text-center">
       <h1>licenses</h1>
@@ -329,9 +304,6 @@
       </div>
     <% end %>
 
-
-    <br>
-    <br>
     <div class="container-fluid text-center">
       <h1>educations</h1>
     </div>
