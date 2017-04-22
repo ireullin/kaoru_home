@@ -71,16 +71,39 @@
       margin: auto;
       max-width: 300px;
     }
+
+    .pagebreak { page-break-before: always; }
     </style>
 
   </head>
 
   <body>
+  <br>
 
   <div class="container-fluid">
-    <br>
-    <div class="jumbotron">
-      <h1>Hi, I'm <%= @resume['name'][@lang] %></h1>
+    <div class="row">
+      <div class="col-xs-6">
+        <h1><%= @resume['name'][@lang] %>'s profile</h1>
+      </div>
+      <div class="col-xs-6">
+        <br>
+        <dl>
+          <dt>mail:</dt>
+          <dd><%= @resume['mail'] %></dd>
+          <dt>phone:</dt>
+          <dd><%= raw @resume['phones'].join('<br>') %></dd>
+          <dt>github:</dt>
+          <dd><a><%= @resume['github'] %></a></dd>
+          <dt>blog(unmaintained):</dt>
+          <dd><a><%= @resume['blog'] %></a></dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+  <br>
+
+  <div class="container-fluid">
+    <div class="bs-callout bs-callout-default">
       <% @resume['profile'][@lang].each do |p| %>
         <p><%= p %></p>
       <% end %>
@@ -89,7 +112,7 @@
     <br>
     <br>
 
-
+    <!--
     <div class="container-fluid text-center">
       <h1>profile</h1>
     </div>
@@ -102,19 +125,20 @@
           <dt>phone:</dt>
           <dd><%= raw @resume['phones'].join('<br>') %></dd>
           <dt>github:</dt>
-          <dd><a href="<%= @resume['github'] %>"><%= @resume['github'] %></a></dd>
-          <dt>blog(unmaintained):</dt>
-          <dd><a href="<%= @resume['blog'] %>"><%= @resume['blog'] %></a></dd>
+          <dd><a><%= @resume['github'] %></a></dd>
+          <dt>blog<br>(unmaintained):</dt>
+          <dd><a><%= @resume['blog'] %></a></dd>
         </dl>
       </div>
     </div>
 
     <br>
     <br>
+    -->
 
     <!-- companies -->
     <div class="container-fluid text-center">
-      <h1>companies</h1>
+      <h1>Companies</h1>
     </div>
     <!--
     <% @resume['companies'].each do |company| %>
@@ -126,7 +150,7 @@
     <% end %>
     -->
     <% col_num = 4 %>
-    <% class_name = "col-md-#{12/col_num}" %>
+    <% class_name = "col-xs-#{12/col_num}" %>
     <% row_num = (@resume['companies'].size / col_num.to_f ).ceil  %>
     <% row_num.times do |i| %>
       <div class="row">
@@ -136,9 +160,9 @@
           <% company = @resume['companies'][k] %>
           <div class="<%= class_name %>">
             <div class="panel panel-default text-center">
-                <h3><%= company['name'][@lang] %></h3>
-                <p><%= company['duration'] %></p>
-                <p><%= company['position'][@lang] %></p>
+              <h4><%= company['name'][@lang] %></h4>
+              <p><%= company['duration'] %></p>
+              <p><%= company['position'][@lang] %></p>
             </div>
           </div>
         <% end %>
@@ -146,17 +170,17 @@
     <% end %>
 
 
-    <br>
-    <br>
+    <div class="pagebreak"></div>
 
     <!-- attainments -->
     <div class="container-fluid text-center">
-      <h1>attainments</h1>
+      <h1>Attainments</h1>
     </div>
     <% col_num = 3 %>
-    <% class_name = "col-md-#{12/col_num}" %>
+    <% class_name = "col-xs-#{12/col_num}" %>
     <% row_num = (@resume['attainments']['items'].size / col_num.to_f ).ceil  %>
     <% row_num.times do |i| %>
+
       <div class="row">
         <% col_num.times do |j| %>
           <% k = i*col_num+j %>
@@ -164,30 +188,32 @@
           <% item = @resume['attainments']['items'][k] %>
           <div class="<%= class_name %>">
             <div class="panel panel-default">
-              <div class="panel-heading  text-center" style="min-height: 1000; max-height: 1000;">
+              <div class="panel-heading  text-center">
                 <h4><%= item['summary'][@lang] %><br><small>in <%= item['company'][@lang] %></small></h4>
               </div>
-              <div class="panel-body" style="min-height: 1000; max-height: 1000;">
-                <p><%= item['description'][@lang] %></p>
+              <div class="panel-body">
+                <%= raw item['description'][@lang].map{|x| "<p>#{x}</p>" }.join %>
               </div>
             </div>
           </div>
         <% end %>
       </div>
+
+      <% if i%2==1 %>
+        <div class="pagebreak"></div>
+      <% end %>
     <% end %>
 
-    <br>
-    <br>
 
 
     <!-- programming languages -->
     <div class="container-fluid text-center">
-      <h1>programming languages</h1>
+      <h1>Languages & Skills</h1>
     </div>
     <table class="table table-condensed">
       <thead>
         <tr>
-          <th>#</th>
+          <th>language</th>
           <th>excellent</th>
           <th>good</th>
           <th>general</th>
@@ -206,37 +232,8 @@
       </tbody>
     </table>
 
-
-
-    <br>
-    <br>
-
-    <!-- skills -->
-    <div class="container-fluid text-center">
-      <h1>skills</h1>
-    </div>
-    <!--
-    <div class="im-centered">
-      <div class="row">
-      <div class="col-md-12">
-        <dl class="dl-horizontal">
-          <dt>libraries:</dt>
-          <dd><%= raw @resume['libraries'].join('<br>') %></dd>
-          <dt>databases:</dt>
-          <dd><%= raw @resume['databases'].join('<br>') %></dd>
-          <dt>vsersion controlls:</dt>
-          <dd><%= raw @resume['vsersion_controlls'].join('<br>') %></dd>
-          <dt>os:</dt>
-          <dd><%= raw @resume['os'].join(', ') %></dd>
-          <dt>special experiences <br>& knowledge:</dt>
-          <dd><%= raw @resume['special_experiences_and_knowledge'].join('<br>') %></dd>
-        </dl>
-      </div>
-      </div>
-    </div>
-    -->
     <div class="row">
-      <div class="col-md-4">
+      <div class="col-xs-4">
         <div class="panel panel-default">
           <div class="panel-heading  text-center" style="min-height: 1000; max-height: 1000;">
             <h4>libraries & freamworks</h4>
@@ -247,7 +244,7 @@
         </div>
       </div>
 
-      <div class="col-md-4">
+      <div class="col-xs-4">
         <div class="panel panel-default">
           <div class="panel-heading  text-center" style="min-height: 1000; max-height: 1000;">
             <h4>databases</h4>
@@ -258,20 +255,20 @@
         </div>
       </div>
 
-      <div class="col-md-4">
+      <div class="col-xs-4">
         <div class="panel panel-default">
           <div class="panel-heading  text-center" style="min-height: 1000; max-height: 1000;">
             <h4>special experiences & knowledge</h4>
           </div>
           <div class="panel-body" style="min-height: 1000; max-height: 1000;">
-            <ul><%= raw @resume['databases'].map{|x| "<li>#{x}</li>" }.join %></ul>
+            <ul><%= raw @resume['special_experiences_and_knowledge'].map{|x| "<li>#{x}</li>" }.join %></ul>
           </div>
         </div>
       </div>
     </div>
 
     <div class="row">
-      <div class="col-md-4">
+      <div class="col-xs-4">
         <div class="panel panel-default">
           <div class="panel-heading  text-center" style="min-height: 1000; max-height: 1000;">
             <h4>os</h4>
@@ -283,7 +280,7 @@
       </div>
 
 
-      <div class="col-md-4">
+      <div class="col-xs-4">
         <div class="panel panel-default">
           <div class="panel-heading  text-center" style="min-height: 1000; max-height: 1000;">
             <h4>vsersion controlls</h4>
@@ -294,24 +291,21 @@
         </div>
       </div>
     </div>
-    <br>
-    <br>
+
+    <div class="pagebreak"></div>
 
     <div class="container-fluid text-center">
-      <h1>licenses</h1>
+      <h1>Licenses</h1>
     </div>
     <% @resume['licenses'].each do |license| %>
       <div class="bs-callout bs-callout-default">
         <h4><%= license['name'] %></h4>
-        <a href="<%= license['url'] %>" ><%= license['url'] %></a>
+        <a><%= license['url'] %></a>
       </div>
     <% end %>
 
-
-    <br>
-    <br>
     <div class="container-fluid text-center">
-      <h1>educations</h1>
+      <h1>Educations</h1>
     </div>
     <% @resume['educations'].each do |education| %>
       <div class="bs-callout bs-callout-default">
