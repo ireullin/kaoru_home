@@ -179,6 +179,11 @@
     <% col_num = 3 %>
     <% class_name = "col-xs-#{12/col_num}" %>
     <% row_num = (@resume['attainments']['items'].size / col_num.to_f ).ceil  %>
+
+    <%
+      page_rows =[2,3]
+      page_rows_index = 0;
+    %>
     <% row_num.times do |i| %>
 
       <div class="row">
@@ -199,7 +204,8 @@
         <% end %>
       </div>
 
-      <% if i%2==1 %>
+      <% if i % page_rows[page_rows_index] ==1 %>
+        <% page_rows_index += 1 %>
         <div class="pagebreak"></div>
       <% end %>
     <% end %>
