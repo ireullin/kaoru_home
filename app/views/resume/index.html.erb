@@ -220,21 +220,25 @@
     <table class="table table-condensed">
       <thead>
         <tr>
-          <th>language</th>
-          <th>excellent</th>
-          <th>good</th>
-          <th>general</th>
+          <th style="vertical-align:middle;">language</th>
+          <th style="vertical-align:middle;">I really got it</th>
+          <th style="vertical-align:middle;">I can accomplish<br>projects independently</th>
+          <th style="vertical-align:middle;">I can write them</th>
+          <th style="vertical-align:middle;">I used to work<br>with them</th>
         </tr>
       </thead>
       <tbody>
-        <% @resume['programs']['excellent'].each do |x| %>
-          <%= raw %Q(<tr><td>#{x}</td><td><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></td><td></td><td></td></tr>) %>
+        <% @resume['programs'][0].each do |x| %>
+          <%= raw %Q(<tr><td>#{x}</td><td><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></td><td></td><td></td><td></td></tr>) %>
         <% end %>
-        <% @resume['programs']['good'].each do |x| %>
-          <%= raw %Q(<tr><td>#{x}</td><td></td><td><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></td><td></td></tr>) %>
+        <% @resume['programs'][1].each do |x| %>
+          <%= raw %Q(<tr><td>#{x}</td><td></td><td><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></td><td></td><td></td></tr>) %>
         <% end %>
-        <% @resume['programs']['general'].each do |x| %>
-          <%= raw %Q(<tr><td>#{x}</td><td></td><td></td><td><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></td></tr>) %>
+        <% @resume['programs'][2].each do |x| %>
+          <%= raw %Q(<tr><td>#{x}</td><td></td><td></td><td><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></td><td></td></tr>) %>
+        <% end %>
+        <% @resume['programs'][3].each do |x| %>
+          <%= raw %Q(<tr><td>#{x}</td><td></td><td></td><td></td><td><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></td></tr>) %>
         <% end %>
       </tbody>
     </table>
